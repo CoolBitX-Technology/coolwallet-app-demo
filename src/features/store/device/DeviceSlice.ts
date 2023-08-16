@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {DeviceState} from '@src/features/store/device/DeviceTypes';
-import {ReducerTypes} from '@src/features/store/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { DeviceState } from '@src/features/store/device/DeviceTypes';
+import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: DeviceState = {
   isConnected: false,

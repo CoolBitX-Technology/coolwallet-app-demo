@@ -1,6 +1,6 @@
-import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {AccountState} from '@src/features/store/account/AccountTypes';
-import {ReducerTypes} from '@src/features/store/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { AccountState } from '@src/features/store/account/AccountTypes';
+import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: AccountState = {
   mnemonic: '',
@@ -11,7 +11,7 @@ export const AcountSlice = createSlice({
   initialState,
   reducers: {
     setMnemonic: (state: AccountState, action: PayloadAction<string>) => {
-      const {payload} = action;
+      const { payload } = action;
       state.mnemonic = payload;
     },
     resetMnemonic: (state: AccountState) => {
