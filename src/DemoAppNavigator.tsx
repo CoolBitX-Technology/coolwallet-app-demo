@@ -1,13 +1,13 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BluetoothSettingsContainer } from '@src/features/ble/BluetoothSettingsContainer';
+import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 import { DemoAppHomeContainer } from '@src/features/home/DemoAppHomeContainer';
 import { RouteName } from '@src/routes/type';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
-  [RouteName.BLUETOOTH_SETTINGS]: undefined;
+  [RouteName.BLUETOOTH_SCAN]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -31,8 +31,14 @@ const Stack = createNativeStackNavigator();
 export function DemoAppNavigator() {
   return (
     <Stack.Navigator initialRouteName={RouteName.DEMO_HOME}>
-      <Stack.Screen name={RouteName.DEMO_HOME} component={DemoAppHomeContainer} />
-      <Stack.Screen name={RouteName.BLUETOOTH_SETTINGS} component={BluetoothSettingsContainer} />
+      <Stack.Screen
+        name={RouteName.DEMO_HOME}
+        component={DemoAppHomeContainer}
+      />
+      <Stack.Screen
+        name={RouteName.BLUETOOTH_SCAN}
+        component={BluetoothScanContainer}
+      />
     </Stack.Navigator>
   );
 }

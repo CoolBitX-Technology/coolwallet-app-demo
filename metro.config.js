@@ -7,10 +7,15 @@ const path = require('path');
  * @type {import('metro-config').MetroConfig}
  */
 const config = {
+  alias: {
+    '@src': path.resolve(__dirname, 'src'),
+  },
+  transformer: {
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+  },
   resolver: {
-    alias: {
-      '@src': path.resolve(__dirname, 'src'),
-    },
+    assetExts: assetExts.filter((ext) => ext !== 'svg'),
+    sourceExts: [...sourceExts, 'svg'],
   },
 };
 
