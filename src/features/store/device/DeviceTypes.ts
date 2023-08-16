@@ -30,9 +30,4 @@ export interface BluetoothInfo {
    * User friendly name of device.
    */
   localName: string | null;
-
-  /**
-   * Transmission power level of device.
-   */
-  txPowerLevel: number | null;
 }
