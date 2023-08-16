@@ -2,5 +2,6 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "editor.formatOnSave": true
 }
