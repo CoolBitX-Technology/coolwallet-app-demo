@@ -64,3 +64,13 @@ yarn-error.log
 
 # testing
 /coverage
+
+# yarn 3, ref: https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+# Section: If you're using Zero-Installs:
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
