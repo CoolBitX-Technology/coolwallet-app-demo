@@ -1,11 +1,11 @@
 // prettier-ignore
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",     /* Recommended React Native TSConfig base */
+  "extends": "@tsconfig/react-native/tsconfig.json" /* Recommended React Native TSConfig base */,
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Completeness */
-    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
@@ -13,7 +13,7 @@
       "@scripts/*": ["scripts/*"],
 
       // root folder
-      "@/*": ["*"],
+      "@/*": ["*"]
     }
   },
   "include": [
@@ -21,7 +21,7 @@
     "scripts/**/*",
     "__tests__/**/*",
     "index.android.js",
-    "index.ios.js",
+    "index.ios.js"
   ],
   "exclude": [
     "node_modules",
@@ -29,6 +29,6 @@
     "metro.config.js",
     "jest.config.js",
     "jest-rn.config.js",
-    "jest-core.config.js",
+    "jest-core.config.js"
   ]
 }
