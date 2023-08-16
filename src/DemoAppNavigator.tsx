@@ -6,8 +6,8 @@ import {
 } from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {BluetoothSettingsContainer} from '@src/features/BluetoothSettings/BluetoothSettingsContainer';
-import {DemoAppHomeContainer} from '@src/features/DemoAppHome/DemoAppHomeContainer';
+import {BluetoothSettingsContainer} from '@src/features/ble/BluetoothSettingsContainer';
+import {DemoAppHomeContainer} from '@src/features/home/DemoAppHomeContainer';
 import {RouteName} from '@src/routes/type';
 
 export type DemoAppParamList = {
