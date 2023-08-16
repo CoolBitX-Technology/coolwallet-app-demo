@@ -6,7 +6,7 @@ const initialState: DeviceState = {
   isConnected: false,
   isPaired: false,
   bleInfo: {
-    id: '',
+    deviceId: '',
     name: '',
     rssi: null,
     mtu: 23, // default value according to RNBleManager

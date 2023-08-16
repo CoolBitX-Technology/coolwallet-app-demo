@@ -8,7 +8,7 @@ export interface BluetoothInfo {
   /**
    * Device identifier: MAC address on Android and UUID on iOS.
    */
-  id: string;
+  deviceId: string;
 
   /**
    * Device name if present
