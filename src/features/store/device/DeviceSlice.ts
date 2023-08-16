@@ -11,7 +11,6 @@ const initialState: DeviceState = {
     rssi: null,
     mtu: 23, // default value according to RNBleManager
     localName: '',
-    txPowerLevel: 0,
   },
 };
 
