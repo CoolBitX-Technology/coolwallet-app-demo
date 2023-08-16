@@ -1,7 +1,4 @@
-import {
-  resetMnemonic,
-  setMnemonic,
-} from '@src/features/store/account/AccountSlice';
+import {AccountActions} from '@src/features/store/account/AccountSlice';
 import {RootState} from '@src/features/store/store';
 import {useAppSelector, useAppDispatch} from '@src/features/store/hooks';
 
@@ -16,13 +13,13 @@ export function useMnemonic() {
 export function useDispatchMnemonicChange(): (mnemonic: string) => void {
   const dispatch = useAppDispatch();
   return mnemonic => {
-    dispatch(setMnemonic(mnemonic));
+    dispatch(AccountActions.setMnemonic(mnemonic));
   };
 }
 
 export function useDispatchResetMnemonic(): () => void {
   const dispatch = useAppDispatch();
   return () => {
-    dispatch(resetMnemonic);
+    dispatch(AccountActions.resetMnemonic);
   };
 }

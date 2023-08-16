@@ -22,6 +22,6 @@ const DeviceSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {} = DeviceSlice.actions;
+export const DeviceActions = DeviceSlice.actions;
 
 export default DeviceSlice.reducer;
