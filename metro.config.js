@@ -7,11 +7,11 @@ const path = require('path');
  * @type {import('metro-config').MetroConfig}
  */
 const config = {
-    resolver: {
-        alias: {
-          '@src': path.resolve(__dirname, 'src'),
-        }
-      }
+  resolver: {
+    alias: {
+      '@src': path.resolve(__dirname, 'src'),
+    },
+  },
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
