@@ -42,9 +42,7 @@ export function BluetoothScanView({
   return (
     <View style={style}>
       <FlatList
-        refreshControl={
-          <RefreshControl refreshing={isScaning} onRefresh={onStartScan} />
-        }
+        refreshControl={<RefreshControl refreshing={isScaning} onRefresh={onStartScan} />}
         data={items}
         ItemSeparatorComponent={() => <ItemSeparator />}
         renderItem={({ item, index }) => {
@@ -67,7 +65,7 @@ export function BluetoothScanView({
         <Button
           disabled={!selectedItem}
           title="開始配對"
-          onPress={() => selectedItem && onConnected?.(selectedItem)}
+          onPress={() => selectedItem && onConnected?.(`CWP06525${selectedItem}`)}
         />
       </ButtonLayout>
     </View>

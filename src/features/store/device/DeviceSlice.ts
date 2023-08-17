@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { DeviceState } from '@src/features/store/device/DeviceTypes';
+import { RootState } from '@src/features/store/store';
 import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: DeviceState = {
@@ -17,7 +18,12 @@ const initialState: DeviceState = {
 const DeviceSlice = createSlice({
   name: ReducerTypes.DEVICE,
   initialState,
-  reducers: {},
+  reducers: {
+    setDeviceName: (state: DeviceState, action: PayloadAction<string>) => {
+      const { payload } = action;
+      state.bleInfo.localName = payload;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
