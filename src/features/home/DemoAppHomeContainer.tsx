@@ -9,7 +9,7 @@ import { ConnectCardView } from '@src/features/home/components/ConnectCardView';
 
 export const DemoAppHomeContainer = () => {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
-  const OnPressButton = () => navigation.navigate(RouteName.BLUETOOTH_SETTINGS);
+  const OnPressButton = () => navigation.navigate(RouteName.BLUETOOTH_SCAN);
   const cardInfo = useCardInfo();
   const { isConnected, bleInfo } = cardInfo;
   return (
