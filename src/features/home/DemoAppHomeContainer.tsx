@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
 import { useCardInfo } from '@src/features/store/device/DeviceActionHooks';
-import { ConnectCardView } from '@src/features/home/components/ConnectCardView';
+import { ConnectCardView } from '@src/features/home/ConnectCardView';
 
 export const DemoAppHomeContainer = () => {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
