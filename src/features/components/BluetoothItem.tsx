@@ -1,36 +1,56 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import {Pressable, Text} from 'react-native';
 import styled from 'styled-components/native';
 import {SignalIcon, useSignalLevel} from '@src/features/components/SignalIcon';
 
-const Layout = styled(View)`
+interface LayoutProps {
+  isSelected: boolean;
+}
+const Button = styled(Pressable)<LayoutProps>`
+  width: 100%;
+  height: 54px;
   flex-direction: row;
-  flex: 1;
+  align-items: center;
+  padding-horizontal: 16px;
+  background-color: ${props => (props.isSelected ? 'skyblue' : 'transparent')};
+`;
+
+const Title = styled(Text)`
+  margin-start: 4px;
+  align-self: center;
+`;
+
+const PairedStatusText = styled(Text)`
+  font-weight: bold;
+  color: black;
 `;
 
 interface Props {
+  index: number;
   deviceId: string;
   deviceName: string;
   rssi: number;
   isPaired: boolean;
   isSelected: boolean;
+  onSelected?: (item: string) => void;
 }
 export function BluetoothItem({
+  index,
   deviceId,
   deviceName,
   rssi,
   isPaired,
   isSelected,
+  onSelected,
 }: Props): JSX.Element {
   const signalLevel = useSignalLevel(rssi);
   const title = useTitle(deviceId, deviceName);
-  console.log('title = ',title);
   return (
-    <Layout style={{ backgroundColor: isSelected ? 'gray' : 'blue' }}>
-      <SignalIcon signalLevel={signalLevel} />
-      {/* <Text>{title}</Text>
-      {isPaired && <Text>{` - 已配對`}</Text>} */}
-    </Layout>
+    <Button isSelected={isSelected} onPress={() => onSelected?.(""+index)}>
+      <SignalIcon isPaired={isPaired} signalLevel={signalLevel} />
+      <Title>{title}</Title>
+      {isPaired && <PairedStatusText>{` - 已配對`}</PairedStatusText>}
+    </Button>
   );
 }
 

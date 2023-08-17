@@ -1,24 +1,61 @@
-import SignalLevel4 from '@src/assets/images/signal_0.svg';
-import SignalLevel3 from '@src/assets/images/signal_1.svg';
-import SignalLevel2 from '@src/assets/images/signal_2.svg';
-import SignalLevel1 from '@src/assets/images/signal_3.svg';
-import SignalLevel0 from '@src/assets/images/signal_4.svg';
+import * as React from 'react';
+import {Image, ImageStyle} from 'react-native';
+import styled from 'styled-components/native';
+
+const ImageView = styled(Image)`
+  width: 20px;
+  height: 20px;
+  margin: 4px;
+`;
 
 export interface Props {
-  signalLevel?: number;
+  style?: ImageStyle;
+  signalLevel: number;
+  isPaired: boolean;
 }
-export function SignalIcon({signalLevel = 0}: Props): JSX.Element {
+export function SignalIcon({style, isPaired, signalLevel = 0}: Props) {
+  if (isPaired) return (
+    <ImageView
+      style={style}
+      source={require('@src/assets/images/bluetooth.png')}
+    />
+  );
   switch (signalLevel) {
     default:
-      return <SignalLevel0/>;
+      return (
+        <ImageView
+          style={style}
+          source={require('@src/assets/images/signal-0.png')}
+        />
+      );
     case 1:
-      return <SignalLevel1/>;
+      return (
+        <ImageView
+          style={style}
+          source={require('@src/assets/images/signal-1.png')}
+        />
+      );
     case 2:
-      return <SignalLevel2/>;
+      return (
+        <ImageView
+          style={style}
+          source={require('@src/assets/images/signal-2.png')}
+        />
+      );
     case 3:
-      return <SignalLevel3/>;
+      return (
+        <ImageView
+          style={style}
+          source={require('@src/assets/images/signal-3.png')}
+        />
+      );
     case 4:
-      return <SignalLevel4/>;
+      return (
+        <ImageView
+          style={style}
+          source={require('@src/assets/images/signal-4.png')}
+        />
+      );
   }
 }
 
