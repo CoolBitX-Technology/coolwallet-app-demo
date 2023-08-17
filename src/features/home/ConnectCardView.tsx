@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextInput, Button, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Button, Input } from 'native-base';
+import { StyleSheet, View } from 'react-native';
 
 interface CardInfo {
   cardId: string | null;
@@ -10,12 +11,12 @@ export const ConnectCardView = (props: CardInfo) => {
   const { isConnected, cardId, onPress } = props;
   return (
     <View style={styles.cardConnectView}>
-      <TextInput editable={false} style={styles.inputTextArea}>
+      <Input editable={false} w={'50%'} size="xl">
         {cardId}
-      </TextInput>
-      <Pressable onPress={onPress} style={styles.connectButton}>
-        <Text style={{ color: '#ffffff', fontSize: 20 }}>{isConnected ? 'Disconnect' : 'Connect'}</Text>
-      </Pressable>
+      </Input>
+      <Button onPress={onPress} size="md">
+        {isConnected ? 'Disconnect' : 'Connect'}
+      </Button>
     </View>
   );
 };
@@ -26,22 +27,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 8,
-  },
-  connectButton: {
-    backgroundColor: '#007aff',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderBottomRightRadius: 8,
-    borderTopRightRadius: 8,
-    borderWidth: 0,
-  },
-  inputTextArea: {
-    borderColor: '#007aff',
-    borderWidth: 1,
-    borderBottomLeftRadius: 8,
-    borderTopLeftRadius: 8,
-    width: '50%',
-    fontSize: 24,
-    paddingHorizontal: 4,
   },
 });
