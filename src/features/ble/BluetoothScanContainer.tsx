@@ -1,6 +1,5 @@
-
-import {useNavigation} from '@react-navigation/native';
-import {BluetoothScanView} from '@src/features/ble/BluetoothScanView';
+import { useNavigation } from '@react-navigation/native';
+import { BluetoothScanView } from '@src/features/ble/BluetoothScanView';
 import { useDispatchDeviceNameChange } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
 
