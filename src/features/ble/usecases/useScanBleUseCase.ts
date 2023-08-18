@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { requestMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { RNBleManager } from '@src/features/ble/RNBleManager';
@@ -9,17 +9,19 @@ export function useScanBleUseCase() {
   const [scannedDevices, setScannedDevices] = useState<Array<BluetoothDevice>>([]);
   const [error, setError] = useState<BleError | undefined>();
 
-  const listener = async (bleError?: BleError, device?: BluetoothDevice) => {
+  const listener = (bleError?: BleError, device?: BluetoothDevice) => {
     if (device) {
-      if (scannedDevices.some((savedDevice) => savedDevice.id === device.id)) return;
-      setScannedDevices(scannedDevices.concat(device));
+      console.log('scannedDevice  >>> ' + JSON.stringify(RNBleManager.getInstance().getScannedDevice()));
+      console.log('device >>> ' + JSON.stringify(device));
+      setScannedDevices(RNBleManager.getInstance().getScannedDevice());
     } else if (bleError) {
       if (bleError !== error) setError(bleError);
       setIsScaning(false);
       if (bleError.errorCode === BleErrorCode.BluetoothUnauthorized) {
         const permissions = getBlePermissions();
-        const results = await requestMultiple(permissions);
-        if (isAllPermissionGranted(results)) return startScan();
+        requestMultiple(permissions).then((results) => {
+          if (isAllPermissionGranted(results)) startScan();
+        });
       }
     }
   };

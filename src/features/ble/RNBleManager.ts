@@ -7,12 +7,12 @@ export class RNBleManager implements CWBleManager {
   private bleManager: BleManager;
   private uuids: Array<string>;
   private stateSubscription: Subscription | undefined;
-  private connectedDevices: Array<BluetoothDevice>;
+  private scannedDevices: Array<BluetoothDevice>;
 
   constructor() {
     this.bleManager = new BleManager();
     this.uuids = CWDevice.getBluetoothServiceUuids();
-    this.connectedDevices = [];
+    this.scannedDevices = [];
   }
 
   static getInstance() {
@@ -25,9 +25,8 @@ export class RNBleManager implements CWBleManager {
     return state === State.PoweredOn;
   }
 
-  isConnected(deviceId: string): boolean {
-    const index = this.connectedDevices.findIndex((device) => device.id === deviceId);
-    return index !== -1;
+  getScannedDevice() {
+    return this.scannedDevices;
   }
 
   listenOnDisconnected(device: BluetoothDevice, onDisconnect: (device: BluetoothDevice, error?: BleError) => void): void {
@@ -47,6 +46,13 @@ export class RNBleManager implements CWBleManager {
       this.bleManager.startDeviceScan(this.uuids, null, (nullableBleError, nullableDevice) => {
         const bleError = nullableBleError === null ? undefined : nullableBleError;
         const device = nullableDevice === null ? undefined : nullableDevice;
+        if (
+          device &&
+          !this.scannedDevices.some((scannedDevice) => {
+            return scannedDevice.id === device.id;
+          })
+        )
+          this.scannedDevices.push(device);
         callback?.(bleError, device);
       });
     });
@@ -69,9 +75,9 @@ export class RNBleManager implements CWBleManager {
     console.log('RNBleManager.connect finish');
     device = await device.discoverAllServicesAndCharacteristics();
     console.log('RNBleManager.discoverAllServicesAndCharacteristics finish');
-    if (!this.connectedDevices.includes(device)) this.connectedDevices.push(device);
+    // if (!this.scannedDevices.includes(device)) this.scannedDevices.push(device);
     this.listenOnDisconnected(device, (device, error) => {
-      if (this.connectedDevices.includes(device)) this.connectedDevices.pop();
+      // if (this.scannedDevices.includes(device)) this.scannedDevices.pop();
     });
     return new RNBleTransport(device);
   }
