@@ -61,7 +61,7 @@ function getBlePermissions() {
 
 function isAllPermissionGranted(permissionResults: Record<string, string>): boolean {
   const permissions = getBlePermissions();
-  return Object.values(permissionResults).filter((result) => result === RESULTS.GRANTED).length !== permissions.length;
+  return Object.values(permissionResults).filter((result) => result === RESULTS.GRANTED).length === permissions.length;
 }
 
 function isBleNotReady(state: State): boolean {
