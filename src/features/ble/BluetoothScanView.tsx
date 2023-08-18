@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, ViewStyle, View, Button, RefreshControl, Text, Platform } from 'react-native';
+import { ViewStyle, View, Button, Text, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { BluetoothItem } from '@src/features/components/BluetoothItem';
 import { Device as BluetoothDevice } from 'react-native-ble-plx';
@@ -52,13 +52,8 @@ export function BluetoothScanView({
 }: Props): JSX.Element {
   return (
     <View style={style}>
-      <FlatList
-        contentContainerStyle={{ marginTop: isScaning && Platform.OS === 'android' ? 84 : 0}}
-        refreshControl={<RefreshControl refreshing={isScaning} onRefresh={onStartScan} />}
-        data={items}
-        keyExtractor={(item) => item.id.toString()}
-        ItemSeparatorComponent={() => <ItemSeparator />}
-        renderItem={({ item, index }) => {
+      <ScrollView>
+        {items.map((item, index) => {
           return (
             <BluetoothItem
               index={index}
@@ -69,8 +64,8 @@ export function BluetoothScanView({
               onSelected={onSelected}
             />
           );
-        }}
-      />
+        })}
+      </ScrollView>
       {items.length > 0 && <ItemSeparator />}
       <ButtonLayout>
         <Button title="取消" onPress={onCanceled} />
