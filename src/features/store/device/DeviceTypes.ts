@@ -1,7 +1,7 @@
 export interface DeviceState {
   isConnected: boolean;
   isPaired: boolean;
-  bleInfo: BluetoothInfo;
+  bleInfo?: BluetoothInfo;
 }
 
 export interface BluetoothInfo {
@@ -13,12 +13,12 @@ export interface BluetoothInfo {
   /**
    * Device name if present
    */
-  name: string | null;
+  name?: string;
 
   /**
    * Current Received Signal Strength Indication of device
    */
-  rssi: number | null;
+  rssi?: number;
 
   /**
    * Current Maximum Transmission Unit for this device. When device is not connected
@@ -29,5 +29,5 @@ export interface BluetoothInfo {
   /**
    * User friendly name of device.
    */
-  localName: string | null;
+  localName?: string;
 }

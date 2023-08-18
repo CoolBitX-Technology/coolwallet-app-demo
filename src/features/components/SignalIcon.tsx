@@ -60,10 +60,9 @@ export function SignalIcon({style, isPaired, signalLevel = 0}: Props) {
 }
 
 export function useSignalLevel(rssi: number): number {
-  if (rssi > -50) return 5;
-  else if (rssi <= -50 && rssi > -70) return 4;
+  if (rssi > -70) return 4;
   else if (rssi <= -70 && rssi > -80) return 3;
   else if (rssi <= -80 && rssi > -90) return 2;
   else if (rssi <= -90 && rssi > -100) return 1;
-  else return 0;
+  return 0;
 }
