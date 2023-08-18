@@ -11,6 +11,9 @@ const config = {
   alias: {
     '@src': path.resolve(__dirname, 'src'),
   },
+  resolver: {
+    resolverMainFields: ['react-native', 'browser', 'main'],
+  },
 };
 
 module.exports = mergeConfig(defaultConfig, config);
