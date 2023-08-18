@@ -1,27 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { DeviceState } from '@src/features/store/device/DeviceTypes';
-import { RootState } from '@src/features/store/store';
+import { BluetoothInfo, DeviceState } from '@src/features/store/device/DeviceTypes';
 import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: DeviceState = {
   isConnected: false,
   isPaired: false,
-  bleInfo: {
-    deviceId: '',
-    name: '',
-    rssi: null,
-    mtu: 23, // default value according to RNBleManager
-    localName: '',
-  },
 };
 
 const DeviceSlice = createSlice({
   name: ReducerTypes.DEVICE,
   initialState,
   reducers: {
-    setDeviceName: (state: DeviceState, action: PayloadAction<string>) => {
-      const { payload } = action;
-      state.bleInfo.localName = payload;
+    setBluetoothInfo: (state: DeviceState, action: PayloadAction<BluetoothInfo>) => {
+      state.bleInfo = action.payload;
     },
   },
 });

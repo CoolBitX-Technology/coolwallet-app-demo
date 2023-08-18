@@ -16,7 +16,7 @@ export const DemoAppHomeContainer = () => {
     <SafeAreaView>
       <View style={styles.homeTitle}>
         <Text style={{ fontSize: 32, fontWeight: '500' }}>CoolWallet Demo App</Text>
-        <ConnectCardView cardId={bleInfo.localName} isConnected={isConnected} onPress={OnPressButton} />
+        <ConnectCardView cardId={bleInfo?.localName} isConnected={isConnected} onPress={OnPressButton} />
       </View>
     </SafeAreaView>
   );

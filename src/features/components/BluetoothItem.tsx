@@ -27,16 +27,14 @@ const PairedStatusText = styled(Text)`
 
 interface Props {
   index: number;
-  deviceId: string;
   deviceName: string;
   rssi: number;
   isPaired: boolean;
   isSelected: boolean;
-  onSelected?: (item: string) => void;
+  onSelected?: (index: number) => void;
 }
 export function BluetoothItem({
   index,
-  deviceId,
   deviceName,
   rssi,
   isPaired,
@@ -44,16 +42,11 @@ export function BluetoothItem({
   onSelected,
 }: Props): JSX.Element {
   const signalLevel = useSignalLevel(rssi);
-  const title = useTitle(deviceId, deviceName);
   return (
-    <Button isSelected={isSelected} onPress={() => onSelected?.(""+index)}>
+    <Button isSelected={isSelected} onPress={() => onSelected?.(index)}>
       <SignalIcon isPaired={isPaired} signalLevel={signalLevel} />
-      <Title>{title}</Title>
+      <Title>{deviceName}</Title>
       {isPaired && <PairedStatusText>{` - 已配對`}</PairedStatusText>}
     </Button>
   );
-}
-
-function useTitle(deviceId: string, deviceName: string): string {
-  return `${deviceName} ${deviceId}`;
 }
