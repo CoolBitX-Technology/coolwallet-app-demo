@@ -3,7 +3,7 @@ import { BluetoothScanView } from '@src/features/ble/BluetoothScanView';
 import { useScanBleUseCase } from '@src/features/ble/usecases/useScanBleUseCase';
 import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
-import { BleError, BleErrorCode, Device as BluetoothDevice } from 'react-native-ble-plx';
+import { BleError, BleErrorCode } from 'react-native-ble-plx';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export function BluetoothScanContainer(): JSX.Element {

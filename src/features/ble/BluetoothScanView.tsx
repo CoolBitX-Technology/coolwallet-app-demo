@@ -58,7 +58,6 @@ export function BluetoothScanView({
         data={items}
         keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={() => <ItemSeparator />}
-        ListEmptyComponent={errorText ? <EmptyText>{errorText}</EmptyText> : undefined}
         renderItem={({ item, index }) => {
           return (
             <BluetoothItem
@@ -81,6 +80,7 @@ export function BluetoothScanView({
           onPress={() => selectedIndex > -1 && onConnected?.(items?.[selectedIndex])}
         />
       </ButtonLayout>
+      {errorText ? <EmptyText>{errorText}</EmptyText> : undefined}
     </View>
   );
 }
