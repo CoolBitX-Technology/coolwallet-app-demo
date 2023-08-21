@@ -21,14 +21,24 @@ export function useDispatchBluetoothInfo(): (device: BluetoothDevice) => void {
     const nameSplits = device?.name?.split(' ');
     const name = nameSplits?.[0] || '';
     const localName = nameSplits?.[1] || '';
-    dispatch(
-      DeviceActions.setBluetoothInfo({
-        deviceId: device.id,
-        name,
-        localName,
-        rssi: device.rssi || -100,
-        mtu: device.mtu,
-      }),
-    );
+    device.isConnected().then((isConnected) => {
+      dispatch(
+        DeviceActions.updateBluetoothInfo({
+          deviceId: device.id,
+          name,
+          localName,
+          rssi: device.rssi || -100,
+          mtu: device.mtu,
+          isConnected,
+        }),
+      );
+    });
+  };
+}
+
+export function useClearBluetoothInfo(): () => void {
+  const dispatch = useAppDispatch();
+  return () => {
+    dispatch(DeviceActions.clearBluetoothInfo());
   };
 }
