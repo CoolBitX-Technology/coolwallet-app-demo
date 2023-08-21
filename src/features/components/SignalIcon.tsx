@@ -11,10 +11,10 @@ const ImageView = styled(Image)`
 export interface Props {
   style?: ImageStyle;
   signalLevel: number;
-  isPaired: boolean;
+  isConnected: boolean;
 }
-export function SignalIcon({style, isPaired, signalLevel = 0}: Props) {
-  if (isPaired) return (
+export function SignalIcon({style, isConnected, signalLevel = 0}: Props) {
+  if (isConnected) return (
     <ImageView
       style={style}
       source={require('@src/assets/images/bluetooth.png')}

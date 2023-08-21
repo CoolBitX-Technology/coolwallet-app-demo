@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import { BluetoothItem } from '@src/features/components/BluetoothItem';
 import { Device as BluetoothDevice } from 'react-native-ble-plx';
 import { Button, Text } from 'native-base';
+import { BluetoothInfo } from '@src/features/store/device/DeviceTypes';
 
 const StyledButton = styled(Button)`
   width: 90px;
@@ -42,7 +43,7 @@ const EmptyText = styled(Text)`
 interface Props {
   style?: ViewStyle;
   items: Array<BluetoothDevice>;
-  pairedDeviceId?: string;
+  connectedBlueInfo?: BluetoothInfo;
   selectedIndex: number;
   isScaning?: boolean;
   isConnecting?: boolean;
@@ -57,7 +58,7 @@ export function BluetoothScanView({
   items,
   isScaning = false,
   isConnecting = false,
-  pairedDeviceId,
+  connectedBlueInfo,
   selectedIndex = -1,
   errorText,
   onStartScan,
@@ -71,15 +72,17 @@ export function BluetoothScanView({
       <ListView isScaning={isScaning} refreshControl={<RefreshControl refreshing={isScaning} onRefresh={onStartScan} />}>
         {items.map((item, index) => {
           return (
-            <BluetoothItem
-              key={item.id}
-              index={index}
-              rssi={item.rssi || -90}
-              deviceName={item?.localName || ''}
-              isPaired={item.id === pairedDeviceId}
-              isSelected={selectedIndex === index}
-              onSelected={onSelected}
-            />
+            <View key={item.id}>
+              <ItemSeparator />
+              <BluetoothItem
+                index={index}
+                rssi={item.rssi || -90}
+                deviceName={item?.localName || ''}
+                isConnected={item.id === connectedBlueInfo?.deviceId && !!connectedBlueInfo.isConnected}
+                isSelected={selectedIndex === index}
+                onSelected={onSelected}
+              />
+            </View>
           );
         })}
       </ListView>
