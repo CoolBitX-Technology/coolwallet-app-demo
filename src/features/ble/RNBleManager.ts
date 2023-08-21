@@ -29,9 +29,9 @@ export class RNBleManager implements CWBleManager {
   private static instance: RNBleManager;
   private bleManager: BleManager;
   private uuids: Array<string>;
-  private stateSubscription: Subscription | undefined;
+  private stateSubscription?: Subscription;
   private scannedDevices: Array<BluetoothDevice>;
-  private connectionSubscription: Subscription | undefined;
+  private connectionSubscription?: Subscription;
 
   constructor() {
     this.bleManager = new BleManager();
@@ -83,9 +83,12 @@ export class RNBleManager implements CWBleManager {
     this.bleManager.stopDeviceScan();
   }
 
-  unsubscriptionAll(): void {
+  unsubscriptionState(): void {
     this.stateSubscription?.remove();
     this.stateSubscription = undefined;
+  }
+
+  unsubscriptionConnection(): void {
     this.connectionSubscription?.remove();
     this.connectionSubscription = undefined;
   }
@@ -155,17 +158,17 @@ export class RNBleManager implements CWBleManager {
     }
   }
 
-  async connectById(deviceId: string, disconnected?: (device: BluetoothDevice, error?: BleError) => void): Promise<Transport> {
+  async connectById(deviceId: string, callback?: (device: BluetoothDevice, error?: BleError) => void): Promise<Transport> {
     let connectedDevice: BluetoothDevice;
     // 藍芽配對連線
     try {
       connectedDevice = await this.bleManager.connectToDevice(deviceId);
-      if (disconnected) {
+      if (callback) {
         this.connectionSubscription = connectedDevice.onDisconnected((nullableBleError, device) => {
           const bleError = nullableBleError === null ? undefined : nullableBleError;
           this.connectionSubscription?.remove();
           this.connectionSubscription = undefined;
-          disconnected?.(device, bleError);
+          callback?.(device, bleError);
         });
       }
     } catch (e) {
@@ -184,6 +187,8 @@ export class RNBleManager implements CWBleManager {
     console.log('RNBleManager.discoverAllServicesAndCharacteristics finish');
     const serviceCharacteristic = await this.getCWServiceCharacteristics(connectedDevice);
     this.checkServiceCharacteristic(serviceCharacteristic);
+    console.log('RNBleManager.convertToRNBleTransport finish');
+    callback?.(connectedDevice);
     return new RNBleTransport(connectedDevice);
   }
 
@@ -196,8 +201,21 @@ export class RNBleManager implements CWBleManager {
     await this.bleManager.cancelDeviceConnection(id);
   }
 
+  async listenConnectedDevice(deviceId: string, callback: (device: BluetoothDevice, error?: BleError) => void) {
+    this.unsubscriptionConnection();
+    const connectedDevices = await this.getBondDevices();
+    const device = connectedDevices.find((device) => device.id === deviceId);
+    if (!device) return;
+    this.connectionSubscription = device.onDisconnected((nullableBleError, device) => {
+      const bleError = nullableBleError === null ? undefined : nullableBleError;
+      this.unsubscriptionConnection();
+      callback(device, bleError);
+    });
+  }
+
   async disconnect(): Promise<void> {
     const connectedDevices = await this.getBondDevices();
     await Promise.all(connectedDevices.map(({ id }) => this.disconnectedById(id)));
+    this.unsubscriptionConnection();
   }
 }

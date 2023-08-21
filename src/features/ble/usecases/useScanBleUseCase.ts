@@ -32,7 +32,8 @@ export function useScanBleUseCase() {
   const stopScan = () => {
     setIsScaning(false);
     setScanError(undefined);
-    RNBleManager.getInstance().unsubscriptionAll();
+    RNBleManager.getInstance().unsubscriptionState();
+    RNBleManager.getInstance().stopListen();
   };
 
   useEffect(() => {
@@ -43,7 +44,6 @@ export function useScanBleUseCase() {
     }, true);
     return () => {
       stopScan();
-      RNBleManager.getInstance().stopListen();
     };
   }, []);
 
