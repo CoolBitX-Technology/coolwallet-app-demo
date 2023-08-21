@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { BluetoothScanView } from '@src/features/ble/BluetoothScanView';
-import { useConnectBleUseCase } from '@src/features/ble/usecases/useConnectBleUseCase';
+import { useConnectBleUseCase, useUnsubscribeConnectionEffect } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useScanBleUseCase } from '@src/features/ble/usecases/useScanBleUseCase';
 import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BleError, BleErrorCode, Device as BluetoothDevice } from 'react-native-ble-plx';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,9 +13,13 @@ export function BluetoothScanContainer(): JSX.Element {
   const navigation = useNavigation();
   const onCanceled = () => navigation.goBack();
 
-  const pairedItem = useBluetoothInfo();
+  const currentBleInfo = useBluetoothInfo();
+  useEffect(()=>{
+    if (!!currentBleInfo?.isConnected) navigation.goBack();
+  },[currentBleInfo]);
+  
   const { isScaning, startScan, stopScan, scannedDevices, scanError } = useScanBleUseCase();
-  const { isConnecting, connect, connectError } = useConnectBleUseCase();
+  const { isConnecting, connectError, connect } = useConnectBleUseCase();
   
   const onStartConnect = (item: BluetoothDevice) => {
     stopScan();
@@ -27,7 +31,7 @@ export function BluetoothScanContainer(): JSX.Element {
     <SafeAreaView>
       <BluetoothScanView
         items={scannedDevices}
-        pairedDeviceId={pairedItem?.deviceId}
+        connectedBlueInfo={currentBleInfo}
         selectedIndex={selectedIndex}
         isScaning={isScaning}
         isConnecting={isConnecting}
