@@ -18,16 +18,15 @@ export function useBluetoothInfo() {
 export function useDispatchBluetoothInfo(): (device: BluetoothDevice) => void {
   const dispatch = useAppDispatch();
   return (device) => {
-    const nameSplits = device?.name?.split(' ');
-    const name = nameSplits?.[0] || '';
-    const localName = nameSplits?.[1] || '';
+    const name = device?.name || '';
+    const nameSplits = name?.split(' ');
+    const cardId = nameSplits?.[1] || '';
     device.isConnected().then((isConnected) => {
       dispatch(
         DeviceActions.updateBluetoothInfo({
           deviceId: device.id,
           name,
-          localName,
-          rssi: device.rssi || -100,
+          cardId,
           mtu: device.mtu,
           isConnected,
         }),

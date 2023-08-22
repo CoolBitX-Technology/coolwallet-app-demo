@@ -4,21 +4,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
-import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 import { ConnectCardView } from '@src/features/home/ConnectCardView';
 import { useConnectBleUseCase, useSubscribeConnectionEffect, useDisconnectAllEffect } from '@src/features/ble/usecases/useConnectBleUseCase';
+import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 
 export const DemoAppHomeContainer = () => {
   const bleInfo = useBluetoothInfo();
-  useSubscribeConnectionEffect(bleInfo);
+  useSubscribeConnectionEffect();
   useDisconnectAllEffect();
 
-  const isConnected = !!bleInfo?.isConnected;
-  const { disconnect } = useConnectBleUseCase();
+  const { disconnect, transport } = useConnectBleUseCase();
+
+  console.log('>>> transport = ',transport);
 
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const OnPressButton = () => {
-    if (!isConnected) return navigation.navigate(RouteName.BLUETOOTH_SCAN);
+    if (!bleInfo) return navigation.navigate(RouteName.BLUETOOTH_SCAN);
     disconnect(bleInfo.deviceId);
   };
 
@@ -26,11 +27,16 @@ export const DemoAppHomeContainer = () => {
     <SafeAreaView>
       <View style={styles.homeTitle}>
         <Text style={{ fontSize: 32, fontWeight: '500' }}>CoolWallet Demo App</Text>
-        <ConnectCardView cardId={bleInfo?.localName} isConnected={isConnected} onPress={OnPressButton} />
+        <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
       </View>
     </SafeAreaView>
   );
 };
+
+function useCardId(deviceName?: string | null) {
+  const nameSplits = deviceName?.split(' ');
+  return nameSplits?.[1] || '';
+}
 
 const styles = StyleSheet.create({
   homeTitle: {

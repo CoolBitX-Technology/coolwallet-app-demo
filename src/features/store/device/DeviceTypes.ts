@@ -14,23 +14,18 @@ export interface BluetoothInfo {
   name?: string;
 
   /**
-   * Current Received Signal Strength Indication of device
-   */
-  rssi?: number;
-
-  /**
    * Current Maximum Transmission Unit for this device. When device is not connected
    * default value of 23 is used.
    */
   mtu: number;
 
   /**
-   * User friendly name of device.
-   */
-  localName?: string;
-
-  /**
    * Connect status of device.
    */
   isConnected: boolean;
+
+  /**
+   * User friendly id of device.
+   */
+  cardId: string;
 }
