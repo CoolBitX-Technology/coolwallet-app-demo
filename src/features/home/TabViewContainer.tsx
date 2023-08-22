@@ -35,7 +35,7 @@ export function TabViewContainer() {
           const color = '#000';
           const borderColor = index === i ? '#06B6D4' : '#E5E7EB';
           return (
-            <Box borderBottomWidth="3" borderColor={borderColor} flex={1} alignItems="center" p="3">
+            <Box borderBottomWidth="3" borderColor={borderColor} flex={1} alignItems="center" p="3" key={i}>
               <Pressable
                 onPress={() => {
                   console.log(i);

@@ -22,7 +22,7 @@ export function ActionItem(props: ActionItemProps) {
           mt="4px"
           isDisabled={!isEditable}
           style={{ backgroundColor: isEditable ? '#ffffff' : '#474545' }}
-        ></Input>
+        />
         <Button onPress={onPressButton} size="sm" mt="4px">
           {buttonText}
         </Button>
