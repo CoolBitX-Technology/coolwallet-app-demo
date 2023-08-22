@@ -225,7 +225,7 @@ export class RNBleManager implements CWBleManager {
     this.connectionSubscriptions[deviceId] = subscription;
   }
 
-  async disconnectAll(): Promise<void> {
+  async disconnect(): Promise<void> {
     const connectedDevices = await this.getBondDevices();
     await Promise.all(
       connectedDevices.map(({ id }) => {

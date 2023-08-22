@@ -19,7 +19,7 @@ export const DemoAppHomeContainer = () => {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const OnPressButton = () => {
     if (!isConnected) return navigation.navigate(RouteName.BLUETOOTH_SCAN);
-    disconnect();
+    disconnect(bleInfo.deviceId);
   };
 
   return (

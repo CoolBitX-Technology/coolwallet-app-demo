@@ -32,5 +32,5 @@ export interface BluetoothInfo {
   /**
    * Connect status of device.
    */
-  isConnected?: boolean;
+  isConnected: boolean;
 }
