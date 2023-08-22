@@ -1,4 +1,5 @@
 import { Transport, BleManager as CWBleManager, device as CWDevice } from '@coolwallet/core';
+import { delay } from '@coolwallet/core/lib/utils';
 import { RNBleTransport } from '@src/features/ble/RNBleTransport';
 import {
   BleError,
@@ -31,12 +32,13 @@ export class RNBleManager implements CWBleManager {
   private uuids: Array<string>;
   private stateSubscription?: Subscription;
   private scannedDevices: Array<BluetoothDevice>;
-  private connectionSubscription?: Subscription;
+  private connectionSubscriptions: Record<string, Subscription | null>;
 
   constructor() {
     this.bleManager = new BleManager();
     this.uuids = CWDevice.getBluetoothServiceUuids();
     this.scannedDevices = [];
+    this.connectionSubscriptions = {};
   }
 
   static getInstance() {
@@ -88,9 +90,18 @@ export class RNBleManager implements CWBleManager {
     this.stateSubscription = undefined;
   }
 
-  unsubscriptionConnection(): void {
-    this.connectionSubscription?.remove();
-    this.connectionSubscription = undefined;
+  unsubscriptionConnections(): void {
+    Object.values(this.connectionSubscriptions)
+      .filter((sub) => sub !== null)
+      .forEach((sub) => sub?.remove());
+    this.connectionSubscriptions = {};
+  }
+
+  unsubscriptionConnection(deviceId: string): void {
+    const subscription = this.connectionSubscriptions?.[deviceId];
+    if (!subscription) return;
+    subscription.remove();
+    this.connectionSubscriptions[deviceId] = null;
   }
 
   private checkDeviceConnection(deviceId: string, connectedDevice?: BluetoothDevice) {
@@ -164,12 +175,12 @@ export class RNBleManager implements CWBleManager {
     try {
       connectedDevice = await this.bleManager.connectToDevice(deviceId);
       if (callback) {
-        this.connectionSubscription = connectedDevice.onDisconnected((nullableBleError, device) => {
+        const subscription = connectedDevice.onDisconnected((nullableBleError, device) => {
           const bleError = nullableBleError === null ? undefined : nullableBleError;
-          this.connectionSubscription?.remove();
-          this.connectionSubscription = undefined;
+          this.unsubscriptionConnection(deviceId);
           callback?.(device, bleError);
         });
+        this.connectionSubscriptions[deviceId] = subscription;
       }
     } catch (e) {
       const bleError = e as BleError;
@@ -199,23 +210,28 @@ export class RNBleManager implements CWBleManager {
   async disconnectedById(id: string): Promise<void> {
     if (!id) return;
     await this.bleManager.cancelDeviceConnection(id);
+    await delay(1000);
   }
 
   async listenConnectedDevice(deviceId: string, callback: (device: BluetoothDevice, error?: BleError) => void) {
-    this.unsubscriptionConnection();
     const connectedDevices = await this.getBondDevices();
     const device = connectedDevices.find((device) => device.id === deviceId);
     if (!device) return;
-    this.connectionSubscription = device.onDisconnected((nullableBleError, device) => {
+    const subscription = device.onDisconnected((nullableBleError, device) => {
       const bleError = nullableBleError === null ? undefined : nullableBleError;
-      this.unsubscriptionConnection();
+      this.unsubscriptionConnection(deviceId);
       callback(device, bleError);
     });
+    this.connectionSubscriptions[deviceId] = subscription;
   }
 
-  async disconnect(): Promise<void> {
+  async disconnectAll(): Promise<void> {
     const connectedDevices = await this.getBondDevices();
-    await Promise.all(connectedDevices.map(({ id }) => this.disconnectedById(id)));
-    this.unsubscriptionConnection();
+    await Promise.all(
+      connectedDevices.map(({ id }) => {
+        this.disconnectedById(id);
+        this.unsubscriptionConnection(id);
+      }),
+    );
   }
 }

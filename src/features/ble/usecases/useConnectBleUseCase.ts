@@ -33,7 +33,7 @@ export function useConnectBleUseCase() {
   const disconnect = () => {
     setIsConnecting(false);
     setConnectError(undefined);
-    RNBleManager.getInstance().disconnect();
+    RNBleManager.getInstance().d;
     clearBleInfo();
   };
 
@@ -54,8 +54,13 @@ export function useSubscribeConnectionEffect(bleInfo?: BluetoothInfo) {
   useEffect(() => {
     if (!bleInfo || !bleInfo.isConnected) return;
     RNBleManager.getInstance().listenConnectedDevice(bleInfo.deviceId, listener);
-    return () => {
-      RNBleManager.getInstance().unsubscriptionConnection();
-    };
   }, [bleInfo]);
+}
+
+export function useDisconnectAllEffect() {
+  useEffect(() => {
+    return () => {
+      RNBleManager.getInstance().disconnectAll();
+    };
+  }, []);
 }
