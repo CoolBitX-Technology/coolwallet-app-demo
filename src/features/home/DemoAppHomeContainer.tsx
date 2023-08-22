@@ -29,7 +29,7 @@ export const DemoAppHomeContainer = () => {
       <ScrollView>
         <View style={styles.homeContainer}>
           <Text style={styles.titleText}>CoolWallet Demo App</Text>
-          <ConnectCardView cardId={bleInfo?.localName} isConnected={isConnected} onPress={OnPressButton} />
+          <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
           <TabViewContainer />
         </View>
       </ScrollView>
