@@ -7,7 +7,7 @@ import React, { ReactNode, useState } from 'react';
 
 enum TabTitle {
   CARD_PAIRING = 'Card Pairing',
-  TX_TESTER = 'Transcaiton Tester',
+  TX_TESTER = 'Transaction Tester',
 }
 
 interface TabRoute {
