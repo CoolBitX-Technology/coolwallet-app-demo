@@ -62,7 +62,7 @@ export function TabViewContainer() {
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}
-      style={{ width: '100%', paddingHorizontal: 20, height: '100%' }}
+      style={{ width: '100%', paddingHorizontal: 20, height: '100%', marginTop: 16 }}
       renderTabBar={renderTabBar}
     />
   );

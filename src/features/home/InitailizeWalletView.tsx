@@ -39,7 +39,7 @@ export function InitializeWalletView() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'flex-start',
-          marginTop: 40,
+          marginTop: 24,
           paddingHorizontal: 4,
           width: '90%',
         }}
