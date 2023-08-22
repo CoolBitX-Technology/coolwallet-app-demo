@@ -33,29 +33,31 @@ const actionItemData = [
 ];
 export function InitializeWalletView() {
   return (
-    <KeyboardAwareView>
-      <View
-        style={{
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          marginTop: 24,
-          paddingHorizontal: 4,
-          width: '90%',
-        }}
-      >
-        <Text style={{ fontSize: 24, fontWeight: '500' }}>Initailize your CoolWallet Pro</Text>
-        <View style={{ borderWidth: 0.5, borderColor: '#3b4043', width: '100%', marginTop: 4 }} />
-        {actionItemData.map((item, index) => (
-          <ActionItem
-            key={index}
-            title={item.title}
-            buttonText={item.buttonText}
-            isEditable={item.isEditable}
-            onPressButton={item.onPressButton}
-          />
-        ))}
-      </View>
-    </KeyboardAwareView>
+    <ScrollView nestedScrollEnabled={true}>
+      <KeyboardAwareView>
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            marginTop: 24,
+            paddingHorizontal: 4,
+            width: '90%',
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: '500' }}>Initailize your CoolWallet Pro</Text>
+          <View style={{ borderWidth: 0.5, borderColor: '#3b4043', width: '100%', marginTop: 4 }} />
+          {actionItemData.map((item, index) => (
+            <ActionItem
+              key={index}
+              title={item.title}
+              buttonText={item.buttonText}
+              isEditable={item.isEditable}
+              onPressButton={item.onPressButton}
+            />
+          ))}
+        </View>
+      </KeyboardAwareView>
+    </ScrollView>
   );
 }
