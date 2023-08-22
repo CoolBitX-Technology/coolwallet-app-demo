@@ -56,6 +56,13 @@ export class RNBleManager implements CWBleManager {
     return devices;
   }
 
+  async findRNBleTransport(deviceId: string): Promise<RNBleTransport | undefined> {
+    const devices = await this.getBondDevices();
+    const device = devices.find((device) => device.id === deviceId);
+    if (!device) return undefined;
+    return new RNBleTransport(device);
+  }
+
   getScannedDevice() {
     return this.scannedDevices;
   }

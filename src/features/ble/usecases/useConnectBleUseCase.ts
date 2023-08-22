@@ -1,5 +1,5 @@
+import { Transport } from '@coolwallet/core';
 import { RNBleManager } from '@src/features/ble/RNBleManager';
-import { RNBleTransport } from '@src/features/ble/RNBleTransport';
 import { useClearBluetoothInfo, useDispatchBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 import { BluetoothInfo } from '@src/features/store/device/DeviceTypes';
 import { useEffect, useState } from 'react';
@@ -8,7 +8,6 @@ import { BleError, Device as BluetoothDevice } from 'react-native-ble-plx';
 export function useConnectBleUseCase() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectError, setConnectError] = useState<Error>();
-  const [bleTransport, setBleTransport] = useState<RNBleTransport>();
   const updateBleInfo = useDispatchBluetoothInfo();
   const clearBleInfo = useClearBluetoothInfo();
 
@@ -23,7 +22,6 @@ export function useConnectBleUseCase() {
     setConnectError(undefined);
     RNBleManager.getInstance()
       .connectById(deviceId, listener)
-      .then(setBleTransport)
       .catch((e) => {
         setConnectError(e);
         setIsConnecting(false);
@@ -37,10 +35,12 @@ export function useConnectBleUseCase() {
     clearBleInfo();
   };
 
+  const transport = useBleTransport();
+
   return {
-    bleTransport,
     isConnecting,
     connectError,
+    transport,
     connect,
     disconnect,
   };
@@ -63,4 +63,13 @@ export function useDisconnectAllEffect() {
       RNBleManager.getInstance().disconnect();
     };
   }, []);
+}
+
+export function useBleTransport(bleInfo?: BluetoothInfo) {
+  const [transport, setTransport] = useState<Transport>();
+  useEffect(() => {
+    if (!bleInfo) return;
+    RNBleManager.getInstance().findRNBleTransport(bleInfo.deviceId).then(setTransport);
+  }, [bleInfo]);
+  return transport;
 }
