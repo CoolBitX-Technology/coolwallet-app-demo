@@ -1,10 +1,9 @@
 import { InitializeWalletView } from '@src/features/home/InitailizeWalletView';
 import { TxSimulationView } from '@src/features/home/TxSimulationView';
-import { View, useWindowDimensions, Dimensions, StatusBar, TouchableOpacity, Animated, Pressable } from 'react-native';
+import { Animated, Pressable } from 'react-native';
 import { Box } from 'native-base';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import React, { useState } from 'react';
-import { NavigationState, Route, TabRouter } from '@react-navigation/native';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import React, { ReactNode, useState } from 'react';
 
 enum TabTitle {
   CARD_PAIRING = 'Card Pairing',
@@ -28,7 +27,7 @@ export function TabViewContainer() {
     { key: 'second', title: TabTitle.TX_TESTER },
   ]);
 
-  const renderTabBar = (props: any) => {
+  const renderTabBar = (props: any): ReactNode => {
     return (
       <Box flexDirection="row">
         {props.navigationState.routes.map((route: TabRoute, i: number) => {
