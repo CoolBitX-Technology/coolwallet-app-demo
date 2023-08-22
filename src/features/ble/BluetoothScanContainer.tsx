@@ -1,22 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
 import { BluetoothScanView } from '@src/features/ble/BluetoothScanView';
-import { useConnectBleUseCase, useUnsubscribeConnectionEffect } from '@src/features/ble/usecases/useConnectBleUseCase';
+import { useConnectBleUseCase } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useScanBleUseCase } from '@src/features/ble/usecases/useScanBleUseCase';
 import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { BluetoothInfo } from '@src/features/store/device/DeviceTypes';
 import { useEffect, useState } from 'react';
 import { BleError, BleErrorCode, Device as BluetoothDevice } from 'react-native-ble-plx';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+function useCheckConnectionEffect(bleInfo?: BluetoothInfo) {
+  const navigation = useNavigation();
+  useEffect(()=>{
+    if (!bleInfo || !bleInfo.isConnected) return;
+    navigation.goBack();
+  },[bleInfo]);
+}
 
 export function BluetoothScanContainer(): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
   const navigation = useNavigation();
   const onCanceled = () => navigation.goBack();
-
-  const currentBleInfo = useBluetoothInfo();
-  useEffect(()=>{
-    if (!!currentBleInfo?.isConnected) navigation.goBack();
-  },[currentBleInfo]);
+  
+  const bleInfo = useBluetoothInfo();
+  useCheckConnectionEffect(bleInfo);
   
   const { isScaning, startScan, stopScan, scannedDevices, scanError } = useScanBleUseCase();
   const { isConnecting, connectError, connect } = useConnectBleUseCase();
@@ -31,7 +38,7 @@ export function BluetoothScanContainer(): JSX.Element {
     <SafeAreaView>
       <BluetoothScanView
         items={scannedDevices}
-        connectedBlueInfo={currentBleInfo}
+        connectedBlueInfo={bleInfo}
         selectedIndex={selectedIndex}
         isScaning={isScaning}
         isConnecting={isConnecting}

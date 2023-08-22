@@ -1,6 +1,7 @@
 import { RNBleManager } from '@src/features/ble/RNBleManager';
 import { RNBleTransport } from '@src/features/ble/RNBleTransport';
 import { useClearBluetoothInfo, useDispatchBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { BluetoothInfo } from '@src/features/store/device/DeviceTypes';
 import { useEffect, useState } from 'react';
 import { BleError, Device as BluetoothDevice } from 'react-native-ble-plx';
 
@@ -45,10 +46,16 @@ export function useConnectBleUseCase() {
   };
 }
 
-export function useUnsubscribeConnectionEffect() {
+export function useSubscribeConnectionEffect(bleInfo?: BluetoothInfo) {
+  const updateBleInfo = useDispatchBluetoothInfo();
+  const listener = (device: BluetoothDevice) => {
+    updateBleInfo(device);
+  };
   useEffect(() => {
+    if (!bleInfo || !bleInfo.isConnected) return;
+    RNBleManager.getInstance().listenConnectedDevice(bleInfo.deviceId, listener);
     return () => {
       RNBleManager.getInstance().unsubscriptionConnection();
     };
-  }, []);
+  }, [bleInfo]);
 }

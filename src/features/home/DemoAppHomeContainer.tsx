@@ -6,17 +6,21 @@ import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
 import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 import { ConnectCardView } from '@src/features/home/ConnectCardView';
-import { useConnectBleUseCase } from '@src/features/ble/usecases/useConnectBleUseCase';
+import { useConnectBleUseCase, useSubscribeConnectionEffect } from '@src/features/ble/usecases/useConnectBleUseCase';
 
 export const DemoAppHomeContainer = () => {
   const bleInfo = useBluetoothInfo();
+  useSubscribeConnectionEffect(bleInfo);
+
   const isConnected = !!bleInfo?.isConnected;
   const { disconnect } = useConnectBleUseCase();
+  
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const OnPressButton = () => {
     if (!isConnected) return navigation.navigate(RouteName.BLUETOOTH_SCAN);
     disconnect();
-  }
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.homeTitle}>
@@ -26,7 +30,6 @@ export const DemoAppHomeContainer = () => {
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   homeTitle: {
