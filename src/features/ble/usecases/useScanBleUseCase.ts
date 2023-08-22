@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { requestMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { RNBleManager } from '@src/features/ble/RNBleManager';
@@ -7,15 +7,12 @@ import { BleError, BleErrorCode, Device as BluetoothDevice, State } from 'react-
 export function useScanBleUseCase() {
   const [isScaning, setIsScaning] = useState(false);
   const [scannedDevices, setScannedDevices] = useState<Array<BluetoothDevice>>([]);
-  const [error, setError] = useState<BleError | undefined>();
+  const [scanError, setScanError] = useState<BleError>();
 
   const listener = (bleError?: BleError, device?: BluetoothDevice) => {
-    if (device) {
-      console.log('scannedDevice  >>> ' + JSON.stringify(RNBleManager.getInstance().getScannedDevice()));
-      console.log('device >>> ' + JSON.stringify(device));
-      setScannedDevices(RNBleManager.getInstance().getScannedDevice());
-    } else if (bleError) {
-      if (bleError !== error) setError(bleError);
+    if (device) setScannedDevices(RNBleManager.getInstance().getScannedDevice());
+    else if (bleError) {
+      setScanError(bleError);
       setIsScaning(false);
       if (bleError.errorCode === BleErrorCode.BluetoothUnauthorized) {
         const permissions = getBlePermissions();
@@ -28,8 +25,15 @@ export function useScanBleUseCase() {
 
   const startScan = () => {
     setIsScaning(true);
-    setError(undefined);
+    setScanError(undefined);
     RNBleManager.getInstance().listen(listener);
+  };
+
+  const stopScan = () => {
+    setIsScaning(false);
+    setScanError(undefined);
+    RNBleManager.getInstance().unsubscriptionState();
+    RNBleManager.getInstance().stopListen();
   };
 
   useEffect(() => {
@@ -38,14 +42,17 @@ export function useScanBleUseCase() {
       if (isBleNotReady(state)) return;
       startScan();
     }, true);
-    return () => RNBleManager.getInstance().stopListen();
+    return () => {
+      stopScan();
+    };
   }, []);
 
   return {
-    error,
+    scanError,
     isScaning,
     scannedDevices,
     startScan,
+    stopScan,
   };
 }
 

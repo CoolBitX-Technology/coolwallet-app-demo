@@ -29,7 +29,7 @@ interface Props {
   index: number;
   deviceName: string;
   rssi: number;
-  isPaired: boolean;
+  isConnected: boolean;
   isSelected: boolean;
   onSelected?: (index: number) => void;
 }
@@ -37,16 +37,16 @@ export function BluetoothItem({
   index,
   deviceName,
   rssi,
-  isPaired,
+  isConnected,
   isSelected,
   onSelected,
 }: Props): JSX.Element {
   const signalLevel = useSignalLevel(rssi);
   return (
     <Button isSelected={isSelected} onPress={() => onSelected?.(index)}>
-      <SignalIcon isPaired={isPaired} signalLevel={signalLevel} />
+      <SignalIcon isConnected={isConnected} signalLevel={signalLevel} />
       <Title>{deviceName}</Title>
-      {isPaired && <PairedStatusText>{` - 已配對`}</PairedStatusText>}
+      {isConnected && <PairedStatusText>{` - 已配對`}</PairedStatusText>}
     </Button>
   );
 }

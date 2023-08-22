@@ -1,6 +1,4 @@
 export interface DeviceState {
-  isConnected: boolean;
-  isPaired: boolean;
   bleInfo?: BluetoothInfo;
 }
 
@@ -30,4 +28,9 @@ export interface BluetoothInfo {
    * User friendly name of device.
    */
   localName?: string;
+
+  /**
+   * Connect status of device.
+   */
+  isConnected: boolean;
 }

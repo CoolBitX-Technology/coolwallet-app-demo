@@ -2,17 +2,17 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { BluetoothInfo, DeviceState } from '@src/features/store/device/DeviceTypes';
 import { ReducerTypes } from '@src/features/store/types';
 
-const initialState: DeviceState = {
-  isConnected: false,
-  isPaired: false,
-};
+const initialState: DeviceState = {};
 
 const DeviceSlice = createSlice({
   name: ReducerTypes.DEVICE,
   initialState,
   reducers: {
-    setBluetoothInfo: (state: DeviceState, action: PayloadAction<BluetoothInfo>) => {
+    updateBluetoothInfo: (state: DeviceState, action: PayloadAction<BluetoothInfo>) => {
       state.bleInfo = action.payload;
+    },
+    clearBluetoothInfo: (state: DeviceState) => {
+      state.bleInfo = undefined;
     },
   },
 });

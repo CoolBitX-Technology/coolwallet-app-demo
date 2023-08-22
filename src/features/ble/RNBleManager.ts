@@ -1,18 +1,44 @@
 import { Transport, BleManager as CWBleManager, device as CWDevice } from '@coolwallet/core';
+import { delay } from '@coolwallet/core/lib/utils';
 import { RNBleTransport } from '@src/features/ble/RNBleTransport';
-import { BleError, BleManager, Device as BluetoothDevice, State, Subscription } from 'react-native-ble-plx';
+import {
+  BleError,
+  BleErrorCode,
+  BleManager,
+  Device as BluetoothDevice,
+  Characteristic,
+  State,
+  Subscription,
+} from 'react-native-ble-plx';
+
+export class RNBleError extends Error {
+  errorCode: BleErrorCode;
+  constructor(errorCode: BleErrorCode, message: string) {
+    super(message);
+    this.errorCode = errorCode;
+  }
+}
+
+interface CWServiceCharacteristics {
+  command?: Characteristic;
+  data?: Characteristic;
+  status?: Characteristic;
+  response?: Characteristic;
+}
 
 export class RNBleManager implements CWBleManager {
   private static instance: RNBleManager;
   private bleManager: BleManager;
   private uuids: Array<string>;
-  private stateSubscription: Subscription | undefined;
+  private stateSubscription?: Subscription;
   private scannedDevices: Array<BluetoothDevice>;
+  private connectionSubscriptions: Record<string, Subscription | null>;
 
   constructor() {
     this.bleManager = new BleManager();
     this.uuids = CWDevice.getBluetoothServiceUuids();
     this.scannedDevices = [];
+    this.connectionSubscriptions = {};
   }
 
   static getInstance() {
@@ -25,23 +51,27 @@ export class RNBleManager implements CWBleManager {
     return state === State.PoweredOn;
   }
 
-  getScannedDevice() {
-    return this.scannedDevices;
+  async getBondDevices(): Promise<Array<BluetoothDevice>> {
+    const devices = await this.bleManager.connectedDevices(this.uuids);
+    return devices;
   }
 
-  listenOnDisconnected(device: BluetoothDevice, onDisconnect: (device: BluetoothDevice, error?: BleError) => void): void {
-    device.onDisconnected((error: BleError | null, device: BluetoothDevice) => {
-      console.debug(`Device ${device.id} is disconnected. error is ${error}.`);
-    });
+  async findRNBleTransport(deviceId: string): Promise<RNBleTransport | undefined> {
+    const devices = await this.getBondDevices();
+    const device = devices.find((device) => device.id === deviceId);
+    if (!device) return undefined;
+    return new RNBleTransport(device);
+  }
+
+  getScannedDevice() {
+    return this.scannedDevices;
   }
 
   addListener(callback: (newState: State) => void, emitCurrentState = true) {
     this.stateSubscription = this.bleManager.onStateChange(callback, emitCurrentState);
   }
 
-  listen(
-    callback?: ((error?: BleError, device?: BluetoothDevice | undefined) => void) | undefined,
-  ): void | Promise<BluetoothDevice> {
+  listen(callback?: (error?: BleError, device?: BluetoothDevice) => void): void {
     this.disconnect().then(() => {
       this.bleManager.startDeviceScan(this.uuids, null, (nullableBleError, nullableDevice) => {
         const bleError = nullableBleError === null ? undefined : nullableBleError;
@@ -59,36 +89,156 @@ export class RNBleManager implements CWBleManager {
   }
 
   stopListen(): void {
-    if (!this.stateSubscription) return;
-    this.stateSubscription.remove();
+    this.bleManager.stopDeviceScan();
+  }
+
+  unsubscriptionState(): void {
+    this.stateSubscription?.remove();
     this.stateSubscription = undefined;
   }
 
-  async connectById(deviceId: string): Promise<Transport> {
-    let device = await this.bleManager.connectToDevice(deviceId);
-    device = await device.discoverAllServicesAndCharacteristics();
-    return new RNBleTransport(device);
+  unsubscriptionConnections(): void {
+    Object.values(this.connectionSubscriptions)
+      .filter((sub) => sub !== null)
+      .forEach((sub) => sub?.remove());
+    this.connectionSubscriptions = {};
   }
 
-  async connect(device: BluetoothDevice): Promise<Transport> {
-    device = await device.connect({ autoConnect: true });
-    console.log('RNBleManager.connect finish');
-    device = await device.discoverAllServicesAndCharacteristics();
+  unsubscriptionConnection(deviceId: string): void {
+    const subscription = this.connectionSubscriptions?.[deviceId];
+    if (!subscription) return;
+    subscription.remove();
+    this.connectionSubscriptions[deviceId] = null;
+  }
+
+  private checkDeviceConnection(deviceId: string, connectedDevice?: BluetoothDevice) {
+    if (!connectedDevice)
+      throw new RNBleError(BleErrorCode.DeviceConnectionFailed, `checkDeviceConnection >>> connect device ${deviceId} failed.`);
+  }
+
+  private async getCWServiceCharacteristics(connectedDevice: BluetoothDevice): Promise<CWServiceCharacteristics | null> {
+    const services = await connectedDevice.services();
+    const characteristics: Array<CWServiceCharacteristics | null> = await Promise.all(
+      services.map(async (service) => {
+        const { uuid } = service;
+        const serviceUuid = CWDevice.getInfosForServiceUuid(uuid);
+        if (!serviceUuid) return null;
+        const servicesCharacteristics = await connectedDevice?.characteristicsForService(uuid);
+        if (!servicesCharacteristics)
+          throw new RNBleError(
+            BleErrorCode.ServiceNotFound,
+            `getCWServiceCharacteristics >>> ${connectedDevice.name} service's characteristics are not found.`,
+          );
+        const command = servicesCharacteristics.find((ch) => ch.uuid === serviceUuid.writeUuid);
+        const data = servicesCharacteristics.find((ch) => ch.uuid === serviceUuid.dataUuid);
+        const status = servicesCharacteristics.find((ch) => ch.uuid === serviceUuid.checkUuid);
+        const response = servicesCharacteristics.find((ch) => ch.uuid === serviceUuid.readUuid);
+        const characteristics: CWServiceCharacteristics = {
+          command,
+          data,
+          status,
+          response,
+        };
+        // Check whether any characteristic is null
+        if (Object.values(characteristics).some((ch) => !ch)) return null;
+        return characteristics;
+      }),
+    ).then((chs) => chs.filter((ch) => ch));
+    return characteristics?.[characteristics.length - 1];
+  }
+
+  private checkServiceCharacteristic(serviceCharacteristic?: CWServiceCharacteristics | null) {
+    if (!serviceCharacteristic)
+      throw new RNBleError(BleErrorCode.CharacteristicNotFound, 'checkServiceCharacteristic >>> Characteristic is not found.');
+    if (!serviceCharacteristic?.command) {
+      throw new RNBleError(
+        BleErrorCode.CharacteristicNotFound,
+        'checkServiceCharacteristic >>> Command characteristic is not found.',
+      );
+    }
+    if (!serviceCharacteristic?.data) {
+      throw new RNBleError(
+        BleErrorCode.CharacteristicNotFound,
+        'checkServiceCharacteristic >>> Data characteristic is not found.',
+      );
+    }
+    if (!serviceCharacteristic?.status) {
+      throw new RNBleError(
+        BleErrorCode.CharacteristicNotFound,
+        'checkServiceCharacteristic >>> Status characteristic is not found.',
+      );
+    }
+    if (!serviceCharacteristic?.response) {
+      throw new RNBleError(
+        BleErrorCode.CharacteristicNotFound,
+        'checkServiceCharacteristic >>> Response characteristic is not found.',
+      );
+    }
+  }
+
+  async connectById(deviceId: string, callback?: (device: BluetoothDevice, error?: BleError) => void): Promise<Transport> {
+    let connectedDevice: BluetoothDevice;
+    // 藍芽配對連線
+    try {
+      connectedDevice = await this.bleManager.connectToDevice(deviceId);
+      if (callback) {
+        const subscription = connectedDevice.onDisconnected((nullableBleError, device) => {
+          const bleError = nullableBleError === null ? undefined : nullableBleError;
+          this.unsubscriptionConnection(deviceId);
+          callback?.(device, bleError);
+        });
+        this.connectionSubscriptions[deviceId] = subscription;
+      }
+    } catch (e) {
+      const bleError = e as BleError;
+      if (bleError.errorCode !== BleErrorCode.DeviceMTUChangeFailed) throw bleError;
+      connectedDevice = await this.bleManager.connectToDevice(deviceId);
+    }
+    this.checkDeviceConnection(deviceId, connectedDevice);
+    const isConnected = await connectedDevice.isConnected();
+    if (!isConnected) {
+      connectedDevice = await connectedDevice.connect();
+    }
+    this.checkDeviceConnection(deviceId, connectedDevice);
+    // 藍芽尋找特徵
+    connectedDevice = await connectedDevice.discoverAllServicesAndCharacteristics();
     console.log('RNBleManager.discoverAllServicesAndCharacteristics finish');
-    // if (!this.scannedDevices.includes(device)) this.scannedDevices.push(device);
-    this.listenOnDisconnected(device, (device, error) => {
-      // if (this.scannedDevices.includes(device)) this.scannedDevices.pop();
-    });
-    return new RNBleTransport(device);
+    const serviceCharacteristic = await this.getCWServiceCharacteristics(connectedDevice);
+    this.checkServiceCharacteristic(serviceCharacteristic);
+    console.log('RNBleManager.convertToRNBleTransport finish');
+    callback?.(connectedDevice);
+    return new RNBleTransport(connectedDevice);
+  }
+
+  async connect(device: BluetoothDevice, disconnected?: (device: BluetoothDevice, error?: BleError) => void): Promise<Transport> {
+    return this.connectById(device.id, disconnected);
   }
 
   async disconnectedById(id: string): Promise<void> {
     if (!id) return;
     await this.bleManager.cancelDeviceConnection(id);
+    await delay(1000);
+  }
+
+  async listenConnectedDevice(deviceId: string, callback: (device: BluetoothDevice, error?: BleError) => void) {
+    const connectedDevices = await this.getBondDevices();
+    const device = connectedDevices.find((device) => device.id === deviceId);
+    if (!device) return;
+    const subscription = device.onDisconnected((nullableBleError, device) => {
+      const bleError = nullableBleError === null ? undefined : nullableBleError;
+      this.unsubscriptionConnection(deviceId);
+      callback(device, bleError);
+    });
+    this.connectionSubscriptions[deviceId] = subscription;
   }
 
   async disconnect(): Promise<void> {
-    const connectedDevices = await this.bleManager.connectedDevices(this.uuids);
-    await Promise.all(connectedDevices.map(({ id }) => this.disconnectedById(id)));
+    const connectedDevices = await this.getBondDevices();
+    await Promise.all(
+      connectedDevices.map(({ id }) => {
+        this.disconnectedById(id);
+        this.unsubscriptionConnection(id);
+      }),
+    );
   }
 }
