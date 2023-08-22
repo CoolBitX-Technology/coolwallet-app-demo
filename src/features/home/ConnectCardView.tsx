@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Input } from 'native-base';
-import { StyleSheet, View } from 'react-native';
+import { Button, Input, HStack } from 'native-base';
 
 interface CardInfo {
   isConnected: boolean;
@@ -10,22 +9,13 @@ interface CardInfo {
 export const ConnectCardView = (props: CardInfo) => {
   const { isConnected, cardId = '', onPress } = props;
   return (
-    <View style={styles.cardConnectView}>
-      <Input editable={false} w={'50%'} size="xl">
+    <HStack space={2} style={{ marginTop: 24 }}>
+      <Input editable={false} w={'65%'} size="xl" mr="4px">
         {cardId}
       </Input>
       <Button onPress={onPress} size="md">
         {isConnected ? 'Disconnect' : 'Connect'}
       </Button>
-    </View>
+    </HStack>
   );
 };
-
-const styles = StyleSheet.create({
-  cardConnectView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginTop: 8,
-  },
-});

@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
 import { ConnectCardView } from '@src/features/home/ConnectCardView';
 import { useConnectBleUseCase, useSubscribeConnectionEffect, useDisconnectAllEffect } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { TabViewContainer } from '@src/features/home/TabViewContainer';
 
 export const DemoAppHomeContainer = () => {
   const bleInfo = useBluetoothInfo();
@@ -25,10 +26,13 @@ export const DemoAppHomeContainer = () => {
 
   return (
     <SafeAreaView>
-      <View style={styles.homeTitle}>
-        <Text style={{ fontSize: 32, fontWeight: '500' }}>CoolWallet Demo App</Text>
-        <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
-      </View>
+      <ScrollView>
+        <View style={styles.homeContainer}>
+          <Text style={styles.titleText}>CoolWallet Demo App</Text>
+          <ConnectCardView cardId={bleInfo?.localName} isConnected={isConnected} onPress={OnPressButton} />
+          <TabViewContainer />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -39,8 +43,11 @@ function useCardId(deviceName?: string | null) {
 }
 
 const styles = StyleSheet.create({
-  homeTitle: {
+  homeContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    height: Dimensions.get('window').height,
   },
+  titleText: { fontSize: 32, fontWeight: '500' },
 });
