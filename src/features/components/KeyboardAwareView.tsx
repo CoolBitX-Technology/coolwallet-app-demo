@@ -10,7 +10,7 @@ export function KeyboardAwareView(props: Props): JSX.Element {
       style={{ flexDirection: 'column', justifyContent: 'center', height: '100%', width: '100%' }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 150 : 70}
+      keyboardVerticalOffset={70}
     >
       {children}
     </KeyboardAvoidingView>

@@ -16,7 +16,7 @@ export const DemoAppHomeContainer = () => {
 
   const { disconnect, transport } = useConnectBleUseCase();
 
-  console.log('>>> transport = ',transport);
+  console.log('>>> transport = ', transport);
 
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const OnPressButton = () => {
@@ -25,15 +25,12 @@ export const DemoAppHomeContainer = () => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.homeContainer}>
-          <Text style={styles.titleText}>CoolWallet Demo App</Text>
-          <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
-          <TabViewContainer />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView>
+      <View style={styles.homeContainer}>
+        <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
+        <TabViewContainer />
+      </View>
+    </ScrollView>
   );
 };
 
