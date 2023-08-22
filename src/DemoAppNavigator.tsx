@@ -31,13 +31,11 @@ const Stack = createNativeStackNavigator();
 export function DemoAppNavigator() {
   return (
     <Stack.Navigator initialRouteName={RouteName.DEMO_HOME}>
-      <Stack.Screen
-        name={RouteName.DEMO_HOME}
-        component={DemoAppHomeContainer}
-      />
+      <Stack.Screen name={RouteName.DEMO_HOME} component={DemoAppHomeContainer} />
       <Stack.Screen
         name={RouteName.BLUETOOTH_SCAN}
         component={BluetoothScanContainer}
+        options={{ headerBackTitleVisible: false }}
       />
     </Stack.Navigator>
   );

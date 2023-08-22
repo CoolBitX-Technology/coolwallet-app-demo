@@ -25,12 +25,14 @@ export const DemoAppHomeContainer = () => {
   };
 
   return (
-    <ScrollView>
+    <>
       <View style={styles.homeContainer}>
         <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: 24 }}>
         <TabViewContainer />
       </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -44,7 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: Dimensions.get('window').height,
   },
   titleText: { fontSize: 32, fontWeight: '500' },
 });

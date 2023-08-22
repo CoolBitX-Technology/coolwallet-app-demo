@@ -33,16 +33,14 @@ const actionItemData = [
 ];
 export function InitializeWalletView() {
   return (
-    <ScrollView nestedScrollEnabled={true}>
-      <KeyboardAwareView>
+    <KeyboardAwareView>
+      <ScrollView>
         <View
           style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
             alignItems: 'flex-start',
+            width: '100%',
             marginTop: 24,
-            paddingHorizontal: 4,
-            width: '90%',
+            paddingBottom: 32,
           }}
         >
           <Text style={{ fontSize: 24, fontWeight: '500' }}>Initailize your CoolWallet Pro</Text>
@@ -57,7 +55,7 @@ export function InitializeWalletView() {
             />
           ))}
         </View>
-      </KeyboardAwareView>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAwareView>
   );
 }
