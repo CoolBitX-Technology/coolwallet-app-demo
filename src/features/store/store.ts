@@ -1,12 +1,14 @@
 import {configureStore} from '@reduxjs/toolkit';
 import AccountReduecers from '@src/features/store/account/AccountSlice';
 import DeciveReducers from '@src/features/store/device/DeviceSlice';
+import LogReducers from '@src/features/store/log/LogSlice';
 import {ReducerTypes} from '@src/features/store/types';
 
 export const store = configureStore({
   reducer: {
     [ReducerTypes.ACCOUNT]: AccountReduecers,
     [ReducerTypes.DEVICE]: DeciveReducers,
+    [ReducerTypes.LOG]: LogReducers,
   },
 });
 
