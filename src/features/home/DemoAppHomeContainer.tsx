@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
 import { ConnectCardView } from '@src/features/home/ConnectCardView';
@@ -29,17 +28,10 @@ export const DemoAppHomeContainer = () => {
       <View style={styles.homeContainer}>
         <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
       </View>
-      <View style={{ flex: 1, paddingHorizontal: 24 }}>
-        <TabViewContainer />
-      </View>
+      <TabViewContainer />
     </>
   );
 };
-
-function useCardId(deviceName?: string | null) {
-  const nameSplits = deviceName?.split(' ');
-  return nameSplits?.[1] || '';
-}
 
 const styles = StyleSheet.create({
   homeContainer: {

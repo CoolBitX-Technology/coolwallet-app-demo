@@ -9,7 +9,7 @@ interface CardInfo {
 export const ConnectCardView = (props: CardInfo) => {
   const { isConnected, cardId = '', onPress } = props;
   return (
-    <HStack space={2} style={{ marginTop: 24 }}>
+    <HStack space={2} style={{ marginTop: 24, marginBottom: 8 }}>
       <Input editable={false} w={'65%'} size="xl" mr="4px">
         {cardId}
       </Input>

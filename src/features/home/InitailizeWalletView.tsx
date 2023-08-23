@@ -34,12 +34,12 @@ const actionItemData = [
 export function InitializeWalletView() {
   return (
     <KeyboardAwareView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             alignItems: 'flex-start',
-            width: '100%',
-            marginTop: 24,
+            marginTop: 16,
+            paddingHorizontal: 16,
             paddingBottom: 32,
           }}
         >
