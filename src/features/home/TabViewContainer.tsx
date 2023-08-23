@@ -11,15 +11,19 @@ enum TabTitle {
 
 export function TabViewContainer() {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarStyle: { backgroundColor: 'transparent' },
-        tabBarIndicatorStyle: { backgroundColor: '#06B6D4' },
-      }}
-    >
-      <Tab.Screen name={TabTitle.CARD_PAIRING} component={InitializeWalletView} />
-      <Tab.Screen name={TabTitle.TX_TESTER} component={TxSimulationView} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator
+        style={{ flex: 1 }}
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarStyle: { backgroundColor: 'transparent' },
+          tabBarIndicatorStyle: { backgroundColor: '#06B6D4' },
+          tabBarAndroidRipple: { color: 'transparent' },
+        }}
+      >
+        <Tab.Screen name={TabTitle.CARD_PAIRING} component={InitializeWalletView} />
+        <Tab.Screen name={TabTitle.TX_TESTER} component={TxSimulationView} />
+      </Tab.Navigator>
+    </>
   );
 }
