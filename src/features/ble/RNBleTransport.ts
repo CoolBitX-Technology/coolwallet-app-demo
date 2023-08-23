@@ -1,5 +1,5 @@
 import { Transport as CWTransport, device as CWDevice } from '@coolwallet/core';
-import { RNBleError } from '@src/features/ble/RNBleManager';
+import { RNBleError } from '@src/features/ble/RNBleError';
 import { BleErrorCode, Device as BluetoothDevice, Characteristic } from 'react-native-ble-plx';
 
 export interface CWServiceCharacteristics {
