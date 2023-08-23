@@ -1,15 +1,8 @@
 import { Transport, BleManager as CWBleManager, device as CWDevice } from '@coolwallet/core';
 import { delay } from '@coolwallet/core/lib/utils';
+import { RNBleError } from '@src/features/ble/RNBleError';
 import { RNBleTransport } from '@src/features/ble/RNBleTransport';
 import { BleError, BleErrorCode, BleManager, Device as BluetoothDevice, State, Subscription } from 'react-native-ble-plx';
-
-export class RNBleError extends Error {
-  errorCode: BleErrorCode;
-  constructor(errorCode: BleErrorCode, message: string) {
-    super(message);
-    this.errorCode = errorCode;
-  }
-}
 
 export class RNBleManager implements CWBleManager {
   private static instance: RNBleManager;
