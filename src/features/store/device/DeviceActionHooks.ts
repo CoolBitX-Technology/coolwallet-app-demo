@@ -15,6 +15,14 @@ export function useBluetoothInfo() {
   return useCardInfo().bleInfo;
 }
 
+export function useCardId() {
+  return useBluetoothInfo()?.cardId || '';
+}
+
+export function useIsConnected() {
+  return !!useCardInfo().bleInfo?.isConnected;
+}
+
 export function useDispatchBluetoothInfo(): (device: BluetoothDevice) => void {
   const dispatch = useAppDispatch();
   return (device) => {

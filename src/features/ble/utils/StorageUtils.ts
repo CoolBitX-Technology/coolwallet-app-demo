@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash/isEmpty';
 
 export const CW_APP_KEYPAIR = 'cw_app_key_pair';
+export const CW_APP_ID = 'cw_appid';
 
 export async function saveObject(key: string, obj: object) {
   await saveString(key, JSON.stringify(obj));

@@ -46,6 +46,7 @@ interface Props {
   selectedIndex: number;
   isScaning?: boolean;
   isConnecting?: boolean;
+  isConnected?: boolean;
   errorText?: string;
   onStartScan?: () => void;
   onSelected?: (index: number) => void;
@@ -57,6 +58,7 @@ export function BluetoothScanView({
   items,
   isScaning = false,
   isConnecting = false,
+  isConnected = false,
   connectedId,
   selectedIndex = -1,
   errorText,
@@ -77,7 +79,7 @@ export function BluetoothScanView({
                 index={index}
                 rssi={item.rssi || -90}
                 deviceName={item?.localName || ''}
-                isConnected={item.id === connectedId}
+                isConnected={item.id === connectedId && isConnected}
                 isSelected={selectedIndex === index}
                 onSelected={onSelected}
               />
