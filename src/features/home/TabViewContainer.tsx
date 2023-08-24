@@ -15,8 +15,8 @@ export function TabViewContainer() {
       <Tab.Navigator
         style={{ flex: 1 }}
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 12 },
-          tabBarStyle: { backgroundColor: 'transparent' },
+          tabBarLabelStyle: { fontSize: 12,  },
+          tabBarStyle: { backgroundColor: 'transparent' , marginHorizontal:16},
           tabBarIndicatorStyle: { backgroundColor: '#06B6D4' },
           tabBarAndroidRipple: { color: 'transparent' },
         }}
