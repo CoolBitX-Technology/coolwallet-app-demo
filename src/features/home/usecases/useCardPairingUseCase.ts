@@ -40,6 +40,7 @@ export function useCardPairingUseCase(): CardPairingOutput {
     console.log('cardId >>> ' + cardId);
     console.log('password >>> ' + password);
     try {
+      updateLog(``);
       const appId = await RNApduManager.getInstance().registerDevice(cardId, password);
       changeAppInfo(cardId, appId, password);
       updateLog(`REGISTER SUCCESS`);
@@ -55,6 +56,7 @@ export function useCardPairingUseCase(): CardPairingOutput {
     if (!cardId) return;
     setIsResting(true);
     try {
+      updateLog(``);
       await RNApduManager.getInstance().resetDevice();
       clearAppInfo(cardId);
       updateLog('RESET SUCCESS');

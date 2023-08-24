@@ -26,8 +26,10 @@ export function useRecoverWalletUseCase(): RecoverWalletOutput {
     if (!appId) return;
     setIsRecovering(true);
     try {
+      updateLog(`WALLET RECOVERING.....`);
       await RNApduManager.getInstance().recoverWallet(appId, mnemonic);
       updateMnemonic(mnemonic);
+      updateLog(`RECOVER SUCCESS`);
     } catch (e) {
       updateLog(`RECOVER FAILED >>> ${e}`);
     } finally {
