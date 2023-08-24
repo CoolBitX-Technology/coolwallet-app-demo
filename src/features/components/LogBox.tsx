@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-export function LogBox() {
+export function LogBox({ log }: { log: string | undefined }) {
   return (
     <View style={{ paddingHorizontal: 16, width: '100%' }}>
-      <TextInput style={styles.log} editable={false} multiline={true} placeholder="Log Box" />
+      <TextInput style={styles.log} editable={false} multiline={true} placeholder="Log Box" value={log} />
     </View>
   );
 }
