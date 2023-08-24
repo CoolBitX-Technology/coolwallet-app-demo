@@ -12,51 +12,55 @@ function useActionItems(): Array<ActionItemProps> {
   const { registerCard, resetCard, refreshPairPassword, appId, pairPassword, isPaired, isRegistering, isReseting } = useCardPairingUseCase();
   const { createWallet, recoverWallet, mnemonic, isRecovering } = useRecoverWalletUseCase();
   const [ recoverMnmonic, setRecoverMnemonic] = useState('');
-  return useMemo(()=>[
-    {
-      title: 'Reset Card',
-      buttonText: 'Reset',
-      disableButton: !isConnected,
-      isLoading: isReseting,
-      onPressButton: () => resetCard(bleInfo?.cardId),
-    },
-    {
-      title: 'Register Card',
-      buttonText: 'Register',
-      input: appId,
-      isLoading: isRegistering,
-      shouldDisplayInput: true,
-      disableButton: !isConnected || isPaired,
-      onPressButton: () => registerCard(bleInfo?.cardId),
-    },
-    {
-      title: 'Create Mnemonic',
-      buttonText: 'Create',
-      input: mnemonic,
-      disableButton: !isConnected,
-      onPressButton: () => createWallet(),
-      shouldDisplayInput: true,
-    },
-    {
-      title: 'Recover Mnemonic',
-      buttonText: 'Recover',
-      onPressButton: () => recoverWallet(recoverMnmonic),
-      isEditable: true,
-      shouldDisplayInput: true,
-      disableButton: !isConnected || !isPaired,
-      input: recoverMnmonic,
-      isLoading: isRecovering,
-      onInputChanged: (mnemonic) => setRecoverMnemonic(mnemonic),
-    },
-    {
-      title: 'Refresh Pairing Password',
-      buttonText: 'Refresh',
-      disableButton: !isConnected || !isPaired,
-      onPressButton: () => refreshPairPassword(bleInfo?.cardId),
-      input: pairPassword,
-      shouldDisplayInput: true,
-    },
-  ], [bleInfo, isPaired, isConnected, pairPassword, recoverMnmonic, appId, isRegistering, isReseting, isRecovering]);
+  return useMemo(
+    () => [
+      {
+        title: 'Reset Card',
+        buttonText: 'Reset',
+        disableButton: !isConnected,
+        isLoading: isReseting,
+        onPressButton: () => resetCard(bleInfo?.cardId),
+      },
+      {
+        title: 'Register Card',
+        buttonText: 'Register',
+        input: appId,
+        isLoading: isRegistering,
+        shouldDisplayInput: true,
+        disableButton: !isConnected || isPaired,
+        onPressButton: () => registerCard(bleInfo?.cardId),
+      },
+      {
+        title: 'Create Mnemonic',
+        buttonText: 'Create',
+        input: mnemonic,
+        disableButton: !isConnected,
+        onPressButton: () => createWallet(),
+        shouldDisplayInput: true,
+        shouldShowCopyButton: true,
+      },
+      {
+        title: 'Recover Mnemonic',
+        buttonText: 'Recover',
+        onPressButton: () => recoverWallet(recoverMnmonic),
+        isEditable: true,
+        shouldDisplayInput: true,
+        disableButton: !isConnected || !isPaired,
+        input: recoverMnmonic,
+        isLoading: isRecovering,
+        onInputChanged: (mnemonic) => setRecoverMnemonic(mnemonic),
+      },
+      {
+        title: 'Refresh Pairing Password',
+        buttonText: 'Refresh',
+        disableButton: !isConnected || !isPaired,
+        onPressButton: () => refreshPairPassword(bleInfo?.cardId),
+        input: pairPassword,
+        shouldDisplayInput: true,
+      },
+    ],
+    [bleInfo, isPaired, isConnected, pairPassword, recoverMnmonic, appId, isRegistering, isReseting, isRecovering, mnemonic],
+  );
 }
 
 export function CardPairingContainer() {

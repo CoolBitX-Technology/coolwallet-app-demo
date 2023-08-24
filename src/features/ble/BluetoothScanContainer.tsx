@@ -5,7 +5,6 @@ import { useScanBleUseCase } from '@src/features/ble/usecases/useScanBleUseCase'
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { useEffect, useState } from 'react';
 import { BleError, BleErrorCode, Device as BluetoothDevice } from 'react-native-ble-plx';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 function useCheckConnectionEffect() {
   const isConnected = useIsConnected();
@@ -36,21 +35,20 @@ export function BluetoothScanContainer(): JSX.Element {
   const errorText = useErrorText(scanError || connectError);
 
   return (
-    <SafeAreaView>
-      <BluetoothScanView
-        items={scannedDevices}
-        connectedId={bleInfo?.deviceId}
-        selectedIndex={selectedIndex}
-        isScaning={isScaning}
-        isConnecting={isConnecting}
-        isConnected={isConnected}
-        errorText={errorText}
-        onCanceled={onCanceled}
-        onStartScan={startScan}
-        onSelected={setSelectedIndex}
-        onStartConnect={onStartConnect}
-      />
-    </SafeAreaView>
+    <BluetoothScanView
+      style={{ height: '100%' }}
+      items={scannedDevices}
+      connectedId={bleInfo?.deviceId}
+      selectedIndex={selectedIndex}
+      isScaning={isScaning}
+      isConnecting={isConnecting}
+      isConnected={isConnected}
+      errorText={errorText}
+      onCanceled={onCanceled}
+      onStartScan={startScan}
+      onSelected={setSelectedIndex}
+      onStartConnect={onStartConnect}
+    />
   );
 }
 

@@ -12,7 +12,7 @@ export function LogBox({ log }: { log: string | undefined }) {
 const styles = StyleSheet.create({
   log: {
     backgroundColor: '#ffffff',
-    height: 100,
+    height: 80,
     padding: 8,
     color: '#403E3E',
     borderRadius: 8,

@@ -31,6 +31,7 @@ export function CardPairingView({ actionItems }: Props): JSX.Element {
               disableButton={item.disableButton}
               onInputChanged={item.onInputChanged}
               onPressButton={() => item?.onPressButton?.()}
+              shouldShowCopyButton={item.shouldShowCopyButton}
             />
           ))}
         </View>
