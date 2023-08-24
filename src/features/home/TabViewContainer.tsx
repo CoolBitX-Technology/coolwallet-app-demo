@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { InitializeWalletView } from '@src/features/home/InitailizeWalletView';
+import { CardPairingContainer } from '@src/features/home/CardPairingContainer';
 import { TxSimulationView } from '@src/features/home/TxSimulationView';
 
 const Tab = createMaterialTopTabNavigator();
@@ -15,13 +15,13 @@ export function TabViewContainer() {
       <Tab.Navigator
         style={{ flex: 1 }}
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 12,  },
-          tabBarStyle: { backgroundColor: 'transparent' , marginHorizontal:16},
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarStyle: { backgroundColor: 'transparent', marginHorizontal: 16 },
           tabBarIndicatorStyle: { backgroundColor: '#06B6D4' },
           tabBarAndroidRipple: { color: 'transparent' },
         }}
       >
-        <Tab.Screen name={TabTitle.CARD_PAIRING} component={InitializeWalletView} />
+        <Tab.Screen name={TabTitle.CARD_PAIRING} component={CardPairingContainer} />
         <Tab.Screen name={TabTitle.TX_TESTER} component={TxSimulationView} />
       </Tab.Navigator>
     </>
