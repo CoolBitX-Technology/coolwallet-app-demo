@@ -23,7 +23,7 @@ export class RNBleTransport extends CWTransport {
 
   async initServiceCharacteristics() {
     let connectedDevice;
-    // 確認連線狀態
+    // Confirm connection status
     const isConnected = await this.getDevice().isConnected();
     if (!isConnected) {
       connectedDevice = await this.getDevice().connect();
@@ -31,7 +31,7 @@ export class RNBleTransport extends CWTransport {
         throw new RNBleError(BleErrorCode.DeviceConnectionFailed, `initialize >>> connect device ${this.getDevice().id} failed.`);
     }
 
-    // 藍芽尋找特徵
+    // Find Bluetooth characteristic
     connectedDevice = await this.getDevice().discoverAllServicesAndCharacteristics();
     console.log('discoverAllServicesAndCharacteristics finish');
     const serviceCharacteristics = await this.getCWServiceCharacteristics(connectedDevice);
@@ -109,6 +109,8 @@ export class RNBleTransport extends CWTransport {
     const commandCharacteristic = this.characteristics?.command as Characteristic;
     try {
       const base64Command = Buffer.from(command).toString('base64');
+      console.log('BASE64Command >>> ' + base64Command);
+
       await commandCharacteristic.writeWithResponse(base64Command);
     } catch (e) {
       throw new RNBleError(BleErrorCode.CharacteristicWriteFailed, `sendCommandToCard >>> write failed error: ${e}`);
@@ -120,6 +122,8 @@ export class RNBleTransport extends CWTransport {
     const dataCharacteristic = this.characteristics?.data as Characteristic;
     try {
       const base64Packets = Buffer.from(packets).toString('base64');
+      console.log('SendData to Card base64Packets >>> ' + base64Packets);
+
       await dataCharacteristic.writeWithResponse(base64Packets);
     } catch (e) {
       throw new RNBleError(BleErrorCode.CharacteristicWriteFailed, `sendDataToCard >>> send failed error: ${e}`);
@@ -131,6 +135,7 @@ export class RNBleTransport extends CWTransport {
     const statusCharacteristic = this.characteristics?.status as Characteristic;
     try {
       const status = await statusCharacteristic.read();
+      console.log('Card Status.value >>> ' + status.value);
       if (!status.value) return 0;
       const statusHex = Buffer.from(status.value, 'base64').toString('hex');
       return convertHexToNumberArray(statusHex)?.[0];
@@ -144,6 +149,7 @@ export class RNBleTransport extends CWTransport {
     const responseCharacteristic = this.characteristics?.response as Characteristic;
     try {
       const result = await responseCharacteristic.read();
+      console.log('Read Result,value >>> ' + result.value);
       if (!result.value) return [];
       const resultHex = Buffer.from(result.value, 'base64').toString('hex');
       return convertHexToNumberArray(resultHex);
@@ -158,7 +164,7 @@ function convertHexToNumberArray(hex?: string): Array<number> {
   if (!hex) return byteArray;
   const length = hex.length;
   for (let i = 0; i < length; i += 2) {
-    byteArray.push(parseInt(hex.slice(0, 2), 16));
+    byteArray.push(parseInt(hex.slice(i, i + 2), 16));
   }
   return byteArray;
 }

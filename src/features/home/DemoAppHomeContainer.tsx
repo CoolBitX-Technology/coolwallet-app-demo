@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
@@ -9,31 +9,42 @@ import {
   useSubscribeConnectionEffect,
   useDisconnectAllEffect,
 } from '@src/features/ble/usecases/useConnectBleUseCase';
-import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { TabViewContainer } from '@src/features/home/TabViewContainer';
 import { LogBox } from '@src/features/components/LogBox';
+import { useLog } from '@src/features/store/log/LogActionHooks';
+import { AppKeyPair, loadAppKeyPair } from '@src/features/ble/utils/StorageUtils';
+
+
+export function useAppKeyPair() {
+  const [appKeyPair, setAppKeyPair] = useState<AppKeyPair>();
+  useEffect(() => {
+    loadAppKeyPair().then(setAppKeyPair);
+  }, []);
+  return appKeyPair;
+}
 
 export const DemoAppHomeContainer = () => {
   const bleInfo = useBluetoothInfo();
+  const isConnected = useIsConnected();
   useSubscribeConnectionEffect();
   useDisconnectAllEffect();
+  const log = useLog();
 
-  const { disconnect, transport } = useConnectBleUseCase();
-
-  console.log('>>> transport = ', transport);
+  const { disconnect } = useConnectBleUseCase();
 
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const OnPressButton = () => {
-    if (!bleInfo) return navigation.navigate(RouteName.BLUETOOTH_SCAN);
-    disconnect(bleInfo.deviceId);
+    if (isConnected && bleInfo) return disconnect(bleInfo.deviceId);
+    return navigation.navigate(RouteName.BLUETOOTH_SCAN);
   };
 
   return (
     <>
       <View style={styles.homeContainer}>
-        <ConnectCardView cardId={bleInfo?.cardId} isConnected={!!bleInfo?.isConnected} onPress={OnPressButton} />
+        <ConnectCardView cardId={bleInfo?.cardId} onPress={OnPressButton} isConnected={isConnected} />
       </View>
-      <LogBox />
+      <LogBox log={log} />
       <TabViewContainer />
     </>
   );

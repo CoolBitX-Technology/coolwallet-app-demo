@@ -98,7 +98,7 @@ export class RNBleManager implements CWBleManager {
 
   async connectById(deviceId: string, callback?: (device: BluetoothDevice, error?: BleError) => void): Promise<Transport> {
     let connectedDevice: BluetoothDevice;
-    // 藍芽配對連線
+    // Bluetooth Connection
     try {
       connectedDevice = await this.bleManager.connectToDevice(deviceId);
       if (callback) {
@@ -115,7 +115,7 @@ export class RNBleManager implements CWBleManager {
       connectedDevice = await this.bleManager.connectToDevice(deviceId);
     }
     this.checkDeviceConnection(deviceId, connectedDevice);
-    // 初始化 Transport 物件
+    // Initialize Transport
     const transport = new RNBleTransport(connectedDevice);
     await transport.initServiceCharacteristics();
     callback?.(connectedDevice);
