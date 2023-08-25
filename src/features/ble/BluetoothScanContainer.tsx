@@ -57,17 +57,17 @@ function useErrorText(error?: Error) {
   if (error instanceof BleError) {
     switch (error.errorCode) {
       case BleErrorCode.BluetoothPoweredOff:
-        return '藍芽未開啟';
+        return 'Please turn on your Bluetooth';
       case BleErrorCode.BluetoothUnsupported:
-        return '藍芽不支援';
+        return 'Bluetooth not supported';
       case BleErrorCode.BluetoothUnauthorized:
-        return '藍芽權限未啟用';
+        return 'Bluetooth permission denied';
       case BleErrorCode.DeviceDisconnected:
-        return `裝置斷線: ${error.message}`;
+        return `Device disconnected: ${error.message}`;
       default:
-        return `發生未知錯誤 - 錯誤: ${error.message}`;
+        return `Unknown error - Error: ${error.message}`;
     }
   } else {
-    return `發生未知錯誤 - 錯誤: ${error.message}`;
+    return `Unknown error - Error: ${error.message}`;
   }
 }

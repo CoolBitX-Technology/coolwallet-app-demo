@@ -23,7 +23,7 @@ export class RNBleTransport extends CWTransport {
 
   async initServiceCharacteristics() {
     let connectedDevice;
-    // 確認連線狀態
+    // Confirm connection status
     const isConnected = await this.getDevice().isConnected();
     if (!isConnected) {
       connectedDevice = await this.getDevice().connect();
@@ -31,7 +31,7 @@ export class RNBleTransport extends CWTransport {
         throw new RNBleError(BleErrorCode.DeviceConnectionFailed, `initialize >>> connect device ${this.getDevice().id} failed.`);
     }
 
-    // 藍芽尋找特徵
+    // Find Bluetooth characteristic
     connectedDevice = await this.getDevice().discoverAllServicesAndCharacteristics();
     console.log('discoverAllServicesAndCharacteristics finish');
     const serviceCharacteristics = await this.getCWServiceCharacteristics(connectedDevice);

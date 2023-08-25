@@ -46,7 +46,7 @@ export function BluetoothItem({
     <Button isSelected={isSelected} onPress={() => onSelected?.(index)}>
       <SignalIcon isConnected={isConnected} signalLevel={signalLevel} />
       <Title>{deviceName}</Title>
-      {isConnected && <PairedStatusText>{` - 已配對`}</PairedStatusText>}
+      {isConnected && <PairedStatusText>{` - Paired`}</PairedStatusText>}
     </Button>
   );
 }

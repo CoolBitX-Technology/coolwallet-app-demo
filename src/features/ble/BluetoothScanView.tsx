@@ -89,14 +89,14 @@ export function BluetoothScanView({
       </ListView>
       {items.length > 0 && <ItemSeparator />}
       <ButtonLayout>
-        <StyledButton onPress={onCanceled}>{'取消'}</StyledButton>
+        <StyledButton onPress={onCanceled}>{'Cancel'}</StyledButton>
         <StyledButton
           opacity={notSelected ? 0.5 : 1}
           isLoading={isConnecting}
           disabled={notSelected}
           onPress={() => selectedIndex > -1 && onStartConnect?.(items?.[selectedIndex])}
         >
-          {'開始配對'}
+          {'Pair'}
         </StyledButton>
       </ButtonLayout>
       {errorText ? <EmptyText>{errorText}</EmptyText> : undefined}
