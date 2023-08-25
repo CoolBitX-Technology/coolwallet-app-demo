@@ -17,6 +17,7 @@ interface CardPairingOutput {
   isPaired: boolean;
   isRegistering: boolean;
   isReseting: boolean;
+  isRefreshing: boolean;
   pairPassword: string;
   registerCard: (cardId?: string) => Promise<void>;
   resetCard: (cardId?: string) => Promise<void>;
@@ -40,12 +41,12 @@ export function useCardPairingUseCase(): CardPairingOutput {
     console.log('cardId >>> ' + cardId);
     console.log('password >>> ' + password);
     try {
-      updateLog(``);
+      updateLog(`REGISTRATION BEGIN, PLEASE PRESS THE CARD TO CONTINUE`);
       const appId = await RNApduManager.getInstance().registerDevice(cardId, password);
       changeAppInfo(cardId, appId, password);
-      updateLog(`REGISTER SUCCESS`);
+      updateLog(`REGISTERED SUCCESS`);
     } catch (e) {
-      updateLog(`REGISTER FAILED >>> ${e}`);
+      updateLog(`REGISTERED FAILED >>> ${e}`);
     } finally {
       setIsRegistering(false);
     }
@@ -56,7 +57,7 @@ export function useCardPairingUseCase(): CardPairingOutput {
     if (!cardId) return;
     setIsResting(true);
     try {
-      updateLog(``);
+      updateLog(`PLEASE PRESS THE CARD TO RESET`);
       await RNApduManager.getInstance().resetDevice();
       clearAppInfo(cardId);
       updateLog('RESET SUCCESS');
@@ -67,10 +68,15 @@ export function useCardPairingUseCase(): CardPairingOutput {
     }
   };
 
+  const [isRefreshing, setIsRefereshing] = useState(false);
   const refreshPairPassword = async (cardId?: string) => {
     if (!appId) return;
+    setIsRefereshing(true);
+    updateLog('REFRESHING....');
     const newPairedPassword = await RNApduManager.getInstance().getPairPassword(appId);
     if (!cardId) return;
+    setIsRefereshing(false);
+    updateLog('REFRESHED SUCCESS');
     changePairedPassword(cardId, newPairedPassword);
   };
 
@@ -78,6 +84,7 @@ export function useCardPairingUseCase(): CardPairingOutput {
     appId,
     pairPassword,
     isReseting,
+    isRefreshing,
     isRegistering,
     isPaired: !!pairPassword,
     registerCard,

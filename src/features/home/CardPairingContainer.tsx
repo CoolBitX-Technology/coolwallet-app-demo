@@ -9,9 +9,10 @@ import { useMemo, useState } from 'react';
 function useActionItems(): Array<ActionItemProps> {
   const bleInfo = useBluetoothInfo();
   const isConnected = useIsConnected();
-  const { registerCard, resetCard, refreshPairPassword, appId, pairPassword, isPaired, isRegistering, isReseting } = useCardPairingUseCase();
+  const { registerCard, resetCard, refreshPairPassword, appId, pairPassword, isPaired, isRegistering, isReseting, isRefreshing } =
+    useCardPairingUseCase();
   const { createWallet, recoverWallet, mnemonic, isRecovering } = useRecoverWalletUseCase();
-  const [ recoverMnmonic, setRecoverMnemonic] = useState('');
+  const [recoverMnmonic, setRecoverMnemonic] = useState('');
   return useMemo(
     () => [
       {
@@ -57,9 +58,22 @@ function useActionItems(): Array<ActionItemProps> {
         onPressButton: () => refreshPairPassword(bleInfo?.cardId),
         input: pairPassword,
         shouldDisplayInput: true,
+        isLoading: isRefreshing,
       },
     ],
-    [bleInfo, isPaired, isConnected, pairPassword, recoverMnmonic, appId, isRegistering, isReseting, isRecovering, mnemonic],
+    [
+      bleInfo,
+      isPaired,
+      isConnected,
+      pairPassword,
+      recoverMnmonic,
+      appId,
+      isRegistering,
+      isReseting,
+      isRecovering,
+      mnemonic,
+      isRefreshing,
+    ],
   );
 }
 
