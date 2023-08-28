@@ -45,12 +45,12 @@ export function useCardPairingUseCase(): CardPairingOutput {
       updateLog(`REGISTRATION BEGIN, PLEASE PRESS THE CARD TO CONTINUE`);
       const appId = await RNApduManager.getInstance().registerDevice(cardId, password);
       changeAppInfo(cardId, appId, password);
-      changePairedPassword(cardId, pairPassword);
+      changePairedPassword(cardId, password);
       updateLog(`REGISTERED SUCCESS`);
-    } catch (e) {
+    } catch (e:any) {
       if (e.errorCode === RNApduErrorCode.REGISTER_FAIL) {
         updateLog(
-          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN. YOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
+          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
         );
         return;
       }
