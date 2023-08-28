@@ -1,6 +1,6 @@
 export enum RNApduErrorCode {
   NOT_INITIALIZE = 1,
-  REGISTER_FAIL = 2,
+  REGISTER_FAIL = 6982,
   NOT_REGISTER = 3,
   RESET_FAIL = 4,
   CREATE_MNEMONIC_FAIL = 5,
