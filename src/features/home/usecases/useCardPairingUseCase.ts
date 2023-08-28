@@ -50,7 +50,7 @@ export function useCardPairingUseCase(): CardPairingOutput {
     } catch (e:any) {
       if (e.errorCode === RNApduErrorCode.REGISTER_FAIL) {
         updateLog(
-          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
+          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
         );
         return;
       }
