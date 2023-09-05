@@ -1,4 +1,4 @@
-import { RNApduErrorCode } from '@src/features/ble/RNApduError';
+import { RNApduError } from '@src/features/ble/RNApduError';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useAppKeyPair } from '@src/features/home/DemoAppHomeContainer';
@@ -47,8 +47,9 @@ export function useCardPairingUseCase(): CardPairingOutput {
       changeAppInfo(cardId, appId, password);
       changePairedPassword(cardId, password);
       updateLog(`REGISTERED SUCCESS`);
-    } catch (e:any) {
-      if (e.errorCode === RNApduErrorCode.REGISTER_FAIL) {
+    } catch (e) {
+      const error: RNApduError = e as RNApduError;
+      if (error?.errorCode === '6985') {
         updateLog(
           'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
         );
