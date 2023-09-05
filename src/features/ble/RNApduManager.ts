@@ -1,7 +1,8 @@
 import crypto from 'crypto';
 import { Transport, apdu, config, utils } from '@coolwallet/core';
 import { AppKeyPair } from '@src/features/ble/utils/StorageUtils';
-import { RNApduError, RNApduErrorCode } from '@src/features/ble/RNApduError';
+import { SDKError } from '@coolwallet/core/lib/error';
+import { RNApduError } from '@src/features/ble/RNApduError';
 
 interface ApduManager {
   init(transport: Transport, appKeyPair: AppKeyPair): void;
@@ -36,17 +37,17 @@ export class RNApduManager implements ApduManager {
   }
 
   private getTransport() {
-    if (!this.isInitialize()) throw new RNApduError(RNApduErrorCode.NOT_INITIALIZE, 'RNApduManager is not initialzie');
+    if (!this.isInitialize()) throw new SDKError('NOT_INITIALIZE', 'RNApduManager is not initialzie');
     return this.transport as Transport;
   }
 
   private getAppKeyPair() {
-    if (!this.isInitialize()) throw new RNApduError(RNApduErrorCode.NOT_INITIALIZE, 'RNApduManager is not initialzie');
+    if (!this.isInitialize()) throw new SDKError('NOT_INITIALIZE', 'RNApduManager is not initialzie');
     return this.appKeyPair as AppKeyPair;
   }
 
   private async getSEPublicKey(): Promise<string> {
-    if (!this.isInitialize()) throw new RNApduError(RNApduErrorCode.NOT_INITIALIZE, 'RNApduManager is not initialzie');
+    if (!this.isInitialize()) throw new SDKError('NOT_INITIALIZE', 'RNApduManager is not initialzie');
     return await config.getSEPublicKey(this.getTransport());
   }
 
@@ -57,7 +58,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await apdu.pair.register(this.getTransport(), publicKey, password, name, sePublicKey);
     } catch (e) {
-      throw new RNApduError(RNApduErrorCode.REGISTER_FAIL, `Register device failed, error: ${e}`);
+      throw RNApduError.parseError(e);
     }
   }
 
@@ -66,7 +67,7 @@ export class RNApduManager implements ApduManager {
       const status = await apdu.general.resetCard(this.getTransport());
       return status;
     } catch (e) {
-      throw new RNApduError(RNApduErrorCode.RESET_FAIL, `Reset device failed, error: ${e}`);
+      throw RNApduError.parseError(e);
     }
   }
 
@@ -76,7 +77,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await apdu.pair.getPairingPassword(this.getTransport(), appId, privateKey);
     } catch (e) {
-      throw new RNApduError(RNApduErrorCode.NOT_REGISTER, `Get device's paired password failed, error: ${e}`);
+      throw RNApduError.parseError(e);
     }
   }
 
@@ -84,7 +85,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await utils.createSeedByApp(worldLength, crypto.randomBytes);
     } catch (e) {
-      throw new RNApduError(RNApduErrorCode.CREATE_MNEMONIC_FAIL, `Create mnemonic failed, error: ${e}`);
+      throw RNApduError.parseError(e);
     }
   }
 
@@ -95,7 +96,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await utils.createWalletByMnemonic(this.getTransport(), appId, privateKey, mnemonic, sePublicKey);
     } catch (e) {
-      throw new RNApduError(RNApduErrorCode.RECOVER_WALLET_FAIL, `Recover wallet failed, error: ${e}`);
+      throw RNApduError.parseError(e);
     }
   }
 

@@ -13,6 +13,9 @@ export interface ActionItemProps {
   onInputChanged?: (text: string) => void;
   onPressButton: () => void;
   shouldShowCopyButton?: boolean;
+  pairingPassword?: string;
+  onPairingPasswordChanged?: (text: string) => void;
+  shouldShowPairingPasswordInput?: boolean;
 }
 export function ActionItem(props: ActionItemProps) {
   const {
@@ -26,6 +29,9 @@ export function ActionItem(props: ActionItemProps) {
     input,
     onInputChanged,
     shouldShowCopyButton = false,
+    pairingPassword,
+    onPairingPasswordChanged,
+    shouldShowPairingPasswordInput = false,
   } = props;
 
   const toastId = 'copy-succes-toast';
@@ -48,7 +54,19 @@ export function ActionItem(props: ActionItemProps) {
         width: '100%',
       }}
     >
-      <Text style={{ fontSize: 20, fontWeight: '400' }}>{title}</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={{ fontSize: 20, fontWeight: '400', width: '50%', flexGrow: 1 }}>{title}</Text>
+        {shouldShowPairingPasswordInput && (
+          <Input
+            size="sm"
+            width={'50%'}
+            placeholder="Pairing Password"
+            value={pairingPassword}
+            onChangeText={onPairingPasswordChanged}
+            style={{ backgroundColor: '#ffffff' }}
+          />
+        )}
+      </View>
       <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>
         {shouldDisplayInput && (
           <Input

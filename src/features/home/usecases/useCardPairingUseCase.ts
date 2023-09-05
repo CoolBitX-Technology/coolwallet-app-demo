@@ -1,3 +1,4 @@
+import { RNApduError } from '@src/features/ble/RNApduError';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useAppKeyPair } from '@src/features/home/DemoAppHomeContainer';
@@ -19,7 +20,7 @@ interface CardPairingOutput {
   isReseting: boolean;
   isRefreshing: boolean;
   pairPassword: string;
-  registerCard: (cardId?: string) => Promise<void>;
+  registerCard: (cardId?: string, pairingPassword?: string) => Promise<void>;
   resetCard: (cardId?: string) => Promise<void>;
   refreshPairPassword: (cardId?: string) => Promise<void>;
 }
@@ -34,18 +35,26 @@ export function useCardPairingUseCase(): CardPairingOutput {
   useInitApduEffect();
 
   const [isRegistering, setIsRegistering] = useState(false);
-  const registerCard = async (cardId?: string) => {
+  const registerCard = async (cardId?: string, pairingPassword?: string) => {
     if (!cardId) return;
     setIsRegistering(true);
-    const password = generateRandomPassword();
+    const password = pairingPassword || generateRandomPassword();
     console.log('cardId >>> ' + cardId);
     console.log('password >>> ' + password);
     try {
       updateLog(`REGISTRATION BEGIN, PLEASE PRESS THE CARD TO CONTINUE`);
       const appId = await RNApduManager.getInstance().registerDevice(cardId, password);
       changeAppInfo(cardId, appId, password);
+      changePairedPassword(cardId, password);
       updateLog(`REGISTERED SUCCESS`);
     } catch (e) {
+      const error: RNApduError = e as RNApduError;
+      if (error?.errorCode === '6985') {
+        updateLog(
+          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
+        );
+        return;
+      }
       updateLog(`REGISTERED FAILED >>> ${e}`);
     } finally {
       setIsRegistering(false);

@@ -32,6 +32,9 @@ export function CardPairingView({ actionItems }: Props): JSX.Element {
               onInputChanged={item.onInputChanged}
               onPressButton={() => item?.onPressButton?.()}
               shouldShowCopyButton={item.shouldShowCopyButton}
+              pairingPassword={item.pairingPassword}
+              onPairingPasswordChanged={item.onPairingPasswordChanged}
+              shouldShowPairingPasswordInput={item.shouldShowPairingPasswordInput}
             />
           ))}
         </View>

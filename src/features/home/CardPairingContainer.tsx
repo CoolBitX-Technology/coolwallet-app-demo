@@ -13,6 +13,7 @@ function useActionItems(): Array<ActionItemProps> {
     useCardPairingUseCase();
   const { createWallet, recoverWallet, mnemonic, isRecovering } = useRecoverWalletUseCase();
   const [recoverMnmonic, setRecoverMnemonic] = useState('');
+  const [pairingPassword, setPairingPassword] = useState('');
   return useMemo(
     () => [
       {
@@ -29,7 +30,10 @@ function useActionItems(): Array<ActionItemProps> {
         isLoading: isRegistering,
         shouldDisplayInput: true,
         disableButton: !isConnected || isPaired,
-        onPressButton: () => registerCard(bleInfo?.cardId),
+        onPressButton: () => registerCard(bleInfo?.cardId, pairingPassword),
+        pairingPassword,
+        onPairingPasswordChanged: (pairingPassword) => setPairingPassword(pairingPassword),
+        shouldShowPairingPasswordInput: true,
       },
       {
         title: 'Create Mnemonic',
@@ -73,6 +77,7 @@ function useActionItems(): Array<ActionItemProps> {
       isRecovering,
       mnemonic,
       isRefreshing,
+      pairingPassword,
     ],
   );
 }
