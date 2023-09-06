@@ -1,13 +1,13 @@
 import Evm from '@coolwallet/evm';
 import { BaseSdkAdapter } from '@src/features/sdk/SdkAdapter';
 import { RawData } from '@src/features/sdk/data/RawData';
-import { isHex, numberToHex } from '@src/features/sdk/evm/EthersUtils';
-import { evmChainIdToSdk } from '@src/features/sdk/evm/EvmChain';
-import { isChainIdSupported } from '@src/features/sdk/evm/EvmChainUtils';
+import { numberToHex } from '@src/features/sdk/evm/utils/EthersUtils';
 import { EthFee } from '@src/features/sdk/evm/data/EthFee';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
 import { EvmTransactionMapper } from '@src/features/sdk/evm/map/EvmTransactionMapper';
 import ObjectUtils from '@src/features/utils/ObjectUtils';
+import { sdkFactory } from '@src/features/sdk/evm/utils/EvmChainUtils';
+import { hasEIP1559Fee } from '@src/features/sdk/evm/utils/TxUtils';
 
 export class EthereumSdkAdapter extends BaseSdkAdapter {
   readonly sdk: Evm;
@@ -16,14 +16,7 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
   constructor(appId: string, chainId: number) {
     super(appId);
     this.chainId = chainId;
-    this.sdk = this.sdkFactory(chainId);
-  }
-
-  private sdkFactory(chainId: number): Evm {
-    const chainProps = evmChainIdToSdk[chainId];
-    if (!isChainIdSupported(chainId) || !chainProps)
-      throw new Error(`EthereumSdkAdapter.sdkFactory >>> unrecognized chainId:${chainId}`);
-    return new Evm(chainProps);
+    this.sdk = sdkFactory(chainId);
   }
 
   async getAddress(index: number): Promise<string> {
@@ -51,7 +44,15 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
     confirmingCallback: () => void,
     authorizedCallback: () => void,
   ): Promise<string> {
-    const { fee, toAddress, amount, data, index: nullableIndex, symbol, decimals } = rawData as EthRawData;
+    const {
+      fee,
+      toAddress,
+      amount,
+      data,
+      index: nullableIndex,
+      symbol: nullableSymbol,
+      decimals: nullableDecimals,
+    } = rawData as EthRawData;
     const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signSmartContract >>> index is invalid.');
     const ethFee = fee as EthFee;
     const {
@@ -65,8 +66,10 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
     ObjectUtils.checkNotNull(nullableGasLimit, 'EthereumSdkAdapter.signSmartContract >>> gasLimit is invalid.');
     const gasLimit = numberToHex(nullableGasLimit); // wei
     const appPrivacy = await this.getAppPrivacy();
+    const symbol = ObjectUtils.checkNotNull(nullableSymbol, 'EthereumSdkAdapter.signSmartContract >>> symbol is invalid');
+    const decimals = ObjectUtils.checkNotNull(nullableDecimals, 'EthereumSdkAdapter.signSmartContract >>> decimals is invalid');
 
-    if (this.hasEIP1559MaxFee(ethFee)) {
+    if (hasEIP1559Fee(ethFee)) {
       ObjectUtils.checkNotNull(nullableMaxFeePerGas, 'EthereumSdkAdapter.signEIP1559Transaction >>> maxFeePerGas is invalid.');
       const maxFeePerGas = numberToHex(nullableMaxFeePerGas);
       ObjectUtils.checkNotNull(
@@ -109,11 +112,6 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
       return await this.sdk.signTransaction(legacyTransaction);
     }
   }
-
-  private hasEIP1559MaxFee = (fee: EthFee) => {
-    const { maxFeePerGas, maxPriorityFeePerGas } = fee;
-    return isHex(maxFeePerGas) && isHex(maxPriorityFeePerGas);
-  };
 
   private async signMessage(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
     const { index: nullableIndex, data } = rawData as EthRawData;

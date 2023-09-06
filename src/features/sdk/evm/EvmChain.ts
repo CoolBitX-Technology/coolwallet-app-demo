@@ -2,7 +2,6 @@ import { ChainProps } from '@coolwallet/evm/lib/chain/types';
 import { CHAIN } from '@coolwallet/evm';
 
 export enum EvmChainId {
-  ETHEREUM_MAINNET = 1,
   ETHEREUM_GOERLI_TESTNET = 5,
   POLYGON_MAINNET = 137,
 }
@@ -10,16 +9,19 @@ export enum EvmChainId {
 export interface EvmChain {
   symbol: string;
   name: string;
+  rpc_url: string;
 }
 
 export const EVM_CHAIN_MAP: Record<string, EvmChain> = {
-  [EvmChainId.ETHEREUM_MAINNET]: {
-    symbol: 'ETH',
-    name: 'Ethereum',
-  },
   [EvmChainId.ETHEREUM_GOERLI_TESTNET]: {
     symbol: 'ETH',
     name: 'Goerli',
+    rpc_url: 'https://goerli.infura.io/v3/55c881399fe442bfb09d327b53dc5fdb',
+  },
+  [EvmChainId.POLYGON_MAINNET]: {
+    symbol: 'MATIC',
+    name: 'Polygon',
+    rpc_url: 'https://matic-mainnet.chainstacklabs.com',
   },
 };
 
