@@ -7,7 +7,7 @@ import {
   Option,
 } from '@coolwallet/evm/lib/transaction/types';
 import { AppPrivacy } from '@src/features/sdk/data/AppPrivacy';
-import { toWei } from '@src/features/sdk/evm/EthersUtils';
+import { toWei } from '@src/features/sdk/evm/utils/EthersUtils';
 import { EIP1559Tx, LegacyTx } from '@src/features/sdk/evm/data/EthTransaction';
 
 export class EvmTransactionMapper {
