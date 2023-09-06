@@ -1,46 +1,12 @@
 import Evm from '@coolwallet/evm';
 import { isChainIdSupported } from '@src/features/sdk/evm/EvmChainUtils';
-import { EvmChainId, evmChainIdToSdk } from '@src/features/sdk/evm/EvmChain';
+import { evmChainIdToSdk } from '@src/features/sdk/evm/EvmChain';
+import { ethers } from 'ethers';
 
 export function sdkFactory(chainId: number): Evm {
   const chainProps = evmChainIdToSdk[chainId];
   if (!isChainIdSupported(chainId) || !chainProps) throw new Error(`/evm/utils sdkFactory unrecognized chainId:${chainId}`);
   return new Evm(chainProps);
-}
-
-export function web3Factory(chainId: number, rpcUrl: string): Web3 {
-  // 測試 Launchpad 測試網交易
-  if (chainId === EvmChainId.ETHEREUM_GOERLI_TESTNET) return new Web3('https://rpc.ankr.com/eth_goerli');
-
-  const jsonRpcEndpoint = `${rpcUrl}web3/${chainId}/submission`;
-
-  return new Web3(
-    new Web3.providers.HttpProvider(jsonRpcEndpoint, {
-      headers: [
-        { name: 'Content-Type', value: 'application/json' },
-        { name: 'accept', value: 'application/json' },
-        { name: 'cbx-client', value: 'coolwallet' },
-      ],
-    }),
-  );
-}
-
-export function ethersProviderFactory(chainId: number): ethers.providers.JsonRpcProvider {
-  // 測試 Launchpad 測試網交易
-  if (chainId === EvmChainId.ETHEREUM_GOERLI_TESTNET)
-    return new ethers.providers.JsonRpcProvider('https://rpc.ankr.com/eth_goerli');
-
-  const proxyBaseUrl = Config.getProxyApiUrl();
-  const jsonRpcEndpoint = proxyBaseUrl + `web3/${chainId}/submission`;
-
-  return new ethers.providers.JsonRpcProvider({
-    url: jsonRpcEndpoint,
-    headers: {
-      'Content-Type': 'application/json',
-      accept: 'application/json',
-      'cbx-client': 'coolwallet',
-    },
-  });
 }
 
 export function evenHexDigit(hex: string): string {
@@ -59,7 +25,17 @@ export function handleHex(hex: string): string {
   return evenHexDigit(removeHex0x(hex));
 }
 
-export function isHex(value?: string): boolean {
-  if (!value) return false;
-  return Web3.utils.isHex(value);
+export function numberToHex(number?: string | number): string {
+  if (!number) return '0';
+  const bigInt = ethers.toBigInt(number);
+  return ethers.toBeHex(bigInt);
+}
+
+export function toWei(amount?: string): string {
+  if (!amount) return '0';
+  return ethers.parseUnits(amount, 'gwei').toString();
+}
+
+export function isHex(str?: string) {
+  return ethers.isHexString(str);
 }
