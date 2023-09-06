@@ -7,10 +7,6 @@ export interface RawData {
   index?: number; // fromAddress 的 index 用於簽交易所需
   toAddress: string;
   memoOrTag?: string;
-  tokenInfo?: TokenInfo;
-}
-
-export interface TokenInfo {
+  symbol: string;
   decimals: string;
-  contractAddress: string;
 }
