@@ -1,8 +1,13 @@
 import Evm from '@coolwallet/evm';
 import { BaseSdkAdapter } from '@src/features/sdk/SdkAdapter';
 import { RawData } from '@src/features/sdk/data/RawData';
+import { isHex, numberToHex } from '@src/features/sdk/evm/EthersUtils';
 import { evmChainIdToSdk } from '@src/features/sdk/evm/EvmChain';
 import { isChainIdSupported } from '@src/features/sdk/evm/EvmChainUtils';
+import { EthFee } from '@src/features/sdk/evm/data/EthFee';
+import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
+import { EvmTransactionMapper } from '@src/features/sdk/evm/map/EvmTransactionMapper';
+import ObjectUtils from '@src/features/utils/ObjectUtils';
 
 export class EthereumSdkAdapter extends BaseSdkAdapter {
   readonly sdk: Evm;
@@ -21,88 +26,123 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
     return new Evm(chainProps);
   }
 
-  getAddress(index: number): Promise<string> {
-    throw new Error('Method not implemented.');
-  }
-  signData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
-    throw new Error('Method not implemented.');
+  async getAddress(index: number): Promise<string> {
+    const { privateKey, appId } = await this.getAppPrivacy();
+    return await this.sdk.getAddress(this.transport, privateKey, appId, index);
   }
 
-  // async signData(signRequest: SignRequest): Promise<string> {
-  //   const { rawData } = signRequest;
-  //   const { dataType } = rawData as EthRawData;
-  //   switch (dataType) {
-  //     case EthDataType.SmartContract:
-  //     case EthDataType.Transfer:
-  //       return await this.signSmartContract(signRequest);
-  //     case EthDataType.Message:
-  //       return await this.signMessage(signRequest);
-  //     case EthDataType.TypedData:
-  //       return await this.signTypedData(signRequest);
-  //     default:
-  //       throw new Error(`EthereumSdkAdapter.signData unsupported dataType:${dataType}`);
-  //   }
-  // }
+  async signData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
+    const { dataType } = rawData as EthRawData;
+    switch (dataType) {
+      case EthDataType.SmartContract:
+      case EthDataType.Transfer:
+        return await this.signSmartContract(rawData, confirmingCallback, authorizedCallback);
+      case EthDataType.Message:
+        return await this.signMessage(rawData, confirmingCallback, authorizedCallback);
+      case EthDataType.TypedData:
+        return await this.signTypedData(rawData, confirmingCallback, authorizedCallback);
+      default:
+        throw new Error(`EthereumSdkAdapter.signData unsupported dataType:${dataType}`);
+    }
+  }
 
-  // private async signSmartContract(signRequest: SignRequest): Promise<string> {
-  //   const { rawData, confirmingCallback, authorizedCallback } = signRequest;
-  //   const { fromAddress, fee, toAddress, amount, data } = rawData as EthRawData;
-  //   const {
-  //     gasLimit: nullableGasLimit,
-  //     gasPrice: nullableGasPrice,
-  //     nonce: nullableNonce,
-  //     maxFeePerGas: nullableMaxFeePerGas,
-  //     maxPriorityFeePerGas: nullableMaxPriorityFeePerGas,
-  //   } = fee as EthFee;
+  private async signSmartContract(
+    rawData: RawData,
+    confirmingCallback: () => void,
+    authorizedCallback: () => void,
+  ): Promise<string> {
+    const { fee, toAddress, amount, data, index: nullableIndex, symbol, decimals } = rawData as EthRawData;
+    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signSmartContract >>> index is invalid.');
+    const ethFee = fee as EthFee;
+    const {
+      nonce: nullableNonce,
+      gasLimit: nullableGasLimit,
+      gasPrice: nullableGasPrice,
+      maxFeePerGas: nullableMaxFeePerGas,
+      maxPriorityFeePerGas: nullableMaxPriorityFeePerGas,
+    } = ethFee;
+    const nonce = ObjectUtils.checkNotNull(nullableNonce, 'EthereumSdkAdapter.signSmartContract >>> nonce is invalid.');
+    ObjectUtils.checkNotNull(nullableGasLimit, 'EthereumSdkAdapter.signSmartContract >>> gasLimit is invalid.');
+    const gasLimit = numberToHex(nullableGasLimit); // wei
+    const appPrivacy = await this.getAppPrivacy();
 
-  //   const keyId = await this.getFromAddressKeyId(fromAddress);
-  //   const weiAmount = ethers.BigNumber.from(ethToWei(amount)).toHexString();
-  //   const defaultData = data || '';
-  //   const nonce = ObjectUtils.checkNotNull(nullableNonce, 'EthereumSdkAdapter.signData >>> nonce is invalid.');
+    if (this.hasEIP1559MaxFee(ethFee)) {
+      ObjectUtils.checkNotNull(nullableMaxFeePerGas, 'EthereumSdkAdapter.signEIP1559Transaction >>> maxFeePerGas is invalid.');
+      const maxFeePerGas = numberToHex(nullableMaxFeePerGas);
+      ObjectUtils.checkNotNull(
+        nullableMaxPriorityFeePerGas,
+        'EthereumSdkAdapter.signEIP1559Transaction >>> maxPriorityFeePerGas is invalid.',
+      );
+      const maxPriorityFeePerGas = numberToHex(nullableMaxPriorityFeePerGas);
+      const eip1559Tx = EvmTransactionMapper.mapEIP1559Tx(
+        toAddress,
+        amount,
+        nonce,
+        gasLimit,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        symbol,
+        decimals,
+        data,
+      );
+      const eip1559Transaction = EvmTransactionMapper.mapEIP1559Transaction(
+        this.transport,
+        appPrivacy,
+        index,
+        eip1559Tx,
+        confirmingCallback,
+        authorizedCallback,
+      );
+      return await this.sdk.signEIP1559Transaction(eip1559Transaction);
+    } else {
+      ObjectUtils.checkNotNull(nullableGasPrice, 'EthereumSdkAdapter.signLegacyTransaction >>> gasPrice is invalid.');
+      const gasPrice = numberToHex(nullableGasPrice); // wei
+      const legacyTx = EvmTransactionMapper.mapLegacyTx(toAddress, amount, nonce, gasLimit, gasPrice, symbol, decimals, data);
+      const legacyTransaction = EvmTransactionMapper.mapLegacyTransaction(
+        this.transport,
+        appPrivacy,
+        index,
+        legacyTx,
+        confirmingCallback,
+        authorizedCallback,
+      );
+      return await this.sdk.signTransaction(legacyTransaction);
+    }
+  }
 
-  //   let gasLimit = ObjectUtils.checkNotNull(nullableGasLimit, 'EthereumSdkAdapter.signData >>> gasLimit is invalid.');
-  //   gasLimit = numberStringToHex(gasLimit); // wei
-  //   const gasPrice = numberStringToHex(nullableGasPrice); // wei
-  //   const maxFeePerGas = numberStringToHex(nullableMaxFeePerGas);
-  //   const maxPriorityFeePerGas = numberStringToHex(nullableMaxPriorityFeePerGas);
+  private hasEIP1559MaxFee = (fee: EthFee) => {
+    const { maxFeePerGas, maxPriorityFeePerGas } = fee;
+    return isHex(maxFeePerGas) && isHex(maxPriorityFeePerGas);
+  };
 
-  //   const txData: SignTransactionDataType = {
-  //     from: fromAddress,
-  //     keyId,
-  //     to: toAddress,
-  //     value: weiAmount,
-  //     gas: gasLimit,
-  //     gasPrice,
-  //     maxFeePerGas,
-  //     maxPriorityFeePerGas,
-  //     data: defaultData,
-  //     nonce,
-  //   };
-  //   return await this.getSdkPro().signTransaction(txData, confirmingCallback, authorizedCallback);
-  // }
+  private async signMessage(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
+    const { index: nullableIndex, data } = rawData as EthRawData;
+    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signMessage >>> index is invalid.');
+    const appPrivacy = await this.getAppPrivacy();
+    const msgTransaction = EvmTransactionMapper.mapMessageTransaction(
+      this.transport,
+      appPrivacy,
+      index,
+      data || '',
+      confirmingCallback,
+      authorizedCallback,
+    );
+    return await this.sdk.signMessage(msgTransaction);
+  }
 
-  // private async signMessage(signRequest: SignRequest): Promise<string> {
-  //   const { rawData, confirmingCallback, authorizedCallback } = signRequest;
-  //   const { fromAddress, data: message } = rawData as EthRawData;
-  //   const keyId = await this.getFromAddressKeyId(fromAddress);
-  //   const defaultMessage = message || '';
-  //   const txData: SignMessageDataType = {
-  //     keyId,
-  //     message: defaultMessage,
-  //   };
-  //   return await this.getSdkPro().signMessage(txData, confirmingCallback, authorizedCallback);
-  // }
-
-  // private async signTypedData(signRequest: SignRequest): Promise<string> {
-  //   const { rawData, confirmingCallback, authorizedCallback } = signRequest;
-  //   const { fromAddress, data } = rawData as EthRawData;
-  //   const defaultTypedData = data || '';
-  //   const keyId = await this.getFromAddressKeyId(fromAddress);
-  //   const typedDataObj: Object = JSON.parse(defaultTypedData);
-  //   const txData: SignTypedDataDataType = {
-  //     keyId,
-  //     typedData: typedDataObj,
-  //   };
-  //   return await this.getSdkPro().signTypedData(txData, confirmingCallback, authorizedCallback);
-  // }
+  private async signTypedData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
+    const { data, index: nullableIndex } = rawData as EthRawData;
+    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signTypedData >>> index is invalid.');
+    const appPrivacy = await this.getAppPrivacy();
+    const typedDataObj: Object = JSON.parse(data || '');
+    const typedDataTransaction = EvmTransactionMapper.mapTypedDataTransaction(
+      this.transport,
+      appPrivacy,
+      index,
+      typedDataObj,
+      confirmingCallback,
+      authorizedCallback,
+    );
+    return await this.sdk.signTypedData(typedDataTransaction);
+  }
 }
