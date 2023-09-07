@@ -7,7 +7,7 @@ interface Props {
 }
 export function LogBox({ style, log }: Props) {
   return (
-    <View style={[style, { paddingHorizontal: 16, width: '100%' }]}>
+    <View style={[style, { width: '100%' }]}>
       <TextInput style={styles.log} editable={false} multiline={true} placeholder="Log Box" value={log} />
     </View>
   );
@@ -16,7 +16,7 @@ export function LogBox({ style, log }: Props) {
 const styles = StyleSheet.create({
   log: {
     backgroundColor: '#ffffff',
-    height: 80,
+    height: 200,
     padding: 8,
     color: '#403E3E',
     borderRadius: 8,
