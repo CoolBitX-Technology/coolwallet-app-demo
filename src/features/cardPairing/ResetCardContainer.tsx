@@ -9,11 +9,11 @@ export function ResetCardContainer() {
   const isConneted = useIsConnected();
   const bleInfo = useBluetoothInfo();
   const [log, setLog] = useState('');
+  const [isReseting, setIsResting] = useState(false);
   const clearAppInfo = useDispatchClearAppId();
 
   useInitApduEffect();
 
-  const [isReseting, setIsResting] = useState(false);
   const resetCard = async (cardId?: string) => {
     if (!cardId) return;
     setIsResting(true);
