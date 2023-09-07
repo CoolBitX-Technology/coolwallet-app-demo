@@ -77,10 +77,14 @@
     "tty-browserify": "^0.0.0",
     "url": "^0.10.3",
     "util": "^0.10.4",
-    "vm-browserify": "^0.0.4"
+    "vm-browserify": "^0.0.4",
+    "web3": "1.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.22.5",
+    "@babel/plugin-transform-private-methods": "^7.22.5",
+    "@babel/plugin-transform-private-property-in-object": "^7.22.11",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
     "@react-native/eslint-config": "^0.72.2",

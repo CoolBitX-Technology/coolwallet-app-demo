@@ -12,5 +12,9 @@ module.exports = {
         },
       },
     ],
+    ['@babel/plugin-transform-flow-strip-types', { loose: false }],
+    ["@babel/plugin-transform-private-methods", { loose: false }],
+    ["@babel/plugin-transform-private-property-in-object", { loose: false }],
+    ["@babel/plugin-transform-class-properties", { loose: false }],
   ],
 };
