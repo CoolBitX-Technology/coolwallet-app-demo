@@ -13,9 +13,9 @@ export interface ActionItemProps {
   onInputChanged?: (text: string) => void;
   onPressButton: () => void;
   shouldShowCopyButton?: boolean;
-  pairingPassword?: string;
-  onPairingPasswordChanged?: (text: string) => void;
-  shouldShowPairingPasswordInput?: boolean;
+  input2?: string;
+  onInput2Changed?: (text: string) => void;
+  shouldDisplayInput2?: boolean;
 }
 export function ActionItem(props: ActionItemProps) {
   const {
@@ -29,9 +29,9 @@ export function ActionItem(props: ActionItemProps) {
     input,
     onInputChanged,
     shouldShowCopyButton = false,
-    pairingPassword,
-    onPairingPasswordChanged,
-    shouldShowPairingPasswordInput = false,
+    input2,
+    onInput2Changed,
+    shouldDisplayInput2 = false,
   } = props;
 
   const toastId = 'copy-succes-toast';
@@ -56,13 +56,14 @@ export function ActionItem(props: ActionItemProps) {
     >
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={{ fontSize: 20, fontWeight: '400', width: '50%', flexGrow: 1 }}>{title}</Text>
-        {shouldShowPairingPasswordInput && (
+        {shouldDisplayInput2 && (
           <Input
             size="sm"
             width={'50%'}
-            placeholder="Pairing Password"
-            value={pairingPassword}
-            onChangeText={onPairingPasswordChanged}
+            defaultValue={input2}
+            type='text'
+            inputMode='numeric'
+            onChangeText={onInput2Changed}
             style={{ backgroundColor: '#ffffff' }}
           />
         )}
@@ -71,7 +72,7 @@ export function ActionItem(props: ActionItemProps) {
         {shouldDisplayInput && (
           <Input
             onChangeText={onInputChanged}
-            value={input}
+            defaultValue={input}
             editable={isEditable && !isLoading}
             w={'100%'}
             size="sm"

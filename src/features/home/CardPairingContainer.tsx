@@ -11,8 +11,9 @@ function useActionItems(): Array<ActionItemProps> {
   const isConnected = useIsConnected();
   const { registerCard, resetCard, refreshPairPassword, appId, pairPassword, isPaired, isRegistering, isReseting, isRefreshing } =
     useCardPairingUseCase();
-  const { createWallet, recoverWallet, mnemonic, isRecovering } = useRecoverWalletUseCase();
+  const { createWallet, recoverWallet, recoverAddress, mnemonic, isRecovering, address, addressIndex } = useRecoverWalletUseCase();
   const [recoverMnmonic, setRecoverMnemonic] = useState('');
+  const [recoverAddressIndex, setRecoverAddressIndex] = useState('0');
   const [pairingPassword, setPairingPassword] = useState('');
   return useMemo(
     () => [
@@ -31,9 +32,18 @@ function useActionItems(): Array<ActionItemProps> {
         shouldDisplayInput: true,
         disableButton: !isConnected || isPaired,
         onPressButton: () => registerCard(bleInfo?.cardId, pairingPassword),
-        pairingPassword,
-        onPairingPasswordChanged: (pairingPassword) => setPairingPassword(pairingPassword),
-        shouldShowPairingPasswordInput: true,
+        input2: pairingPassword,
+        onInput2Changed: (newPassword) => setPairingPassword(newPassword),
+        shouldDisplayInput2: true,
+      },
+      {
+        title: 'Refresh Pairing Password',
+        buttonText: 'Refresh',
+        disableButton: !isConnected || !isPaired,
+        onPressButton: () => refreshPairPassword(bleInfo?.cardId),
+        input: pairPassword,
+        shouldDisplayInput: true,
+        isLoading: isRefreshing,
       },
       {
         title: 'Create Mnemonic',
@@ -56,13 +66,18 @@ function useActionItems(): Array<ActionItemProps> {
         onInputChanged: (mnemonic) => setRecoverMnemonic(mnemonic),
       },
       {
-        title: 'Refresh Pairing Password',
-        buttonText: 'Refresh',
-        disableButton: !isConnected || !isPaired,
-        onPressButton: () => refreshPairPassword(bleInfo?.cardId),
-        input: pairPassword,
+        title: 'Recover Address',
+        buttonText: 'Recover',
+        onPressButton: () => recoverAddress(Number.parseInt(recoverAddressIndex)),
+        isEditable: false,
         shouldDisplayInput: true,
-        isLoading: isRefreshing,
+        input: address,
+        disableButton: !isConnected || !isPaired,
+        isLoading: isRecovering,
+        input2: `${addressIndex || 0}`,
+        onInput2Changed: (newIndex) => setRecoverAddressIndex(`${newIndex}`),
+        shouldDisplayInput2: true,
+        shouldShowCopyButton: true,
       },
     ],
     [
