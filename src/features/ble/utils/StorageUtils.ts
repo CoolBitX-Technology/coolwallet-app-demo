@@ -39,7 +39,9 @@ export interface AppKeyPair {
 export async function loadAppKeyPair(): Promise<AppKeyPair> {
   const nullableKeyPair = await loadObject(CW_APP_KEYPAIR);
   if (isEmpty(nullableKeyPair)) {
-    return await crypto.key.generateKeyPair();
+    const newKeyPair = await crypto.key.generateKeyPair();
+    await saveObject(CW_APP_KEYPAIR, newKeyPair);
+    return newKeyPair;
   }
   return nullableKeyPair;
 }
