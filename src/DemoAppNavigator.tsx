@@ -10,6 +10,7 @@ import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardCon
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
 import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
 import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
+import { PersonalSignContainer } from '@src/features/cardPairing/PersonalSignContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -22,6 +23,7 @@ export type DemoAppParamList = {
   [RouteName.EIP1559_TOKEN]: undefined;
   [RouteName.PERSONAL_SIGN]: undefined;
   [RouteName.SIGN_TYPED_DATA]: undefined;
+  [RouteName.SEND_HEX]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -58,8 +60,9 @@ export function DemoAppNavigator() {
       <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={RefreshPairingPasswordContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.PERSONAL_SIGN} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.PERSONAL_SIGN} component={PersonalSignContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.SIGN_TYPED_DATA} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.SEND_HEX} component={DemoView} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>
   );
 }

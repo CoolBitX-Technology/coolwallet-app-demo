@@ -10,4 +10,5 @@ export enum RouteName {
   EIP1559_TOKEN = 'Token Transfer',
   PERSONAL_SIGN = 'Personal Sign',
   SIGN_TYPED_DATA = 'Sign Typed Data',
+  SEND_HEX = 'Send Hex',
 }
