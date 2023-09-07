@@ -1,14 +1,18 @@
 import { AccountActions } from '@src/features/store/account/AccountSlice';
 import { RootState } from '@src/features/store/store';
 import { useAppSelector, useAppDispatch } from '@src/features/store/hooks';
-import { useCardId } from '@src/features/store/device/DeviceActionHooks';
+import ObjectUtils from '@src/features/utils/ObjectUtils';
 
 function getAccountState(state: RootState) {
   return state.account;
 }
 
+export function useAccountState() {
+  return useAppSelector((state: RootState) => getAccountState(state));
+}
+
 export function useMnemonic() {
-  return useAppSelector((state: RootState) => getAccountState(state).mnemonic);
+  return useAccountState().mnemonic;
 }
 
 export function useDispatchMnemonicChange(): (mnemonic: string) => void {
@@ -34,7 +38,8 @@ export function useDispatchUpdateAddress(): (cardId: string, index: number, addr
 
 export function useAccount(cardId?: string) {
   if (!cardId) return null;
-  return useAppSelector((state: RootState) => getAccountState(state).accounts?.[cardId]);
+  const accountState = useAccountState();
+  return accountState?.accounts?.[cardId];
 }
 
 export function useAppId(cardId?: string) {
@@ -62,10 +67,12 @@ export function useWalletRecoverStatus(cardId?: string) {
 }
 
 export function useAddress(cardId?: string, index?: number) {
-  if (!index || !cardId) return '';
+  console.log('useAddress >>> cardId = ', cardId);
+  console.log('useAddress >>> index = ', index);
+  if (!cardId || !ObjectUtils.isNumeric(index)) return '';
   const account = useAccount(cardId);
   if (!account) return '';
-  return account.addresses?.[index] || '';
+  return account.addresses?.[index as number] || '';
 }
 
 export function useDispatchChangeAppInfo(): (cardId: string, appId: string, password: string) => void {
