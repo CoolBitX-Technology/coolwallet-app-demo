@@ -13,6 +13,7 @@ import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/Refre
 import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
+import { SendHexContainer } from '@src/features/tx/SendHexContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -95,7 +96,7 @@ export function DemoAppNavigator() {
         component={SignTypedDataContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.SEND_HEX} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.SEND_HEX} component={SendHexContainer} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>
   );
 }
