@@ -1,6 +1,6 @@
 import { ScrollView, Text, View } from 'react-native';
 
-export function TxSimulationView() {
+export function PersonalSign() {
   return (
     <ScrollView>
       <View
@@ -13,7 +13,7 @@ export function TxSimulationView() {
           paddingBottom: 100,
         }}
       >
-        <Text style={{ fontSize: 24, fontWeight: '500' }}>Tx Method Implement Here</Text>
+        <Text style={{ fontSize: 24, fontWeight: '500' }}>Implement Personal Sign Here</Text>
       </View>
     </ScrollView>
   );
