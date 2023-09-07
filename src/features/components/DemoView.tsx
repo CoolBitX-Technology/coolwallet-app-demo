@@ -11,33 +11,30 @@ interface Props {
   isBtnLoading?: boolean;
   isBtnDisable?: boolean;
   onPressBtn?: () => void;
-  input?: string;
+  textBoxBody?: string;
   inputPlaceHolder?: string;
+  textBoxPlaceHolder?: string;
+  showTextBox?: boolean;
+  onTextChanged?: (text: string) => void;
+  input?: string;
   showInput?: boolean;
-  isInputEditable?: boolean;
   onInputChanged?: (text: string) => void;
-  input2?: string;
-  input2PlaceHolder?: string;
-  showInput2?: boolean;
-  onInput2Changed?: (text: string) => void;
 }
 export function DemoView({
-  title = 'Title',
   log = '',
-  showCopy = false,
+  showCopy = true,
   btnText = 'Button',
   isBtnLoading = false,
   isBtnDisable = false,
-  input = '',
-  inputPlaceHolder = 'inputPlaceHolder',
+  textBoxBody = '',
+  textBoxPlaceHolder,
   onPressBtn,
+  showTextBox = true,
+  onTextChanged,
+  input = '',
   showInput = true,
-  isInputEditable = true,
+  inputPlaceHolder,
   onInputChanged,
-  input2 = '',
-  showInput2 = true,
-  input2PlaceHolder = 'input2PlaceHolder',
-  onInput2Changed,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
   const toast = useToast();
@@ -51,60 +48,69 @@ export function DemoView({
 
   return (
     <ScrollView>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ fontSize: 20, fontWeight: '400', width: '50%', flexGrow: 1 }}>{title}</Text>
-        {showInput2 && (
-        <Input
-          size="sm"
-          width={'50%'}
-          placeholder={input2PlaceHolder}
-          value={input2}
-          onChangeText={onInput2Changed}
-          style={{ backgroundColor: '#ffffff' }}
-        />
-        )}
-      </View>
-      <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>
-        {showInput && (
-          <Input
-            onChangeText={onInputChanged}
-            placeholder={inputPlaceHolder}
-            value={input}
-            editable={isInputEditable && !isBtnLoading}
-            w={'100%'}
-            size="sm"
-            mt="4px"
-            isDisabled={!isInputEditable}
-            style={{ backgroundColor: isInputEditable ? '#ffffff' : '#474545', color: isInputEditable ? '#000000' : '#ffffff' }}
-          />
-        )}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Button
-            isLoading={isBtnLoading}
-            bgColor={isBtnDisable ? 'grey' : undefined}
-            disabled={isBtnDisable}
-            onPress={onPressBtn}
-            size="sm"
-            mt="4px"
-            w={showCopy ? '48%' : '100%'}
-          >
-            {btnText}
-          </Button>
-          {showCopy && (
-            <Button
-              onPress={() => copyToClipboard(input)}
+      <View
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          marginTop: 24,
+          paddingHorizontal: 20,
+          paddingBottom: 100,
+        }}
+      >
+        <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>
+          <LogBox log={log} />
+
+          {showInput && (
+            <Input
+              size="sm"
+              width={'100%'}
+              placeholder={inputPlaceHolder}
+              value={input}
+              onChangeText={onInputChanged}
+              style={{ backgroundColor: '#ffffff' }}
+            />
+          )}
+          {showTextBox && (
+            <Input
+              onChangeText={onTextChanged}
+              placeholder={textBoxPlaceHolder}
+              value={textBoxBody}
+              editable={false}
+              w={'100%'}
               size="sm"
               mt="4px"
-              w={'48%'}
+              isDisabled={true}
+              style={{ backgroundColor: '#8d8c8c', color: '#ffffff' }}
+            />
+          )}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Button
+              isLoading={isBtnLoading}
               bgColor={isBtnDisable ? 'grey' : undefined}
               disabled={isBtnDisable}
+              onPress={onPressBtn}
+              size="sm"
+              mt="4px"
+              w={showCopy ? '48%' : '100%'}
             >
-              Copy
+              {btnText}
             </Button>
-          )}
-        </View>
-      </VStack>
-      <LogBox log={log} />
+            {showCopy && (
+              <Button
+                onPress={() => copyToClipboard(textBoxBody)}
+                size="sm"
+                mt="4px"
+                w={'48%'}
+                bgColor={isBtnDisable ? 'grey' : undefined}
+                disabled={isBtnDisable}
+              >
+                Copy
+              </Button>
+            )}
+          </View>
+        </VStack>
+      </View>
     </ScrollView>
   );
 }
