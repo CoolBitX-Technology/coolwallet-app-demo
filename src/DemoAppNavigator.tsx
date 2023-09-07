@@ -10,15 +10,18 @@ import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardCon
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
 import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
 import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
-import { PersonalSignContainer } from '@src/features/cardPairing/PersonalSignContainer';
+import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
+import { RecoverAddressContainer } from '@src/features/tx/RecoverAddressContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
   [RouteName.RESET_CARD]: undefined;
   [RouteName.REGISTER_CARD]: undefined;
+  [RouteName.CREATE_MNEMONIC]: undefined;
   [RouteName.RECOVER_MNEMONIC]: undefined;
   [RouteName.REFRESH_PAIRING_PASSWORD]: undefined;
+  [RouteName.RECOVER_ADDRESS]: undefined;
   [RouteName.EIP1559_COIN]: undefined;
   [RouteName.EIP1559_TOKEN]: undefined;
   [RouteName.PERSONAL_SIGN]: undefined;
@@ -54,13 +57,39 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.REGISTER_CARD} component={RegisterCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={GenerateMnemonicContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={RecoverWalletContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={RefreshPairingPasswordContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.REGISTER_CARD}
+        component={RegisterCardContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.CREATE_MNEMONIC}
+        component={GenerateMnemonicContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.RECOVER_MNEMONIC}
+        component={RecoverWalletContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.REFRESH_PAIRING_PASSWORD}
+        component={RefreshPairingPasswordContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.RECOVER_ADDRESS}
+        component={RecoverAddressContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+
       <Stack.Screen name={RouteName.EIP1559_COIN} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.PERSONAL_SIGN} component={PersonalSignContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.PERSONAL_SIGN}
+        component={PersonalSignContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen name={RouteName.SIGN_TYPED_DATA} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.SEND_HEX} component={DemoView} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>

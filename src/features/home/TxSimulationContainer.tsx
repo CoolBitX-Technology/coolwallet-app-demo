@@ -7,6 +7,10 @@ function useRouteItems() {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const routeItems: Array<RouteItem> = [
     {
+      routeName: RouteName.RECOVER_ADDRESS,
+      onButtonPress: () => navigation.navigate(RouteName.RECOVER_ADDRESS),
+    },
+    {
       routeName: RouteName.EIP1559_COIN,
       onButtonPress: () => navigation.navigate(RouteName.EIP1559_COIN),
     },

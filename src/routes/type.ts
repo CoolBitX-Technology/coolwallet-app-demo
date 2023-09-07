@@ -6,6 +6,7 @@ export enum RouteName {
   CREATE_MNEMONIC = 'Create Mnemonic',
   RECOVER_MNEMONIC = 'Recover Mnemonic',
   REFRESH_PAIRING_PASSWORD = 'Refresh Pairing Password',
+  RECOVER_ADDRESS = 'Recover Address',
   EIP1559_COIN = 'Coin Transfer',
   EIP1559_TOKEN = 'Token Transfer',
   PERSONAL_SIGN = 'Personal Sign',
