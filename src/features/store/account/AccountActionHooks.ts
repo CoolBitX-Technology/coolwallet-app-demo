@@ -56,7 +56,7 @@ export function useWalletRecoverStatus() {
 
 export function useAddress() {
   const index = useAddressIndex();
-  if (!index) return '';
+  if (index === undefined) return '';
   const address = useAccount()?.addresses[index] || '';
   return address;
 }
