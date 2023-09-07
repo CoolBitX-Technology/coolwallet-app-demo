@@ -4,37 +4,36 @@ import { Button, Input, VStack, useToast } from 'native-base';
 import { ScrollView, Text, View } from 'react-native';
 
 interface Props {
-  title?: string;
   log?: string;
-  showCopy?: boolean;
   btnText?: string;
   isBtnLoading?: boolean;
   isBtnDisable?: boolean;
   onPressBtn?: () => void;
   textBoxBody?: string;
-  inputPlaceHolder?: string;
   textBoxPlaceHolder?: string;
-  showTextBox?: boolean;
   onTextChanged?: (text: string) => void;
   input?: string;
-  showInput?: boolean;
+  inputPlaceHolder?: string;
   onInputChanged?: (text: string) => void;
+  showTextBox?: boolean;
+  showCopy?: boolean;
+  showInput?: boolean;
 }
 export function DemoView({
   log = 'LogBox',
-  showCopy = true,
   btnText = 'Button',
   isBtnLoading = false,
   isBtnDisable = false,
+  onPressBtn,
   textBoxBody = '',
   textBoxPlaceHolder,
-  onPressBtn,
-  showTextBox = true,
   onTextChanged,
   input = '',
-  showInput = true,
   inputPlaceHolder,
   onInputChanged,
+  showTextBox = true,
+  showCopy = true,
+  showInput = true,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
   const toast = useToast();
