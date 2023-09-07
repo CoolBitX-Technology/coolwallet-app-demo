@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '@src/features/store/hooks';
 import ObjectUtils from '@src/features/utils/ObjectUtils';
 
 function getAccountState(state: RootState) {
-  return state.account;
+  return state?.account;
 }
 
 export function useAccountState() {
@@ -12,7 +12,7 @@ export function useAccountState() {
 }
 
 export function useMnemonic() {
-  return useAccountState().mnemonic;
+  return useAccountState()?.mnemonic;
 }
 
 export function useDispatchMnemonicChange(): (mnemonic: string) => void {
@@ -37,8 +37,8 @@ export function useDispatchUpdateAddress(): (cardId: string, index: number, addr
 }
 
 export function useAccount(cardId?: string) {
-  if (!cardId) return null;
   const accountState = useAccountState();
+  if (!cardId) return null;
   return accountState?.accounts?.[cardId];
 }
 
@@ -67,10 +67,8 @@ export function useWalletRecoverStatus(cardId?: string) {
 }
 
 export function useAddress(cardId?: string, index?: number) {
-  console.log('useAddress >>> cardId = ', cardId);
-  console.log('useAddress >>> index = ', index);
-  if (!cardId || !ObjectUtils.isNumeric(index)) return '';
   const account = useAccount(cardId);
+  if (!cardId || !ObjectUtils.isNumeric(index)) return '';
   if (!account) return '';
   return account.addresses?.[index as number] || '';
 }

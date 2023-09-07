@@ -27,7 +27,7 @@ export function RecoverAddressContainer() {
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
-      addLog(`ADDRESS RECOVERING.....`);
+      addLog(`ADDRESS${addressIndex} RECOVERING.....`);
       sdkAdapter.setAppId(appId);
       const address = await sdkAdapter.getAddress(addressIndex);
       updateAddress(cardId, addressIndex, address);

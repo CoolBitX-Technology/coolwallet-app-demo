@@ -10,7 +10,7 @@ import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardCon
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
 import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
 import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
-import { PersonalSignContainer } from '@src/features/cardPairing/PersonalSignContainer';
+import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 
 export type DemoAppParamList = {

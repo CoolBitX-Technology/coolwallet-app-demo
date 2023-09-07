@@ -88,8 +88,8 @@ export default class ObjectUtils {
 
   static isNumeric(value?: string | number) {
     if (value === undefined || value === null) return false;
-    if (typeof value === 'number' && Number.isInteger(value) && value > 0) return true;
-    return /^[1-9]\d*$/.test(value as string);
+    if (typeof value === 'number' && Number.isInteger(value) && value >= 0) return true;
+    return /^[0-9]\d*$/.test(value as string);
   }
 }
 

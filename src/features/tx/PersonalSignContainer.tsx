@@ -6,6 +6,7 @@ import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
 import { useAddress, useAddressIndex, useAppId } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 
 export function PersonalSignContainer(): JSX.Element {
@@ -23,11 +24,11 @@ export function PersonalSignContainer(): JSX.Element {
   const [isSigning, setIsSigning] = useState(false);
   const { log, addLog } = useLogUseCase();
 
-  const isBtnDisable = !appId || !transport || !index || !fromAddress || isSigning;
+  const isBtnDisable = !appId || !transport || !ObjectUtils.isNumeric(index) || !fromAddress || isSigning;
 
   useEffect(()=>{
     addLog(`SIGN ADDRESS: ${fromAddress}`);
-  }, []);
+  }, [fromAddress]);
 
   const confirmed = () => {
     addLog(`SIGN CONFIRMED`);
@@ -46,7 +47,7 @@ export function PersonalSignContainer(): JSX.Element {
       sdkAdapter.setTransport(transport);
       const rawData: EthRawData = {
         amount: '0',
-        index,
+        index: index as number,
         fromAddress: '',
         toAddress: '',
         dataType: EthDataType.Message,
