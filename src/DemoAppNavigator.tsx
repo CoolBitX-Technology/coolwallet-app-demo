@@ -4,10 +4,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 import { DemoAppHomeContainer } from '@src/features/home/DemoAppHomeContainer';
 import { RouteName } from '@src/routes/type';
+import { EIP1559CoinTx } from '@src/features/tx/EIP1559CoinTx';
+import { EIP1559TokenTx } from '@src/features/tx/EIP1559TokenTx';
+import { TokenApporve } from '@src/features/tx/TokenApprove';
+import { PersonalSign } from '@src/features/tx/PersonalSign';
+import { SignTypedData } from '@src/features/tx/SignTypedData';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
+  [RouteName.EIP1559_COIN]: undefined;
+  [RouteName.EIP1559_TOKEN]: undefined;
+  [RouteName.TOKEN_APPROVE]: undefined;
+  [RouteName.PERSONAL_SIGN]: undefined;
+  [RouteName.SIGN_TYPED_DATA]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -37,6 +47,11 @@ export function DemoAppNavigator() {
         component={BluetoothScanContainer}
         options={{ headerBackTitleVisible: false }}
       />
+      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTx} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.TOKEN_APPROVE} component={TokenApporve} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.PERSONAL_SIGN} component={PersonalSign} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.SIGN_TYPED_DATA} component={SignTypedData} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>
   );
 }
