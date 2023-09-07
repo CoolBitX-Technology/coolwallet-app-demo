@@ -21,7 +21,7 @@ interface Props {
   onInputChanged?: (text: string) => void;
 }
 export function DemoView({
-  log = '',
+  log = 'LogBox',
   showCopy = true,
   btnText = 'Button',
   isBtnLoading = false,

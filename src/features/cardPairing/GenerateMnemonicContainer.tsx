@@ -1,11 +1,11 @@
 import { DemoView } from '@src/features/components/DemoView';
+import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
 import { useDispatchMnemonicChange, useMnemonic } from '@src/features/store/account/AccountActionHooks';
-import { useState } from 'react';
 
 export function GenerateMnemonicContainer() {
-  const [log, setLog] = useState('');
+  const { log, addLog } = useLogUseCase();
   const mnemonic = useMnemonic();
   const updateMnemonic = useDispatchMnemonicChange();
 
@@ -13,7 +13,7 @@ export function GenerateMnemonicContainer() {
     const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
     const newMnemonic = await sdkAdapter.createMnemonic();
     updateMnemonic(newMnemonic);
-    setLog(`CREATE SUCCESS`);
+    addLog(`CREATE SUCCESS`);
   };
 
   return (
