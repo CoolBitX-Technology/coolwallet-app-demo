@@ -10,6 +10,7 @@ export interface EvmChain {
   symbol: string;
   name: string;
   rpc_url: string;
+  explorer_url: string;
 }
 
 export const EVM_CHAIN_MAP: Record<string, EvmChain> = {
@@ -17,11 +18,13 @@ export const EVM_CHAIN_MAP: Record<string, EvmChain> = {
     symbol: 'ETH',
     name: 'Goerli',
     rpc_url: 'https://goerli.infura.io/v3/55c881399fe442bfb09d327b53dc5fdb',
+    explorer_url: 'https://goerli.etherscan.io/tx/',
   },
   [EvmChainId.POLYGON_MAINNET]: {
     symbol: 'MATIC',
     name: 'Polygon',
     rpc_url: 'https://matic-mainnet.chainstacklabs.com',
+    explorer_url: 'https://polygonscan.com/tx/',
   },
 };
 
