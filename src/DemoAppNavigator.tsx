@@ -11,6 +11,7 @@ import { PersonalSign } from '@src/features/tx/PersonalSign';
 import { SignTypedData } from '@src/features/tx/SignTypedData';
 import { DemoView } from '@src/features/components/DemoView';
 import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer';
+import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -54,7 +55,7 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.REGISTER_CARD} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.REGISTER_CARD} component={RegisterCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={DemoView} options={{ headerBackTitleVisible: false }} />
