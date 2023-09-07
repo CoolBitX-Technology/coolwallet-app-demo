@@ -12,6 +12,8 @@ import { SignTypedData } from '@src/features/tx/SignTypedData';
 import { DemoView } from '@src/features/components/DemoView';
 import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer';
 import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardContainer';
+import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
+import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -56,8 +58,8 @@ export function DemoAppNavigator() {
       />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.REGISTER_CARD} component={RegisterCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={GenerateMnemonicContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={RecoverWalletContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTx} options={{ headerBackTitleVisible: false }} />

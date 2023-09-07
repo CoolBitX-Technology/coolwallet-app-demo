@@ -4,6 +4,7 @@ import { DemoView } from '@src/features/components/DemoView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { generateRandomPassword } from '@src/features/home/utils/RandomUtils';
 import {
+    useAppId,
   useDispatchChangeAppInfo,
   useDispatchChangePairedPassword,
   usePairedPassword,
@@ -13,6 +14,7 @@ import { useState } from 'react';
 
 export function RegisterCardContainer(): JSX.Element {
   const cardId = useCardId();
+  const appId = useAppId();
   const isConnected = useIsConnected();
   const pairedPassword = usePairedPassword();
   const [pairingPassword, setPairingPassword] = useState(pairedPassword);
@@ -51,7 +53,8 @@ export function RegisterCardContainer(): JSX.Element {
       log={log}
       input={pairingPassword}
       isBtnLoading={isRegistering}
-      showInput={true}
+      textBoxBody={appId}
+      showCopy={false}
       onPressBtn={registerCard}
       isBtnDisable={!isConnected}
       inputPlaceHolder="Pairing Password"
