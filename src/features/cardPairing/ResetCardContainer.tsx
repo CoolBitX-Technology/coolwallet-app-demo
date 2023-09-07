@@ -1,6 +1,6 @@
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { DemoView } from '@src/features/components/DemoView';
-
+import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useDispatchClearAppId } from '@src/features/store/account/AccountActionHooks';
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
@@ -10,6 +10,8 @@ export function ResetCardContainer() {
   const bleInfo = useBluetoothInfo();
   const [log, setLog] = useState('');
   const clearAppInfo = useDispatchClearAppId();
+
+  useInitApduEffect();
 
   const [isReseting, setIsResting] = useState(false);
   const resetCard = async (cardId?: string) => {
