@@ -1,15 +1,16 @@
+import { Text } from 'native-base';
 import React from 'react';
-import { StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import { StyleSheet, ScrollView, ViewStyle } from 'react-native';
 
 interface Props {
   style?: ViewStyle;
   log?: string;
 }
-export function LogBox({ style, log }: Props) {
+export function LogBox({ style, log = 'LogBox' }: Props) {
   return (
-    <View style={[style, { width: '100%' }]}>
-      <TextInput style={styles.log} editable={false} multiline={true} placeholder="Log Box" value={log} />
-    </View>
+    <ScrollView style={[style, { width: '100%' }]}>
+      <Text style={styles.log}>{log}</Text>
+    </ScrollView>
   );
 }
 

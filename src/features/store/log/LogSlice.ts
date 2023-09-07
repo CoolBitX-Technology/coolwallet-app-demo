@@ -3,15 +3,16 @@ import { LogState } from '@src/features/store/log/LogTypes';
 import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: LogState = {
-  logMessage: '',
+  logMessage: undefined,
 };
 
 const LogSlice = createSlice({
   name: ReducerTypes.LOG,
   initialState,
   reducers: {
-    updateLogMessage: (state: LogState, action: PayloadAction<string>) => {
-      state.logMessage = action.payload;
+    addLogMessage: (state: LogState, action: PayloadAction<string>) => {
+      if (!state.logMessage) state.logMessage = action.payload;
+      else state.logMessage += `\r\n${action.payload}`;
     },
     clearLogMessage: (state: LogState) => {
       state.logMessage = undefined;

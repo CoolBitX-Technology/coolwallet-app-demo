@@ -10,16 +10,16 @@ export function useLog() {
   return useAppSelector((state: RootState) => getLog(state));
 }
 
-export function useDispatchLogChange(): (log: string) => void {
+export function useDispatchLogAdd(): (log: string) => void {
   const dispatch = useAppDispatch();
   return (log) => {
-    dispatch(LogActions.updateLogMessage(log));
+    dispatch(LogActions.addLogMessage(log));
   };
 }
 
 export function useDispatchResetLog(): () => void {
   const dispatch = useAppDispatch();
   return () => {
-    dispatch(LogActions.clearLogMessage);
+    dispatch(LogActions.clearLogMessage());
   };
 }
