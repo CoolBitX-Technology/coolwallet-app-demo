@@ -13,7 +13,7 @@ export function GenerateMnemonicContainer() {
     const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
     const newMnemonic = await sdkAdapter.createMnemonic();
     updateMnemonic(newMnemonic);
-    addLog(`CREATE SUCCESS`);
+    addLog(`CREATE SUCCESS\r\nMnemonic: ${newMnemonic}`);
   };
 
   return (

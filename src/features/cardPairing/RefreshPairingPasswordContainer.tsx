@@ -9,9 +9,9 @@ import { useState } from 'react';
 export function RefreshPairingPasswordContainer() {
   const isConnected = useIsConnected();
   const changePairedPassword = useDispatchChangePairedPassword();
-  const pairPassword = usePairedPassword();
-  const appId = useAppId();
   const cardId = useCardId();
+  const pairPassword = usePairedPassword(cardId);
+  const appId = useAppId(cardId);
   const { log, addLog } = useLogUseCase();
   const isBtnDisable = !cardId || !isConnected || !pairPassword;
   const [isRefreshing, setIsRefereshing] = useState(false);

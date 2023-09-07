@@ -4,35 +4,35 @@ import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
 import { useAppId, useDispatchMnemonicChange, useDispatchWalletRecoverStatus, useMnemonic } from '@src/features/store/account/AccountActionHooks';
-import { useBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { useCardId } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
 
 export function RecoverWalletContainer() {
   const { log, addLog } = useLogUseCase();
   const defaultMnemonic = useMnemonic();
-  const appId = useAppId();
+  const cardId = useCardId();
+  const appId = useAppId(cardId);
   const transport = useBleTransport();
-  const bleInfo = useBluetoothInfo();
   const [isRecovering, setIsRecovering] = useState(false);
   const [mnemonic, setMnemonic] = useState(defaultMnemonic);
-  const isBtnDisable = !bleInfo || !appId || !transport;
+  const isBtnDisable = !cardId || !appId || !transport || !mnemonic || isRecovering;
   const updateMnemonic = useDispatchMnemonicChange();
   const updateRecoverdStatus = useDispatchWalletRecoverStatus();
 
   const recoverWallet = async () => {
     if (isBtnDisable) return;
-    setIsRecovering(true);
     try {
+      setIsRecovering(true);
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
       addLog(`WALLET RECOVERING.....`);
       await sdkAdapter.recoverWallet(mnemonic);
       updateMnemonic(mnemonic);
-      updateRecoverdStatus(bleInfo?.cardId, true);
+      updateRecoverdStatus(cardId, true);
       addLog(`RECOVER SUCCESS`);
     } catch (e) {
-      updateRecoverdStatus(bleInfo?.cardId, false);
+      updateRecoverdStatus(cardId, false);
       addLog(`RECOVER FAILED >>> ${e}`);
     } finally {
       setIsRecovering(false);
