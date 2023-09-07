@@ -5,6 +5,8 @@ export interface AccountState {
     {
       appId: string;
       password: string;
+      currentIndex?: number;
+      addresses: Record<number, string>;
     } | null
   >;
 }

@@ -22,6 +22,7 @@ export const AcountSlice = createSlice({
       state.accounts[cardId] = {
         appId,
         password,
+        addresses: {},
       };
     },
     setAppPassword: (state: AccountState, action: PayloadAction<{ cardId: string; password: string }>) => {
@@ -33,6 +34,14 @@ export const AcountSlice = createSlice({
     clearAppInfo: (state: AccountState, action: PayloadAction<string>) => {
       const cardId = action.payload;
       state.accounts[cardId] = null;
+    },
+    updateAddress: (state: AccountState, action: PayloadAction<{ cardId: string; index: number; address: string }>) => {
+      const { index, address, cardId } = action.payload;
+      const account = state.accounts[cardId];
+      console.log('>>> account = ', account);
+      if (!account) return;
+      account.currentIndex = index;
+      account.addresses[index] = address;
     },
   },
 });
