@@ -13,15 +13,15 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
   readonly sdk: Evm;
   readonly chainId: number;
 
-  constructor(appId: string, chainId: number) {
-    super(appId);
+  constructor(chainId: number) {
+    super();
     this.chainId = chainId;
     this.sdk = sdkFactory(chainId);
   }
 
   async getAddress(index: number): Promise<string> {
     const { privateKey, appId } = await this.getAppPrivacy();
-    return await this.sdk.getAddress(this.transport, privateKey, appId, index);
+    return await this.sdk.getAddress(this.getTransport(), privateKey, appId, index);
   }
 
   async signData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
@@ -89,7 +89,7 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
         data,
       );
       const eip1559Transaction = EvmTransactionMapper.mapEIP1559Transaction(
-        this.transport,
+        this.getTransport(),
         appPrivacy,
         index,
         eip1559Tx,
@@ -102,7 +102,7 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
       const gasPrice = numberToHex(nullableGasPrice); // wei
       const legacyTx = EvmTransactionMapper.mapLegacyTx(toAddress, amount, nonce, gasLimit, gasPrice, symbol, decimals, data);
       const legacyTransaction = EvmTransactionMapper.mapLegacyTransaction(
-        this.transport,
+        this.getTransport(),
         appPrivacy,
         index,
         legacyTx,
@@ -118,7 +118,7 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
     const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signMessage >>> index is invalid.');
     const appPrivacy = await this.getAppPrivacy();
     const msgTransaction = EvmTransactionMapper.mapMessageTransaction(
-      this.transport,
+      this.getTransport(),
       appPrivacy,
       index,
       data || '',
@@ -134,7 +134,7 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
     const appPrivacy = await this.getAppPrivacy();
     const typedDataObj: Object = JSON.parse(data || '');
     const typedDataTransaction = EvmTransactionMapper.mapTypedDataTransaction(
-      this.transport,
+      this.getTransport(),
       appPrivacy,
       index,
       typedDataObj,

@@ -1,5 +1,4 @@
-import crypto from 'crypto';
-import { Transport, apdu, config, utils } from '@coolwallet/core';
+import { Transport, apdu, config } from '@coolwallet/core';
 import { AppKeyPair } from '@src/features/ble/utils/StorageUtils';
 import { SDKError } from '@coolwallet/core/lib/error';
 import { RNApduError } from '@src/features/ble/RNApduError';
@@ -10,9 +9,6 @@ interface ApduManager {
   registerDevice(name: string, password: string): Promise<string>;
   getPairPassword(appId: string): Promise<string>;
   resetDevice(): Promise<boolean>;
-  createMnemonic(): Promise<string>;
-  recoverWallet(appId: string, mnemonic: string): Promise<void>;
-  sign(appId: string, message: string): Promise<string>;
 }
 
 export class RNApduManager implements ApduManager {
@@ -58,7 +54,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await apdu.pair.register(this.getTransport(), publicKey, password, name, sePublicKey);
     } catch (e) {
-      throw RNApduError.parseError(e);
+      throw RNApduError.parseError(e as Error);
     }
   }
 
@@ -67,7 +63,7 @@ export class RNApduManager implements ApduManager {
       const status = await apdu.general.resetCard(this.getTransport());
       return status;
     } catch (e) {
-      throw RNApduError.parseError(e);
+      throw RNApduError.parseError(e as Error);
     }
   }
 
@@ -77,38 +73,7 @@ export class RNApduManager implements ApduManager {
     try {
       return await apdu.pair.getPairingPassword(this.getTransport(), appId, privateKey);
     } catch (e) {
-      throw RNApduError.parseError(e);
+      throw RNApduError.parseError(e as Error);
     }
   }
-
-  async createMnemonic(worldLength = WordLength.WORD_12): Promise<string> {
-    try {
-      return await utils.createSeedByApp(worldLength, crypto.randomBytes);
-    } catch (e) {
-      throw RNApduError.parseError(e);
-    }
-  }
-
-  async recoverWallet(appId: string, mnemonic: string): Promise<void> {
-    const appKeyPair = this.getAppKeyPair();
-    const { privateKey } = appKeyPair;
-    const sePublicKey = await this.getSEPublicKey();
-    try {
-      return await utils.createWalletByMnemonic(this.getTransport(), appId, privateKey, mnemonic, sePublicKey);
-    } catch (e) {
-      throw RNApduError.parseError(e);
-    }
-  }
-
-  sign(appId: string, message: string): Promise<string> {
-    const appKeyPair = this.getAppKeyPair();
-    const { privateKey } = appKeyPair;
-    throw new Error('Method not implemented.');
-  }
-}
-
-export enum WordLength {
-  WORD_12 = 12,
-  WORD_18 = 18,
-  WORD_24 = 24,
 }

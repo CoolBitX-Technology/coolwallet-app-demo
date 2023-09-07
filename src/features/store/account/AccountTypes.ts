@@ -3,8 +3,11 @@ export interface AccountState {
   accounts: Record<
     string,
     {
+      isWalletRecovered: boolean;
       appId: string;
       password: string;
+      currentIndex?: number;
+      addresses: Record<number, string>;
     } | null
   >;
 }
