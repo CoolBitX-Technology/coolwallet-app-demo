@@ -1,6 +1,7 @@
 import { RNApduError } from '@src/features/ble/RNApduError';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { DemoView } from '@src/features/components/DemoView';
+import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { generateRandomPassword } from '@src/features/home/utils/RandomUtils';
 import {
   useDispatchChangeAppInfo,
@@ -19,6 +20,8 @@ export function RegisterCardContainer(): JSX.Element {
   const [log, setLog] = useState('');
   const changeAppInfo = useDispatchChangeAppInfo();
   const changePairedPassword = useDispatchChangePairedPassword();
+
+  useInitApduEffect();
 
   const registerCard = async () => {
     try {
@@ -51,7 +54,8 @@ export function RegisterCardContainer(): JSX.Element {
       showInput={true}
       onPressBtn={registerCard}
       isBtnDisable={!isConnected}
-      inputPlaceHolder='Pairing Password'
+      inputPlaceHolder="Pairing Password"
+      btnText="Register"
       onInputChanged={setPairingPassword}
     />
   );
