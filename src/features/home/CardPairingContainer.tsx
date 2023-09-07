@@ -3,15 +3,26 @@ import { KeyboardAwareView } from '@src/features/components/KeyboardAwareView';
 import { CardPairingView } from '@src/features/home/CardPairingView';
 import { useCardPairingUseCase } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useRecoverWalletUseCase } from '@src/features/home/usecases/useRecoverWalletUseCase';
+import { useWalletRecoverStatus } from '@src/features/store/account/AccountActionHooks';
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { useMemo, useState } from 'react';
 
 function useActionItems(): Array<ActionItemProps> {
   const bleInfo = useBluetoothInfo();
   const isConnected = useIsConnected();
+  const isWalletRecovered = useWalletRecoverStatus();
   const { registerCard, resetCard, refreshPairPassword, appId, pairPassword, isPaired, isRegistering, isReseting, isRefreshing } =
     useCardPairingUseCase();
-  const { createWallet, recoverWallet, recoverAddress, mnemonic, isRecovering, address, addressIndex } = useRecoverWalletUseCase();
+  const {
+    createWallet,
+    recoverWallet,
+    recoverAddress,
+    mnemonic,
+    isRecoveringWallet,
+    isRecoveringAddress,
+    address,
+    addressIndex,
+  } = useRecoverWalletUseCase();
   const [recoverMnmonic, setRecoverMnemonic] = useState('');
   const [recoverAddressIndex, setRecoverAddressIndex] = useState('0');
   const [pairingPassword, setPairingPassword] = useState('');
@@ -62,7 +73,7 @@ function useActionItems(): Array<ActionItemProps> {
         shouldDisplayInput: true,
         disableButton: !isConnected || !isPaired,
         input: recoverMnmonic,
-        isLoading: isRecovering,
+        isLoading: isRecoveringWallet,
         onInputChanged: (mnemonic) => setRecoverMnemonic(mnemonic),
       },
       {
@@ -72,8 +83,8 @@ function useActionItems(): Array<ActionItemProps> {
         isEditable: false,
         shouldDisplayInput: true,
         input: address,
-        disableButton: !isConnected || !isPaired,
-        isLoading: isRecovering,
+        disableButton: !isConnected || !isPaired || !isWalletRecovered,
+        isLoading: isRecoveringAddress,
         input2: `${addressIndex || 0}`,
         onInput2Changed: (newIndex) => setRecoverAddressIndex(`${newIndex}`),
         shouldDisplayInput2: true,
@@ -89,7 +100,9 @@ function useActionItems(): Array<ActionItemProps> {
       appId,
       isRegistering,
       isReseting,
-      isRecovering,
+      isRecoveringWallet,
+      isRecoveringAddress,
+      isWalletRecovered,
       mnemonic,
       isRefreshing,
       pairingPassword,

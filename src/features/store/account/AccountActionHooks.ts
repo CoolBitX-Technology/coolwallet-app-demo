@@ -50,6 +50,10 @@ export function useAddressIndex() {
   return useAccount()?.currentIndex;
 }
 
+export function useWalletRecoverStatus() {
+  return useAccount()?.isWalletRecovered;
+}
+
 export function useAddress() {
   const index = useAddressIndex();
   if (!index) return '';
@@ -75,5 +79,12 @@ export function useDispatchClearAppId(): (cardId: string) => void {
   const dispatch = useAppDispatch();
   return (cardId) => {
     dispatch(AccountActions.clearAppInfo(cardId));
+  };
+}
+
+export function useDispatchWalletRecoverStatus(): (cardId: string, status: boolean) => void {
+  const dispatch = useAppDispatch();
+  return (cardId, status) => {
+    dispatch(AccountActions.setWalletRecoverStatus({ cardId, status }));
   };
 }

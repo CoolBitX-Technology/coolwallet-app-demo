@@ -20,6 +20,7 @@ export const AcountSlice = createSlice({
     setAppInfo: (state: AccountState, action: PayloadAction<{ cardId: string; appId: string; password: string }>) => {
       const { cardId, appId, password } = action.payload;
       state.accounts[cardId] = {
+        isWalletRecovered: false,
         appId,
         password,
         addresses: {},
@@ -41,6 +42,12 @@ export const AcountSlice = createSlice({
       if (!account) return;
       account.currentIndex = index;
       account.addresses[index] = address;
+    },
+    setWalletRecoverStatus: (state: AccountState, action: PayloadAction<{ cardId: string; status: boolean }>) => {
+      const { cardId, status } = action.payload;
+      const account = state.accounts?.[cardId];
+      if (!account) return;
+      account.isWalletRecovered = status;
     },
   },
 });
