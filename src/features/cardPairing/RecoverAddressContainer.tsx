@@ -3,36 +3,37 @@ import { DemoView } from '@src/features/components/DemoView';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
-import { useAppId, useDispatchMnemonicChange, useDispatchWalletRecoverStatus, useMnemonic } from '@src/features/store/account/AccountActionHooks';
+import { useAddress, useAddressIndex, useAppId, useDispatchUpdateAddress } from '@src/features/store/account/AccountActionHooks';
 import { useCardId } from '@src/features/store/device/DeviceActionHooks';
+import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useState } from 'react';
 
-export function RecoverWalletContainer() {
+export function RecoverAddressContainer() {
   const { log, addLog } = useLogUseCase();
-  const defaultMnemonic = useMnemonic();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const transport = useBleTransport();
+  const defaultAddressIndex = useAddressIndex(cardId);
+  const defaultAddress = useAddress(cardId, defaultAddressIndex);
+  const updateAddress = useDispatchUpdateAddress();
   const [isRecovering, setIsRecovering] = useState(false);
-  const [mnemonic, setMnemonic] = useState(defaultMnemonic);
-  const isBtnDisable = !cardId || !appId || !transport || !mnemonic || isRecovering;
-  const updateMnemonic = useDispatchMnemonicChange();
-  const updateRecoverdStatus = useDispatchWalletRecoverStatus();
+  const [addressIndex, setAddressIndex] = useState(defaultAddressIndex);
+  const isBtnDisable = !cardId || !appId || addressIndex === undefined || !transport || isRecovering;
 
-  const recoverWallet = async () => {
+  const recoverAddress = async () => {
     if (isBtnDisable) return;
     try {
       setIsRecovering(true);
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
-      addLog(`WALLET RECOVERING.....`);
-      await sdkAdapter.recoverWallet(mnemonic);
-      updateMnemonic(mnemonic);
-      updateRecoverdStatus(cardId, true);
+      addLog(`ADDRESS ${addressIndex} RECOVERING.....`);
+      sdkAdapter.setAppId(appId);
+      const address = await sdkAdapter.getAddress(addressIndex);
+      updateAddress(cardId, addressIndex, address);
       addLog(`RECOVER SUCCESS`);
+      addLog(`[${addressIndex}]：${address}`);
     } catch (e) {
-      updateRecoverdStatus(cardId, false);
       addLog(`RECOVER FAILED >>> ${e}`);
     } finally {
       setIsRecovering(false);
@@ -42,12 +43,15 @@ export function RecoverWalletContainer() {
   return (
     <DemoView
       btnText="Recover"
-      onPressBtn={recoverWallet}
-      showTextBox={false}
+      onPressBtn={recoverAddress}
       showCopy={false}
-      textBoxBody={defaultMnemonic}
-      input={mnemonic}
-      onInputChanged={setMnemonic}
+      textBoxBody={defaultAddress}
+      input={addressIndex ? `${addressIndex}` : ''}
+      inputMode="numeric"
+      onInputChanged={(num: string) => {
+        if (!ObjectUtils.isNumeric(num) || addressIndex === Number.parseInt(num)) return;
+        setAddressIndex(Number.parseInt(num));
+      }}
       isBtnDisable={isBtnDisable}
       isBtnLoading={isRecovering}
       log={log}

@@ -10,7 +10,8 @@ import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardCon
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
 import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
 import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
-import { PersonalSignContainer } from '@src/features/cardPairing/PersonalSignContainer';
+import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
+import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -18,6 +19,8 @@ export type DemoAppParamList = {
   [RouteName.RESET_CARD]: undefined;
   [RouteName.REGISTER_CARD]: undefined;
   [RouteName.RECOVER_MNEMONIC]: undefined;
+  [RouteName.CREATE_MNEMONIC]: undefined;
+  [RouteName.RECOVER_ADDRESS]: undefined;
   [RouteName.REFRESH_PAIRING_PASSWORD]: undefined;
   [RouteName.EIP1559_COIN]: undefined;
   [RouteName.EIP1559_TOKEN]: undefined;
@@ -57,6 +60,7 @@ export function DemoAppNavigator() {
       <Stack.Screen name={RouteName.REGISTER_CARD} component={RegisterCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={GenerateMnemonicContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={RecoverWalletContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.RECOVER_ADDRESS} component={RecoverAddressContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={RefreshPairingPasswordContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />

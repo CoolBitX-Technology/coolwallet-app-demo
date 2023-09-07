@@ -15,14 +15,15 @@ import { useState } from 'react';
 
 export function RegisterCardContainer(): JSX.Element {
   const cardId = useCardId();
-  const appId = useAppId();
+  const appId = useAppId(cardId);
   const isConnected = useIsConnected();
-  const pairedPassword = usePairedPassword();
+  const pairedPassword = usePairedPassword(cardId);
   const [pairingPassword, setPairingPassword] = useState(pairedPassword);
   const [isRegistering, setIsRegistering] = useState(false);
   const { log, addLog } = useLogUseCase();
   const changeAppInfo = useDispatchChangeAppInfo();
   const changePairedPassword = useDispatchChangePairedPassword();
+  const isBtnDisable = !isConnected || !!appId;
 
   useInitApduEffect();
 
@@ -35,6 +36,7 @@ export function RegisterCardContainer(): JSX.Element {
       changeAppInfo(cardId, appId, password);
       changePairedPassword(cardId, password);
       addLog(`REGISTERED SUCCESS, PASSWORD: ${password}`);
+      setPairingPassword(password);
     } catch (e) {
       const error = e as RNApduError;
       if (error?.errorCode === '6985') {
@@ -57,7 +59,7 @@ export function RegisterCardContainer(): JSX.Element {
       textBoxBody={appId}
       showCopy={false}
       onPressBtn={registerCard}
-      isBtnDisable={!isConnected}
+      isBtnDisable={isBtnDisable}
       inputPlaceHolder="Pairing Password"
       btnText="Register"
       onInputChanged={setPairingPassword}

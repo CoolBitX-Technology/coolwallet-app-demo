@@ -85,6 +85,12 @@ export default class ObjectUtils {
     });
     return inputObject;
   }
+
+  static isNumeric(value?: string | number) {
+    if (value === undefined || value === null) return false;
+    if (typeof value === 'number' && Number.isInteger(value) && value >= 0) return true;
+    return /^[0-9]\d*$/.test(value as string);
+  }
 }
 
 export type { PartialExcept };

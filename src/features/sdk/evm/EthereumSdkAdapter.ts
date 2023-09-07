@@ -53,7 +53,8 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
       symbol: nullableSymbol,
       decimals: nullableDecimals,
     } = rawData as EthRawData;
-    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signSmartContract >>> index is invalid.');
+    if (!ObjectUtils.isNumeric(nullableIndex)) throw new Error(`EthereumSdkAdapter.signSmartContract >>> index is invalid.`);
+    const index = nullableIndex as number;
     const ethFee = fee as EthFee;
     const {
       nonce: nullableNonce,
@@ -115,7 +116,8 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
 
   private async signMessage(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
     const { index: nullableIndex, data } = rawData as EthRawData;
-    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signMessage >>> index is invalid.');
+    if (!ObjectUtils.isNumeric(nullableIndex)) throw new Error(`EthereumSdkAdapter.signSmartContract >>> index is invalid.`);
+    const index = nullableIndex as number;
     const appPrivacy = await this.getAppPrivacy();
     const msgTransaction = EvmTransactionMapper.mapMessageTransaction(
       this.getTransport(),
@@ -130,7 +132,8 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
 
   private async signTypedData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {
     const { data, index: nullableIndex } = rawData as EthRawData;
-    const index = ObjectUtils.checkNotNull(nullableIndex, 'EthereumSdkAdapter.signTypedData >>> index is invalid.');
+    if (!ObjectUtils.isNumeric(nullableIndex)) throw new Error(`EthereumSdkAdapter.signSmartContract >>> index is invalid.`);
+    const index = nullableIndex as number;
     const appPrivacy = await this.getAppPrivacy();
     const typedDataObj: Object = JSON.parse(data || '');
     const typedDataTransaction = EvmTransactionMapper.mapTypedDataTransaction(

@@ -12,7 +12,7 @@ export function useCardInfo() {
 }
 
 export function useBluetoothInfo() {
-  return useCardInfo().bleInfo;
+  return useCardInfo()?.bleInfo;
 }
 
 export function useCardId() {
