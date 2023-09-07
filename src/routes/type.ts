@@ -6,9 +6,8 @@ export enum RouteName {
   CREATE_MNEMONIC = 'Create Mnemonic',
   RECOVER_MNEMONIC = 'Recover Mnemonic',
   REFRESH_PAIRING_PASSWORD = 'Refresh Pairing Password',
-  EIP1559_COIN = 'EIP 1559 Coin Transfer',
-  EIP1559_TOKEN = 'EIP 1559 Token Transfer',
-  TOKEN_APPROVE = 'Token Approve',
+  EIP1559_COIN = 'Coin Transfer',
+  EIP1559_TOKEN = 'Token Transfer',
   PERSONAL_SIGN = 'Personal Sign',
   SIGN_TYPED_DATA = 'Sign Typed Data',
 }

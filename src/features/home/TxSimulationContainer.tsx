@@ -15,10 +15,6 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.EIP1559_TOKEN),
     },
     {
-      routeName: RouteName.TOKEN_APPROVE,
-      onButtonPress: () => navigation.navigate(RouteName.TOKEN_APPROVE),
-    },
-    {
       routeName: RouteName.PERSONAL_SIGN,
       onButtonPress: () => navigation.navigate(RouteName.PERSONAL_SIGN),
     },
