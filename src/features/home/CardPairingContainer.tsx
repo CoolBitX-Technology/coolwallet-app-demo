@@ -1,11 +1,42 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { ActionItemProps } from '@src/features/components/ActionItem';
 import { KeyboardAwareView } from '@src/features/components/KeyboardAwareView';
+import { RouteItem, RouteListView } from '@src/features/components/RouteListView';
 import { CardPairingView } from '@src/features/home/CardPairingView';
 import { useCardPairingUseCase } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useRecoverWalletUseCase } from '@src/features/home/usecases/useRecoverWalletUseCase';
 import { useWalletRecoverStatus } from '@src/features/store/account/AccountActionHooks';
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import { RouteName } from '@src/routes/type';
 import { useMemo, useState } from 'react';
+
+function useRouteItems() {
+  const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
+  const routeItems: Array<RouteItem> = [
+    {
+      routeName: RouteName.RESET_CARD,
+      onButtonPress: () => navigation.navigate(RouteName.RESET_CARD),
+    },
+    {
+      routeName: RouteName.REGISTER_CARD,
+      onButtonPress: () => navigation.navigate(RouteName.REGISTER_CARD),
+    },
+    {
+      routeName: RouteName.CREATE_MNEMONIC,
+      onButtonPress: () => navigation.navigate(RouteName.CREATE_MNEMONIC),
+    },
+    {
+      routeName: RouteName.RECOVER_MNEMONIC,
+      onButtonPress: () => navigation.navigate(RouteName.RECOVER_MNEMONIC),
+    },
+    {
+      routeName: RouteName.REFRESH_PAIRING_PASSWORD,
+      onButtonPress: () => navigation.navigate(RouteName.REFRESH_PAIRING_PASSWORD),
+    },
+  ];
+  return routeItems;
+}
 
 function useActionItems(): Array<ActionItemProps> {
   const bleInfo = useBluetoothInfo();
@@ -111,10 +142,8 @@ function useActionItems(): Array<ActionItemProps> {
 }
 
 export function CardPairingContainer() {
-  const actionItems = useActionItems();
+  const routeItems = useRouteItems();
   return (
-    <KeyboardAwareView>
-      <CardPairingView actionItems={actionItems} />
-    </KeyboardAwareView>
+    <RouteListView title={'Initialize your CoolWallet Pro'} items={routeItems} />
   );
 }

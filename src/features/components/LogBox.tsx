@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, ViewStyle } from 'react-native';
 
-export function LogBox({ log }: { log: string | undefined }) {
+interface Props {
+  style?: ViewStyle;
+  log?: string;
+}
+export function LogBox({ style, log }: Props) {
   return (
-    <View style={{ paddingHorizontal: 16, width: '100%' }}>
+    <View style={[style, { paddingHorizontal: 16, width: '100%' }]}>
       <TextInput style={styles.log} editable={false} multiline={true} placeholder="Log Box" value={log} />
     </View>
   );

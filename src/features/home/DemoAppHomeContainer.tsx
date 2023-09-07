@@ -44,7 +44,6 @@ export const DemoAppHomeContainer = () => {
       <View style={styles.homeContainer}>
         <ConnectCardView cardId={bleInfo?.cardId} onPress={OnPressButton} isConnected={isConnected} />
       </View>
-      <LogBox log={log} />
       <TabViewContainer />
     </>
   );
