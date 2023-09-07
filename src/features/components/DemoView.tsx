@@ -68,6 +68,7 @@ export function DemoView({
               value={input}
               onChangeText={onInputChanged}
               style={{ backgroundColor: '#ffffff' }}
+              editable={!isBtnLoading}
             />
           )}
           {showTextBox && (
