@@ -9,10 +9,15 @@ import { EIP1559TokenTx } from '@src/features/tx/EIP1559TokenTx';
 import { TokenApporve } from '@src/features/tx/TokenApprove';
 import { PersonalSign } from '@src/features/tx/PersonalSign';
 import { SignTypedData } from '@src/features/tx/SignTypedData';
+import { DemoView } from '@src/features/components/DemoView';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
+  [RouteName.RESET_CARD]: undefined;
+  [RouteName.REGISTER_CARD]: undefined;
+  [RouteName.RECOVER_MNEMONIC]: undefined;
+  [RouteName.REFRESH_PAIRING_PASSWORD]: undefined;
   [RouteName.EIP1559_COIN]: undefined;
   [RouteName.EIP1559_TOKEN]: undefined;
   [RouteName.TOKEN_APPROVE]: undefined;
@@ -47,6 +52,11 @@ export function DemoAppNavigator() {
         component={BluetoothScanContainer}
         options={{ headerBackTitleVisible: false }}
       />
+      <Stack.Screen name={RouteName.RESET_CARD} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.REGISTER_CARD} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTx} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.TOKEN_APPROVE} component={TokenApporve} options={{ headerBackTitleVisible: false }} />
