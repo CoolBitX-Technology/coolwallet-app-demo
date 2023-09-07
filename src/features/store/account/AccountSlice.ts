@@ -40,8 +40,15 @@ export const AcountSlice = createSlice({
       const { index, address, cardId } = action.payload;
       const account = state.accounts[cardId];
       if (!account) return;
-      account.currentIndex = index;
-      account.addresses[index] = address;
+      const newAddresses = {
+        ...account.addresses,
+        [index]: address,
+      };
+      state.accounts[cardId] = {
+        ...account,
+        currentIndex: index,
+        addresses: newAddresses,
+      };
     },
     setWalletRecoverStatus: (state: AccountState, action: PayloadAction<{ cardId: string; status: boolean }>) => {
       const { cardId, status } = action.payload;
