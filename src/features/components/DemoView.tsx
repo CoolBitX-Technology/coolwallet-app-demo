@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { LogBox } from '@src/features/components/LogBox';
-import { Button, Input, VStack, useToast } from 'native-base';
-import { ScrollView, Text, View } from 'react-native';
+import { Button, VStack, useToast, Input } from 'native-base';
+import { ScrollView, View } from 'react-native';
 
 interface Props {
   title?: string;
@@ -18,6 +18,7 @@ interface Props {
   onTextChanged?: (text: string) => void;
   input?: string;
   showInput?: boolean;
+  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   onInputChanged?: (text: string) => void;
 }
 export function DemoView({
@@ -34,6 +35,7 @@ export function DemoView({
   input = '',
   showInput = true,
   inputPlaceHolder,
+  inputMode = 'text',
   onInputChanged,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
@@ -47,7 +49,7 @@ export function DemoView({
   };
 
   return (
-    <ScrollView>
+    <View>
       <View
         style={{
           flexDirection: 'column',
@@ -60,14 +62,15 @@ export function DemoView({
       >
         <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>
           <LogBox log={log} />
-
           {showInput && (
             <Input
               size="sm"
               width={'100%'}
+              editable={!isBtnLoading}
               placeholder={inputPlaceHolder}
-              value={input}
+              defaultValue={input}
               onChangeText={onInputChanged}
+              inputMode={inputMode}
               style={{ backgroundColor: '#ffffff' }}
             />
           )}
@@ -111,6 +114,6 @@ export function DemoView({
           </View>
         </VStack>
       </View>
-    </ScrollView>
+    </View>
   );
 }

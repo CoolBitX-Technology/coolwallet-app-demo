@@ -1,15 +1,22 @@
-import { Text } from 'native-base';
-import React from 'react';
-import { StyleSheet, ScrollView, ViewStyle } from 'react-native';
+import { ScrollView, Text } from 'native-base';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, ViewStyle, Dimensions } from 'react-native';
 
 interface Props {
   style?: ViewStyle;
   log?: string;
 }
 export function LogBox({ style, log = 'LogBox' }: Props) {
+  const scrollViewRef = useRef();
+
+  useEffect(()=>{
+    if (!scrollViewRef.current) return;
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [log, scrollViewRef]);
+
   return (
-    <ScrollView style={[style, { width: '100%' }]}>
-      <Text style={styles.log}>{log}</Text>
+    <ScrollView ref={scrollViewRef} style={[styles.log, style]} showsHorizontalScrollIndicator alwaysBounceHorizontal>
+      <Text style={{ margin: 8 }} >{log}</Text>
     </ScrollView>
   );
 }
@@ -17,8 +24,7 @@ export function LogBox({ style, log = 'LogBox' }: Props) {
 const styles = StyleSheet.create({
   log: {
     backgroundColor: '#ffffff',
-    height: 200,
-    padding: 8,
+    height: Dimensions.get('screen').height/4,
     color: '#403E3E',
     borderRadius: 8,
     borderColor: '#807a7a',
