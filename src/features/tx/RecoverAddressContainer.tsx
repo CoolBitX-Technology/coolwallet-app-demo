@@ -25,7 +25,7 @@ export function RecoverAddressContainer() {
   const addressIndex = useAddressIndex();
   const account = useAccount();
   const isBtnDisable = !isConnected || !pairPassword || !isWalletRecovered;
-  const [recoverAddressIndex, setRecoverAddressIndex] = useState('0');
+  const [recoverAddressIndex, setRecoverAddressIndex] = useState(`${addressIndex || 0}`);
   const [isRecoveringAddress, setIsRecoveringAddress] = useState(false);
   const [address, setAddress] = useState('');
 
@@ -46,6 +46,7 @@ export function RecoverAddressContainer() {
       sdkAdapter.setAppId(appId);
       const address = await sdkAdapter.getAddress(index);
       updateAddress(index, address);
+      setAddress(address);
       addLog(`RECOVER SUCCESS`);
     } catch (e) {
       addLog(`RECOVER FAILED >>> ${e}`);
