@@ -73,7 +73,6 @@ export function useRecoverWalletUseCase(): RecoverWalletOutput {
       updateLog(`ADDRESS RECOVERING.....`);
       sdkAdapter.setAppId(appId);
       const address = await sdkAdapter.getAddress(index);
-      console.log('>>> address = ', address);
       updateAddress(index, address);
       updateLog(`RECOVER SUCCESS`);
     } catch (e) {

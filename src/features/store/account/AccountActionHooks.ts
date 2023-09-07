@@ -54,7 +54,6 @@ export function useAddress() {
   const index = useAddressIndex();
   if (!index) return '';
   const address = useAccount()?.addresses[index] || '';
-  console.log('useAddress <<< address = ', address);
   return address;
 }
 

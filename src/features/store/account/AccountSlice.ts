@@ -38,7 +38,6 @@ export const AcountSlice = createSlice({
     updateAddress: (state: AccountState, action: PayloadAction<{ cardId: string; index: number; address: string }>) => {
       const { index, address, cardId } = action.payload;
       const account = state.accounts[cardId];
-      console.log('>>> account = ', account);
       if (!account) return;
       account.currentIndex = index;
       account.addresses[index] = address;

@@ -30,7 +30,6 @@ export abstract class BaseSdkAdapter implements SdkAdapter {
 
   setAppId(appId: string): void {
     this.appId = appId;
-    console.log('BaseSdkAdapter.setAppId >>> appId = ', appId);
   }
 
   getAppId(): string {
@@ -40,7 +39,6 @@ export abstract class BaseSdkAdapter implements SdkAdapter {
 
   setTransport(transport: Transport): void {
     this.transport = transport;
-    console.log('BaseSdkAdapter.transport >>> transport = ', transport);
   }
 
   getTransport(): Transport {
@@ -70,9 +68,6 @@ export abstract class BaseSdkAdapter implements SdkAdapter {
     const appKeyPair = await this.getAppPrivacy();
     const { privateKey, appId } = appKeyPair;
     const sePublicKey = await this.getSEPublicKey();
-    console.log('recoverWallet >>> appId=', appId);
-    console.log('recoverWallet >>> privateKey=', privateKey);
-    console.log('recoverWallet >>> sePublicKey=', sePublicKey);
     return await utils.createWalletByMnemonic(this.getTransport(), appId, privateKey, mnemonic, sePublicKey);
   }
 }
