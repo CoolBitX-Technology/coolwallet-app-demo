@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { CardPairingContainer } from '@src/features/home/CardPairingContainer';
-import { TxSimulationView } from '@src/features/home/TxSimulationView';
+import { TxSimulationContainer } from '@src/features/home/TxSimulationContainer';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -22,7 +22,7 @@ export function TabViewContainer() {
         }}
       >
         <Tab.Screen name={TabTitle.CARD_PAIRING} component={CardPairingContainer} />
-        <Tab.Screen name={TabTitle.TX_TESTER} component={TxSimulationView} />
+        <Tab.Screen name={TabTitle.TX_TESTER} component={TxSimulationContainer} />
       </Tab.Navigator>
     </>
   );
