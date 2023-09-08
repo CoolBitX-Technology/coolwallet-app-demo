@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import { TokenInfo } from '@src/features/sdk/data/RawData';
 import { ERC20_ABI } from '@src/features/sdk/evm/data/ERC20_ABI';
 import { EthFee } from '@src/features/sdk/evm/data/EthFee';
+import ObjectUtils from '@src/features/utils/ObjectUtils';
 
 export function providerFactory(chainId: number): ethers.JsonRpcProvider {
   const jsonRpcEndpoint = EVM_CHAIN_MAP[chainId].rpc_url;
@@ -36,6 +37,12 @@ export function toWei(amount?: string): string {
   return ethers.parseUnits(amount, 'gwei').toString();
 }
 
+export function moveDecimal(amount?: string, decimals = '18'): string {
+  if (!amount) return '0';
+  if (!ObjectUtils.isNumeric(decimals)) return amount;
+  return ethers.parseUnits(amount, Number.parseInt(decimals)).toString();
+}
+
 export function isHex(str?: string) {
   return ethers.isHexString(str);
 }
@@ -51,7 +58,8 @@ export async function fetchErc20TokenInfo(contractAddress: string, provider: eth
   const decimals = await contract.decimals();
   return {
     symbol,
-    decimals,
+    unit: decimals,
+    contractAddress,
   };
 }
 
@@ -67,4 +75,28 @@ export async function fetchFeeData(provider: ethers.JsonRpcProvider): Promise<Pa
 export async function fetchNonce(provider: ethers.JsonRpcProvider, fromAddress: string): Promise<string> {
   const nonce = await provider.getTransactionCount(fromAddress);
   return numberToHex(nonce);
+}
+
+export async function encodeTokenTransfer(
+  provider: ethers.JsonRpcProvider,
+  toAddress: string,
+  amount: string,
+  contractAddress: string,
+): Promise<string> {
+  const contract = await getErc20Contract(contractAddress, provider);
+  const decimals = await contract.decimals();
+  const tokenAmount = moveDecimal(amount, decimals);
+  return contract.interface.encodeFunctionData('transfer', [toAddress, tokenAmount]);
+}
+
+export async function encodeApprove(
+  provider: ethers.JsonRpcProvider,
+  contractAddress: string,
+  spenderAddress: string,
+  value: string,
+): Promise<string> {
+  const contract = await getErc20Contract(contractAddress, provider);
+  const decimals = await contract.decimals();
+  const allowanceAmount = moveDecimal(value, decimals);
+  return contract.interface.encodeFunctionData('approve', [spenderAddress, allowanceAmount]);
 }

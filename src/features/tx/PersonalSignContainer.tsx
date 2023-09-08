@@ -45,7 +45,7 @@ export function PersonalSignContainer(): JSX.Element {
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
-      const rawData: EthRawData = {
+      const rawDataForSign: EthRawData = {
         amount: '0',
         index: index as number,
         fromAddress: '',
@@ -53,7 +53,8 @@ export function PersonalSignContainer(): JSX.Element {
         dataType: EthDataType.Message,
         data: message,
       };
-      const hex = await sdkAdapter.signData(rawData, confirmed, authorized);
+      addLog(`RAW DATA INFO >>>> ${JSON.stringify(rawDataForSign)}`);
+      const hex = await sdkAdapter.signData(rawDataForSign, confirmed, authorized);
       setSignedHex(hex);
       addLog(`SIGN SUCCESS`);
       addLog(`HEX: ${hex}`);

@@ -12,6 +12,8 @@ export interface RawData {
 }
 
 export interface TokenInfo {
+  name?: string;
   symbol: string;
-  decimals: string;
+  unit: string;
+  contractAddress: string;
 }
