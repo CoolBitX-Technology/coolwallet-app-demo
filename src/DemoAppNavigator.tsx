@@ -12,7 +12,6 @@ import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/Refre
 import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
-import { SendHexContainer } from '@src/features/tx/SendHexContainer';
 import { EIP1559CoinTx } from '@src/features/tx/EIP1559CoinTx';
 import { EIP1559TokenTx } from '@src/features/tx/EIP1559TokenTx';
 
@@ -97,7 +96,6 @@ export function DemoAppNavigator() {
         component={SignTypedDataContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.SEND_HEX} component={SendHexContainer} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>
   );
 }

@@ -23,18 +23,6 @@ interface Props {
   inputPlaceHolder?: string;
   inputMode?: InputMode;
   onInputChanged?: (text: string) => void;
-  input2?: string;
-  input2Type?: InputType;
-  input2PlaceHolder?: string;
-  showInput2?: boolean;
-  input2Mode?: InputMode;
-  onInput2Changed?: (text: string) => void;
-  input3?: string;
-  input3Type?: InputType;
-  input3PlaceHolder?: string;
-  showInput3?: boolean;
-  input3Mode?: InputMode;
-  onInput3Changed?: (text: string) => void;
   style?: ViewStyle;
 }
 export function DemoView({
@@ -53,18 +41,6 @@ export function DemoView({
   inputMode = 'text',
   inputType = 'text',
   onInputChanged,
-  input2 = '',
-  showInput2 = false,
-  input2PlaceHolder,
-  input2Mode = 'text',
-  input2Type = 'text',
-  onInput2Changed,
-  input3 = '',
-  showInput3 = false,
-  input3PlaceHolder,
-  input3Mode = 'text',
-  input3Type = 'text',
-  onInput3Changed,
   style,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
@@ -102,32 +78,6 @@ export function DemoView({
               type={inputType}
               onChangeText={onInputChanged}
               inputMode={inputMode}
-              style={{ backgroundColor: '#ffffff' }}
-            />
-          )}
-          {showInput2 && (
-            <Input
-              size="sm"
-              width={'100%'}
-              editable={!isBtnLoading}
-              placeholder={input2PlaceHolder}
-              defaultValue={input2}
-              type={input2Type}
-              onChangeText={onInput2Changed}
-              inputMode={input2Mode}
-              style={{ backgroundColor: '#ffffff' }}
-            />
-          )}
-           {showInput3 && (
-            <Input
-              size="sm"
-              width={'100%'}
-              editable={!isBtnLoading}
-              placeholder={input3PlaceHolder}
-              defaultValue={input3}
-              type={input3Type}
-              onChangeText={onInput3Changed}
-              inputMode={input3Mode}
               style={{ backgroundColor: '#ffffff' }}
             />
           )}
