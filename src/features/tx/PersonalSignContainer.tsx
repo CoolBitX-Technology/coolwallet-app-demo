@@ -1,6 +1,5 @@
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { DemoSignView } from '@src/features/components/DemoSignView';
-import { DemoView } from '@src/features/components/DemoView';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
@@ -51,7 +50,7 @@ export function PersonalSignContainer(): JSX.Element {
       const rawDataForSign: EthRawData = {
         amount: '0',
         index: index as number,
-        fromAddress: '',
+        fromAddress,
         toAddress: '',
         dataType: EthDataType.Message,
         data: message,

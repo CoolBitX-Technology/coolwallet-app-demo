@@ -49,6 +49,7 @@ export function RecoverWalletContainer() {
       showCopy={false}
       textBoxBody={defaultMnemonic}
       input={mnemonic}
+      inputPlaceHolder={'Your Mnemonic'}
       inputType='password'
       onInputChanged={setMnemonic}
       isBtnDisable={isBtnDisable}

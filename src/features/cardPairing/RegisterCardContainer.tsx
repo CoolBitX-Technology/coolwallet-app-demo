@@ -62,6 +62,7 @@ export function RegisterCardContainer(): JSX.Element {
       isBtnDisable={isBtnDisable}
       inputPlaceHolder="Pairing Password"
       btnText="Register"
+      textBoxPlaceHolder='App Id'
       onInputChanged={setPairingPassword}
     />
   );

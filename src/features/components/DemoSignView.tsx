@@ -14,6 +14,8 @@ interface Props {
   btn2Text?: string;
   btn3Text?: string;
   isBtnLoading?: boolean;
+  isBtn2Loading?: boolean;
+  isBtn3Loading?: boolean;
   isBtnDisable?: boolean;
   onPressBtn?: () => void;
   onPressBtn2?: () => void;
@@ -50,6 +52,8 @@ export function DemoSignView({
   btn2Text = 'Button',
   btn3Text = 'Button',
   isBtnLoading = false,
+  isBtn2Loading = false,
+  isBtn3Loading = false,
   isBtnDisable = false,
   textBoxBody = '',
   textBoxPlaceHolder,
@@ -159,6 +163,7 @@ export function DemoSignView({
             </Button>
             {showBtn2 && (
               <Button
+                isLoading={isBtn2Loading}
                 onPress={onPressBtn2}
                 size="sm"
                 mt="4px"
@@ -172,6 +177,7 @@ export function DemoSignView({
             )}
             {showBtn3 && (
               <Button
+                isLoading={isBtn3Loading}
                 onPress={onPressBtn3}
                 size="sm"
                 mt="4px"

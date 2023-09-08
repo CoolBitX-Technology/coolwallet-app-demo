@@ -12,8 +12,8 @@ import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/Refre
 import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
-import { EIP1559CoinTx } from '@src/features/tx/EIP1559CoinTx';
-import { EIP1559TokenTx } from '@src/features/tx/EIP1559TokenTx';
+import { EIP1559CoinTransferContainer } from '@src/features/tx/EIP1559CoinTransferContainer';
+import { EIP1559TokenTransferContainer } from '@src/features/tx/EIP1559TokenTransferContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -84,8 +84,8 @@ export function DemoAppNavigator() {
         component={RefreshPairingPasswordContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTx} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTransferContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTransferContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.PERSONAL_SIGN}
         component={PersonalSignContainer}

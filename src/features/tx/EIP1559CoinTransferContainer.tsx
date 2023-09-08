@@ -12,14 +12,14 @@ import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 
-export function EIP1559CoinTx(): JSX.Element {
+export function EIP1559CoinTransferContainer(): JSX.Element {
   const transport = useBleTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const index = useAddressIndex(cardId);
   const fromAddress = useAddress(cardId, index);
 
-  const [toAddress, setToAddress] = useState('');
+  const [toAddress, setToAddress] = useState(fromAddress);
   const [amount, setAmount] = useState('0');
   const [signedHex, setSignedHex] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -98,11 +98,13 @@ export function EIP1559CoinTx(): JSX.Element {
     <DemoSignView
       log={log}
       isBtnLoading={isSigning}
+      isBtn2Loading={isSending}
       textBoxBody={signedHex}
       onPressBtn={signCoinTransfer}
       isBtnDisable={isBtnDisable}
       inputPlaceHolder="To Address"
       input2PlaceHolder="Amount"
+      input2Mode="numeric"
       btnText="Sign"
       input={toAddress}
       input2={amount}

@@ -10,6 +10,5 @@ export enum EthDataType {
 export interface EthRawData extends RawData {
   data?: string;
   dataType: EthDataType;
-  index: number;
   gasMultiplier?: number;
 }

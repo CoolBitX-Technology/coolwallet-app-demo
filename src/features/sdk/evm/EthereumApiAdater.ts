@@ -39,7 +39,7 @@ export class EthereumApiAdapter {
   }
 
   private async fetchDefaultEstimatedGas(rawData: Partial<RawData>, defaultGasLimit?: string): Promise<string> {
-    const { amount, toAddress, fromAddress, data, gasMultiplier } = rawData as EthRawData;
+    const { toAddress, fromAddress, data, gasMultiplier } = rawData as EthRawData;
     const variables = { from: fromAddress, to: toAddress, value: toWei('0'), data };
 
     if (defaultGasLimit) {

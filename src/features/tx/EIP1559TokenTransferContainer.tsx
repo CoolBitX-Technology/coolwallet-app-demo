@@ -12,14 +12,14 @@ import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 
-export function EIP1559TokenTx() {
+export function EIP1559TokenTransferContainer() {
   const transport = useBleTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const index = useAddressIndex(cardId);
 
   const fromAddress = useAddress(cardId, index);
-  const [toAddress, setToAddress] = useState('');
+  const [toAddress, setToAddress] = useState(fromAddress);
   const [amount, setAmount] = useState('0');
   const [symbol, setSymbol] = useState('USDT');
   const [signedHex, setSignedHex] = useState('');
@@ -102,11 +102,13 @@ export function EIP1559TokenTx() {
     <DemoSignView
       log={log}
       isBtnLoading={isSigning}
+      isBtn2Loading={isSending}
       textBoxBody={signedHex}
       onPressBtn={signTokenTransfer}
       isBtnDisable={isBtnDisable}
       inputPlaceHolder="To Address"
       input2PlaceHolder="Amount"
+      input2Mode="numeric"
       input3PlaceHolder="Symbol"
       btnText="Sign"
       input={toAddress}
