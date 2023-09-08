@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 import { DemoAppHomeContainer } from '@src/features/home/DemoAppHomeContainer';
 import { RouteName } from '@src/routes/type';
-import { DemoView } from '@src/features/components/DemoView';
 import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer';
 import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardContainer';
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
@@ -15,6 +14,7 @@ import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddres
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
 import { SendHexContainer } from '@src/features/tx/SendHexContainer';
 import { EIP1559CoinTx } from '@src/features/tx/EIP1559CoinTx';
+import { EIP1559TokenTx } from '@src/features/tx/EIP1559TokenTx';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -86,7 +86,7 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTx} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.PERSONAL_SIGN}
         component={PersonalSignContainer}

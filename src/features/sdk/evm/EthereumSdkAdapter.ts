@@ -1,6 +1,6 @@
-import Evm from '@coolwallet/evm';
+import Evm, { CHAIN } from '@coolwallet/evm';
 import { BaseSdkAdapter } from '@src/features/sdk/SdkAdapter';
-import { RawData } from '@src/features/sdk/data/RawData';
+import { RawData, TokenInfo } from '@src/features/sdk/data/RawData';
 import { numberToHex } from '@src/features/sdk/evm/utils/EthersUtils';
 import { EthFee } from '@src/features/sdk/evm/data/EthFee';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
@@ -22,6 +22,15 @@ export class EthereumSdkAdapter extends BaseSdkAdapter {
   async getAddress(index: number): Promise<string> {
     const { privateKey, appId } = await this.getAppPrivacy();
     return await this.sdk.getAddress(this.getTransport(), privateKey, appId, index);
+  }
+
+  findContractAddress(symbol: string): TokenInfo {
+    const chainProps = CHAIN.POLYGON;
+    if (symbol === chainProps.symbol) throw new Error(`EthereumSdkAdapter.findContractAddress not unsupported symbol:${symbol}`);
+    const map: Record<string, any> = chainProps.tokens;
+    const info = map[symbol];
+    if (!info) throw new Error(`EthereumSdkAdapter.findContractAddress unsupported symbol:${symbol}`);
+    return info;
   }
 
   async signData(rawData: RawData, confirmingCallback: () => void, authorizedCallback: () => void): Promise<string> {

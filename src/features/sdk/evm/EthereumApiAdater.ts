@@ -1,5 +1,12 @@
 import { ethers } from 'ethers';
-import { fetchErc20TokenInfo, fetchFeeData, fetchNonce, providerFactory, toWei } from '@src/features/sdk/evm/utils/EthersUtils';
+import {
+  encodeTokenTransfer,
+  fetchErc20TokenInfo,
+  fetchFeeData,
+  fetchNonce,
+  providerFactory,
+  toWei,
+} from '@src/features/sdk/evm/utils/EthersUtils';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
 import { RawData, TokenInfo } from '@src/features/sdk/data/RawData';
 import { Fee } from '@src/features/sdk/data/Fee';
@@ -33,7 +40,7 @@ export class EthereumApiAdapter {
 
   private async fetchDefaultEstimatedGas(rawData: Partial<RawData>, defaultGasLimit?: string): Promise<string> {
     const { amount, toAddress, fromAddress, data, gasMultiplier } = rawData as EthRawData;
-    const variables = { from: fromAddress, to: toAddress, value: toWei(amount), data };
+    const variables = { from: fromAddress, to: toAddress, value: toWei('0'), data };
 
     if (defaultGasLimit) {
       return defaultGasLimit;
@@ -47,7 +54,7 @@ export class EthereumApiAdapter {
   }
 
   private async fetchDefaultFeeData(defaultFee: EthFee): Promise<Partial<EthFee>> {
-    if (!defaultFee || (!hasEIP1559Fee(defaultFee) && !hasLegacyFee(defaultFee))) {
+    if (!hasEIP1559Fee(defaultFee) && !hasLegacyFee(defaultFee)) {
       const feeData = await fetchFeeData(this.ethersProvider);
       return feeData;
     }
@@ -125,5 +132,9 @@ export class EthereumApiAdapter {
 
   async getTokenInfo(contractAddress: string): Promise<TokenInfo> {
     return await fetchErc20TokenInfo(contractAddress, this.ethersProvider);
+  }
+
+  async getTokenTransferData(toAddress: string, amount: string, tokenInfo: TokenInfo): Promise<string> {
+    return await encodeTokenTransfer(this.ethersProvider, toAddress, amount, tokenInfo?.contractAddress);
   }
 }
