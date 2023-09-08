@@ -1,15 +1,14 @@
 import BigNumber from 'bignumber.js';
 import { EthFee } from '@src/features/sdk/evm/data/EthFee';
-import { isHex } from '@src/features/sdk/evm/utils/EthersUtils';
 
 export function hasEIP1559Fee(fee: EthFee): boolean {
-  const { maxFeePerGas, maxPriorityFeePerGas } = fee;
-  return isHex(maxFeePerGas) && isHex(maxPriorityFeePerGas);
+  if (!fee) return false;
+  return !!fee?.maxFeePerGas && !!fee?.maxPriorityFeePerGas;
 }
 
 export function hasLegacyFee(fee: EthFee): boolean {
-  const { gasPrice } = fee;
-  return isHex(gasPrice);
+  if (!fee) return false;
+  return !!fee?.gasPrice;
 }
 
 export const calculateFeeToETH = (gasLimit: string, gasPrice?: string) => {
