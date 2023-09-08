@@ -47,6 +47,7 @@ export function RecoverAddressContainer() {
       textBoxBody={defaultAddress}
       input={addressIndex ? `${addressIndex}` : ''}
       inputMode="numeric"
+      inputPlaceHolder='Address Index'
       onInputChanged={(num: string) => {
         if (!ObjectUtils.isNumeric(num) || addressIndex === Number.parseInt(num)) return;
         setAddressIndex(Number.parseInt(num));
