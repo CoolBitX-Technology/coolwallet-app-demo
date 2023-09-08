@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { LogBox } from '@src/features/components/LogBox';
+import { LogBox, getDefaultLog } from '@src/features/components/LogBox';
 import { Button, VStack, useToast, Input } from 'native-base';
 import { View, ViewStyle } from 'react-native';
 
@@ -39,7 +39,7 @@ interface Props {
   style?: ViewStyle;
 }
 export function DemoView({
-  log = 'LogBox',
+  log = getDefaultLog(),
   showCopy = true,
   btnText = 'Button',
   isBtnLoading = false,

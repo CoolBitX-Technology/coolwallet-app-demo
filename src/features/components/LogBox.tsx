@@ -6,28 +6,32 @@ interface Props {
   style?: ViewStyle;
   log?: string;
 }
-export function LogBox({ style, log = 'LogBox' }: Props) {
+export function LogBox({ style, log = getDefaultLog() }: Props) {
   const scrollViewRef = useRef();
-
   useEffect(()=>{
     if (!scrollViewRef.current) return;
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+    const scrollView = scrollViewRef.current as any;
+    scrollView?.scrollToEnd({ animated: true });
   }, [log, scrollViewRef]);
 
   return (
     <ScrollView ref={scrollViewRef} style={[styles.log, style]} showsHorizontalScrollIndicator alwaysBounceHorizontal>
-      <Text style={{ margin: 8 }} >{log}</Text>
+      <Text style={{ margin: 8, color: '#FFFFFF' }} >{log}</Text>
     </ScrollView>
   );
 }
 
+export function getDefaultLog(): string {
+  const date = new Date();
+  const dateString = date.toDateString();
+  const timeString = date.toLocaleTimeString();
+  return `Last log: ${dateString} ${timeString}`;
+}
+
 const styles = StyleSheet.create({
   log: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#000000',
     height: Dimensions.get('screen').height/4,
-    color: '#403E3E',
     borderRadius: 8,
-    borderColor: '#807a7a',
-    borderWidth: 0.4,
   },
 });
