@@ -27,6 +27,8 @@ export function RecoverWalletContainer() {
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
       addLog(`WALLET RECOVERING.....`);
+      const spilts = mnemonic.split(' ');
+      addLog(`RECOVERING FROM [ ${spilts[spilts.length-1]} .... ${spilts[0]} ]`);
       await sdkAdapter.recoverWallet(mnemonic);
       updateMnemonic(mnemonic);
       updateRecoverdStatus(cardId, true);
@@ -47,6 +49,7 @@ export function RecoverWalletContainer() {
       showCopy={false}
       textBoxBody={defaultMnemonic}
       input={mnemonic}
+      inputType='password'
       onInputChanged={setMnemonic}
       isBtnDisable={isBtnDisable}
       isBtnLoading={isRecovering}
