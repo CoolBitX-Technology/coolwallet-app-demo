@@ -17,7 +17,6 @@ interface Props {
   textBoxBody?: string;
   textBoxPlaceHolder?: string;
   showTextBox?: boolean;
-  onTextChanged?: (text: string) => void;
   input?: string;
   inputType?: InputType;
   showInput?: boolean;
@@ -48,7 +47,6 @@ export function DemoView({
   textBoxPlaceHolder,
   onPressBtn,
   showTextBox = true,
-  onTextChanged,
   input = '',
   showInput = true,
   inputPlaceHolder,
@@ -135,15 +133,16 @@ export function DemoView({
           )}
           {showTextBox && (
             <Input
-              onChangeText={onTextChanged}
               placeholder={textBoxPlaceHolder}
               value={textBoxBody}
               editable={false}
+              placeholderTextColor={'#000000'}
+              color={'#000000'}
+              backgroundColor={'#aeaeae'}
               w={'100%'}
               size="sm"
               mt="4px"
               isDisabled={true}
-              style={{ backgroundColor: '#8d8c8c', color: '#ffffff' }}
             />
           )}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
