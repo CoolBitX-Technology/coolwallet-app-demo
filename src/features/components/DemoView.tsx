@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { LogBox } from '@src/features/components/LogBox';
 import { Button, VStack, useToast, Input } from 'native-base';
-import { ScrollView, View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 interface Props {
   title?: string;
@@ -20,6 +20,7 @@ interface Props {
   showInput?: boolean;
   inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   onInputChanged?: (text: string) => void;
+  style?: ViewStyle;
 }
 export function DemoView({
   log = 'LogBox',
@@ -37,6 +38,7 @@ export function DemoView({
   inputPlaceHolder,
   inputMode = 'text',
   onInputChanged,
+  style,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
   const toast = useToast();
@@ -58,6 +60,7 @@ export function DemoView({
           marginTop: 24,
           paddingHorizontal: 20,
           paddingBottom: 100,
+          ...style,
         }}
       >
         <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>

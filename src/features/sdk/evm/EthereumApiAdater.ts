@@ -100,12 +100,11 @@ export class EthereumApiAdapter {
     return ethFee as Fee;
   }
 
-  async sendTransaction(rawData: RawData, signedTx: string): Promise<string> {
-    const { dataType } = rawData as EthRawData;
+  async sendTransaction(dataType: EthDataType, signedTx: string): Promise<string> {
     switch (dataType) {
       case EthDataType.SmartContract:
       case EthDataType.Transfer:
-        return await this.sendSmartContractTransaction(rawData, signedTx);
+        return await this.sendSmartContractTransaction(signedTx);
       case EthDataType.Message:
       case EthDataType.TypedData:
         return this.sendMessageTransaction();
@@ -114,7 +113,7 @@ export class EthereumApiAdapter {
     }
   }
 
-  private async sendSmartContractTransaction(rawData: RawData, signedTx: string): Promise<string> {
+  private async sendSmartContractTransaction(signedTx: string): Promise<string> {
     const response = await this.ethersProvider.broadcastTransaction(signedTx);
     return response.hash;
   }
