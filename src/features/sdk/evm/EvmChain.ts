@@ -23,7 +23,7 @@ export const EVM_CHAIN_MAP: Record<string, EvmChain> = {
   [EvmChainId.POLYGON_MAINNET]: {
     symbol: 'MATIC',
     name: 'Polygon',
-    rpc_url: 'https://matic-mainnet.chainstacklabs.com',
+    rpc_url: 'https://rpc.ankr.com/polygon',
     explorer_url: 'https://polygonscan.com/tx/',
   },
 };

@@ -12,14 +12,19 @@ interface Props {
   isBtnDisable?: boolean;
   onPressBtn?: () => void;
   textBoxBody?: string;
-  inputPlaceHolder?: string;
   textBoxPlaceHolder?: string;
   showTextBox?: boolean;
   onTextChanged?: (text: string) => void;
   input?: string;
   showInput?: boolean;
+  inputPlaceHolder?: string;
   inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   onInputChanged?: (text: string) => void;
+  input2?: string;
+  input2PlaceHolder?: string;
+  showInput2?: boolean;
+  input2Mode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+  onInput2Changed?: (text: string) => void;
   style?: ViewStyle;
 }
 export function DemoView({
@@ -38,6 +43,11 @@ export function DemoView({
   inputPlaceHolder,
   inputMode = 'text',
   onInputChanged,
+  input2 = '',
+  showInput2 = false,
+  input2PlaceHolder,
+  input2Mode = 'text',
+  onInput2Changed,
   style,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
@@ -74,6 +84,18 @@ export function DemoView({
               defaultValue={input}
               onChangeText={onInputChanged}
               inputMode={inputMode}
+              style={{ backgroundColor: '#ffffff' }}
+            />
+          )}
+          {showInput2 && (
+            <Input
+              size="sm"
+              width={'100%'}
+              editable={!isBtnLoading}
+              placeholder={input2PlaceHolder}
+              defaultValue={input2}
+              onChangeText={onInput2Changed}
+              inputMode={input2Mode}
               style={{ backgroundColor: '#ffffff' }}
             />
           )}

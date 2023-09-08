@@ -14,6 +14,7 @@ import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
 import { SendHexContainer } from '@src/features/tx/SendHexContainer';
+import { EIP1559CoinTx } from '@src/features/tx/EIP1559CoinTx';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -84,7 +85,7 @@ export function DemoAppNavigator() {
         component={RefreshPairingPasswordContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.EIP1559_COIN} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTx} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.PERSONAL_SIGN}

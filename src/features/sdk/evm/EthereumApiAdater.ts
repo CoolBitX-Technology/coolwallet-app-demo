@@ -47,7 +47,7 @@ export class EthereumApiAdapter {
   }
 
   private async fetchDefaultFeeData(defaultFee: EthFee): Promise<Partial<EthFee>> {
-    if (!hasEIP1559Fee(defaultFee) && !hasLegacyFee(defaultFee)) {
+    if (!defaultFee || (!hasEIP1559Fee(defaultFee) && !hasLegacyFee(defaultFee))) {
       const feeData = await fetchFeeData(this.ethersProvider);
       return feeData;
     }
