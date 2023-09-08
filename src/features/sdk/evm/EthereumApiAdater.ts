@@ -107,27 +107,9 @@ export class EthereumApiAdapter {
     return ethFee as Fee;
   }
 
-  async sendTransaction(dataType: EthDataType, signedTx: string): Promise<string> {
-    switch (dataType) {
-      case EthDataType.SmartContract:
-      case EthDataType.Transfer:
-        return await this.sendSmartContractTransaction(signedTx);
-      case EthDataType.Message:
-      case EthDataType.TypedData:
-        return this.sendMessageTransaction();
-      default:
-        throw new Error(`EthereumApiAdapter.sendTransaction unsupported dataType:${dataType}`);
-    }
-  }
-
-  private async sendSmartContractTransaction(signedTx: string): Promise<string> {
+  async sendTransaction(signedTx: string): Promise<string> {
     const response = await this.ethersProvider.broadcastTransaction(signedTx);
     return response.hash;
-  }
-
-  private sendMessageTransaction(): string {
-    const EMPTY_TX_ID = '';
-    return EMPTY_TX_ID;
   }
 
   async getTokenInfo(contractAddress: string): Promise<TokenInfo> {
