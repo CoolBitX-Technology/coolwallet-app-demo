@@ -51,7 +51,7 @@ export function PersonalSignContainer(): JSX.Element {
       const rawDataForSign: EthRawData = {
         amount: '0',
         index: index as number,
-        fromAddress: '',
+        fromAddress,
         toAddress: '',
         dataType: EthDataType.Message,
         data: message,

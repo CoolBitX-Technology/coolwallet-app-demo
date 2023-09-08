@@ -12,16 +12,15 @@ import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 
-export function EIP1559TokenTx() {
+export function EIP1559CoinTransferContainer(): JSX.Element {
   const transport = useBleTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const index = useAddressIndex(cardId);
-
   const fromAddress = useAddress(cardId, index);
+
   const [toAddress, setToAddress] = useState('');
   const [amount, setAmount] = useState('0');
-  const [symbol, setSymbol] = useState('USDT');
   const [signedHex, setSignedHex] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [txId, setTxId] = useState('');
@@ -43,25 +42,21 @@ export function EIP1559TokenTx() {
     addLog(`SIGN AUTHORIZED`);
   };
 
-  const signTokenTransfer = async () => {
+  const signCoinTransfer = async () => {
     try {
       if (isBtnDisable) return;
       const apiAdapter = new EthereumApiAdapter(EvmChainId.POLYGON_MAINNET);
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
-
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
-      const tokenInfo = await sdkAdapter.findContractAddress(symbol);
-      const data = await apiAdapter.getTokenTransferData(toAddress, amount, tokenInfo);
       const rawDataForFee: EthRawData = {
-        dataType: EthDataType.SmartContract,
+        dataType: EthDataType.Transfer,
         fromAddress,
-        amount: '0',
-        toAddress: tokenInfo.contractAddress,
-        data,
+        amount,
+        toAddress,
         index: index as number,
-        decimals: tokenInfo.unit,
-        symbol: tokenInfo.symbol,
+        decimals: '18',
+        symbol: 'MATIC',
       };
       setIsSigning(true);
       addLog('CALCULATING FEE......');
@@ -98,29 +93,27 @@ export function EIP1559TokenTx() {
       setIsSending(false);
     }
   };
+
   return (
     <DemoSignView
       log={log}
       isBtnLoading={isSigning}
       textBoxBody={signedHex}
-      onPressBtn={signTokenTransfer}
+      onPressBtn={signCoinTransfer}
       isBtnDisable={isBtnDisable}
       inputPlaceHolder="To Address"
       input2PlaceHolder="Amount"
-      input3PlaceHolder="Symbol"
+      input2Mode="numeric"
       btnText="Sign"
       input={toAddress}
       input2={amount}
-      input3={symbol}
       onInputChanged={setToAddress}
       onInput2Changed={setAmount}
-      onInput3Changed={setSymbol}
       showInput2={true}
-      showInput3={true}
       showBtn2={true}
-      showBtn3={true}
       btn2Text="Send"
       onPressBtn2={sendTrasaction}
+      showBtn3={true}
       btn3Text="Check On Explorer"
       onPressBtn3={() => Linking.openURL(`${EVM_CHAIN_MAP[EvmChainId.POLYGON_MAINNET].explorer_url}${txId}`)}
     />

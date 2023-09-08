@@ -11,7 +11,6 @@ import {
 } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { TabViewContainer } from '@src/features/home/TabViewContainer';
-import { LogBox } from '@src/features/components/LogBox';
 import { useLog } from '@src/features/store/log/LogActionHooks';
 import { AppKeyPair, loadAppKeyPair } from '@src/features/ble/utils/StorageUtils';
 
