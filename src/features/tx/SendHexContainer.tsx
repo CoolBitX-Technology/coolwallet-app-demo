@@ -3,7 +3,7 @@ import { DemoView } from '@src/features/components/DemoView';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumApiAdapter } from '@src/features/sdk/evm/EthereumApiAdater';
 import { EVM_CHAIN_MAP, EvmChainId } from '@src/features/sdk/evm/EvmChain';
-import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
+import { EthDataType } from '@src/features/sdk/evm/data/EthRawData';
 import { useAppId } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { isEmpty } from 'lodash';
@@ -35,8 +35,7 @@ export function SendHexContainer() {
     } catch (e) {
       addLog(`SEND FAILED >>> ${e}`);
     } finally {
-      setIsSending(true);
-      false;
+      setIsSending(false);
     }
   };
   return (

@@ -23,7 +23,7 @@ export function RegisterCardContainer(): JSX.Element {
   const { log, addLog } = useLogUseCase();
   const changeAppInfo = useDispatchChangeAppInfo();
   const changePairedPassword = useDispatchChangePairedPassword();
-  const isBtnDisable = !isConnected || !!appId;
+  const isBtnDisable = !isConnected;
 
   useInitApduEffect();
 

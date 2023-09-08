@@ -6,7 +6,7 @@ import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
 import { useAddress, useAddressIndex, useAppId } from '@src/features/store/account/AccountActionHooks';
-import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import { useCardId } from '@src/features/store/device/DeviceActionHooks';
 import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +14,6 @@ export function EIP1559CoinTx(): JSX.Element {
   const transport = useBleTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
-  const isConnected = useIsConnected();
   const index = useAddressIndex(cardId);
   const fromAddress = useAddress(cardId, index);
 
@@ -63,6 +62,7 @@ export function EIP1559CoinTx(): JSX.Element {
         ...rawDataForFee,
         fee,
       };
+      addLog(`RAW DATA INFO >>>> ${JSON.stringify(rawDataForSign)}`);
       const hex = await sdkAdapter.signData(rawDataForSign, confirmed, authorized);
       setSignedHex(hex);
       addLog(`SIGN SUCCESS`);

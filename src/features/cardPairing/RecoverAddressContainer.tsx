@@ -44,7 +44,6 @@ export function RecoverAddressContainer() {
     <DemoView
       btnText="Recover"
       onPressBtn={recoverAddress}
-      showCopy={false}
       textBoxBody={defaultAddress}
       input={addressIndex ? `${addressIndex}` : ''}
       inputMode="numeric"

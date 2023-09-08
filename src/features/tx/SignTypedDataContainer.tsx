@@ -47,7 +47,7 @@ export function SignTypedDataContainer(): JSX.Element {
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
 
-      const rawData: EthRawData = {
+      const rawDataForSign: EthRawData = {
         data: typeData,
         amount: '0',
         dataType: EthDataType.TypedData,
@@ -55,7 +55,8 @@ export function SignTypedDataContainer(): JSX.Element {
         toAddress: '',
         index: index as number,
       };
-      const hex = await sdkAdapter.signData(rawData, confirmed, authorized);
+      addLog(`RAW DATA INFO >>>> ${JSON.stringify(rawDataForSign)}`);
+      const hex = await sdkAdapter.signData(rawDataForSign, confirmed, authorized);
       setSignedHex(hex);
       addLog(`SIGN SUCCESS`);
       addLog(`HEX: ${hex}`);

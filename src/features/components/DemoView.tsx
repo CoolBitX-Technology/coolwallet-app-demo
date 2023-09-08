@@ -3,6 +3,9 @@ import { LogBox } from '@src/features/components/LogBox';
 import { Button, VStack, useToast, Input } from 'native-base';
 import { View, ViewStyle } from 'react-native';
 
+type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+type InputType = "password" | "text";
+
 interface Props {
   title?: string;
   log?: string;
@@ -16,15 +19,23 @@ interface Props {
   showTextBox?: boolean;
   onTextChanged?: (text: string) => void;
   input?: string;
+  inputType?: InputType;
   showInput?: boolean;
   inputPlaceHolder?: string;
-  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+  inputMode?: InputMode;
   onInputChanged?: (text: string) => void;
   input2?: string;
+  input2Type?: InputType;
   input2PlaceHolder?: string;
   showInput2?: boolean;
-  input2Mode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+  input2Mode?: InputMode;
   onInput2Changed?: (text: string) => void;
+  input3?: string;
+  input3Type?: InputType;
+  input3PlaceHolder?: string;
+  showInput3?: boolean;
+  input3Mode?: InputMode;
+  onInput3Changed?: (text: string) => void;
   style?: ViewStyle;
 }
 export function DemoView({
@@ -42,12 +53,20 @@ export function DemoView({
   showInput = true,
   inputPlaceHolder,
   inputMode = 'text',
+  inputType = 'text',
   onInputChanged,
   input2 = '',
   showInput2 = false,
   input2PlaceHolder,
   input2Mode = 'text',
+  input2Type = 'text',
   onInput2Changed,
+  input3 = '',
+  showInput3 = false,
+  input3PlaceHolder,
+  input3Mode = 'text',
+  input3Type = 'text',
+  onInput3Changed,
   style,
 }: Props): JSX.Element {
   const toastId = 'copy-succes-toast';
@@ -82,6 +101,7 @@ export function DemoView({
               editable={!isBtnLoading}
               placeholder={inputPlaceHolder}
               defaultValue={input}
+              type={inputType}
               onChangeText={onInputChanged}
               inputMode={inputMode}
               style={{ backgroundColor: '#ffffff' }}
@@ -94,8 +114,22 @@ export function DemoView({
               editable={!isBtnLoading}
               placeholder={input2PlaceHolder}
               defaultValue={input2}
+              type={input2Type}
               onChangeText={onInput2Changed}
               inputMode={input2Mode}
+              style={{ backgroundColor: '#ffffff' }}
+            />
+          )}
+           {showInput3 && (
+            <Input
+              size="sm"
+              width={'100%'}
+              editable={!isBtnLoading}
+              placeholder={input3PlaceHolder}
+              defaultValue={input3}
+              type={input3Type}
+              onChangeText={onInput3Changed}
+              inputMode={input3Mode}
               style={{ backgroundColor: '#ffffff' }}
             />
           )}
