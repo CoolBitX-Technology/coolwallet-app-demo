@@ -12,7 +12,7 @@ const LogSlice = createSlice({
   reducers: {
     addLogMessage: (state: LogState, action: PayloadAction<string>) => {
       if (!state.logMessage) state.logMessage = action.payload;
-      else state.logMessage += `\r\n${action.payload}`;
+      else state.logMessage += `\n\n${action.payload}`;
     },
     clearLogMessage: (state: LogState) => {
       state.logMessage = undefined;
