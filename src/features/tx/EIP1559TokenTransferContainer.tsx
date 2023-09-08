@@ -19,7 +19,7 @@ export function EIP1559TokenTransferContainer() {
   const index = useAddressIndex(cardId);
 
   const fromAddress = useAddress(cardId, index);
-  const [toAddress, setToAddress] = useState('');
+  const [toAddress, setToAddress] = useState(fromAddress);
   const [amount, setAmount] = useState('0');
   const [symbol, setSymbol] = useState('USDT');
   const [signedHex, setSignedHex] = useState('');
@@ -102,6 +102,7 @@ export function EIP1559TokenTransferContainer() {
     <DemoSignView
       log={log}
       isBtnLoading={isSigning}
+      isBtn2Loading={isSending}
       textBoxBody={signedHex}
       onPressBtn={signTokenTransfer}
       isBtnDisable={isBtnDisable}

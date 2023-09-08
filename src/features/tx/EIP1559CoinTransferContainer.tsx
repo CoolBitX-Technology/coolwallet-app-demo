@@ -19,7 +19,7 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
   const index = useAddressIndex(cardId);
   const fromAddress = useAddress(cardId, index);
 
-  const [toAddress, setToAddress] = useState('');
+  const [toAddress, setToAddress] = useState(fromAddress);
   const [amount, setAmount] = useState('0');
   const [signedHex, setSignedHex] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -98,6 +98,7 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
     <DemoSignView
       log={log}
       isBtnLoading={isSigning}
+      isBtn2Loading={isSending}
       textBoxBody={signedHex}
       onPressBtn={signCoinTransfer}
       isBtnDisable={isBtnDisable}

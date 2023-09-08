@@ -22,6 +22,7 @@ export function GenerateMnemonicContainer() {
       showCopy={true}
       onPressBtn={generateMnemonic}
       showInput={false}
+      textBoxPlaceHolder='Mnemnoic'
       textBoxBody={mnemonic}
       log={log}
     />
