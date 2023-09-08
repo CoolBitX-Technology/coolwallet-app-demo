@@ -12,6 +12,7 @@ import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletC
 import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
 import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
+import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -57,15 +58,43 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.REGISTER_CARD} component={RegisterCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.CREATE_MNEMONIC} component={GenerateMnemonicContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.RECOVER_MNEMONIC} component={RecoverWalletContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.RECOVER_ADDRESS} component={RecoverAddressContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.REFRESH_PAIRING_PASSWORD} component={RefreshPairingPasswordContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.REGISTER_CARD}
+        component={RegisterCardContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.CREATE_MNEMONIC}
+        component={GenerateMnemonicContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.RECOVER_MNEMONIC}
+        component={RecoverWalletContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.RECOVER_ADDRESS}
+        component={RecoverAddressContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.REFRESH_PAIRING_PASSWORD}
+        component={RefreshPairingPasswordContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen name={RouteName.EIP1559_COIN} component={DemoView} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.EIP1559_TOKEN} component={DemoView} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.PERSONAL_SIGN} component={PersonalSignContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.SIGN_TYPED_DATA} component={DemoView} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.PERSONAL_SIGN}
+        component={PersonalSignContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.SIGN_TYPED_DATA}
+        component={SignTypedDataContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen name={RouteName.SEND_HEX} component={DemoView} options={{ headerBackTitleVisible: false }} />
     </Stack.Navigator>
   );
