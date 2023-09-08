@@ -22,10 +22,6 @@ function useRouteItems() {
       routeName: RouteName.SIGN_TYPED_DATA,
       onButtonPress: () => navigation.navigate(RouteName.SIGN_TYPED_DATA),
     },
-    {
-      routeName: RouteName.SEND_HEX,
-      onButtonPress: () => navigation.navigate(RouteName.SEND_HEX),
-    },
   ];
   return routeItems;
 }

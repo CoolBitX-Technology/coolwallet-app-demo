@@ -1,14 +1,16 @@
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
+import { DemoSignView } from '@src/features/components/DemoSignView';
 import { DemoView } from '@src/features/components/DemoView';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumApiAdapter } from '@src/features/sdk/evm/EthereumApiAdater';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
-import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
+import { EVM_CHAIN_MAP, EvmChainId } from '@src/features/sdk/evm/EvmChain';
 import { EthDataType, EthRawData } from '@src/features/sdk/evm/data/EthRawData';
 import { useAddress, useAddressIndex, useAppId } from '@src/features/store/account/AccountActionHooks';
 import { useCardId } from '@src/features/store/device/DeviceActionHooks';
 import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 
 export function EIP1559CoinTx(): JSX.Element {
   const transport = useBleTransport();
@@ -20,6 +22,8 @@ export function EIP1559CoinTx(): JSX.Element {
   const [toAddress, setToAddress] = useState('');
   const [amount, setAmount] = useState('0');
   const [signedHex, setSignedHex] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [txId, setTxId] = useState('');
 
   const [isSigning, setIsSigning] = useState(false);
   const { log, addLog } = useLogUseCase();
@@ -74,8 +78,24 @@ export function EIP1559CoinTx(): JSX.Element {
     }
   };
 
+  const sendTrasaction = async () => {
+    try {
+      if (isBtnDisable) return;
+      setIsSending(true);
+      const apiAdapter = new EthereumApiAdapter(EvmChainId.POLYGON_MAINNET);
+      const txHash = await apiAdapter.sendTransaction(signedHex);
+      setTxId(txHash);
+      addLog(`SEND SUCCESS`);
+      addLog(`TXID: ${txHash}`);
+    } catch (e) {
+      addLog(`SEND FAILED >>> ${e}`);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
-    <DemoView
+    <DemoSignView
       log={log}
       isBtnLoading={isSigning}
       textBoxBody={signedHex}
@@ -89,6 +109,12 @@ export function EIP1559CoinTx(): JSX.Element {
       onInputChanged={setToAddress}
       onInput2Changed={setAmount}
       showInput2={true}
+      showBtn2={true}
+      btn2Text="Send"
+      onPressBtn2={sendTrasaction}
+      showBtn3={true}
+      btn3Text="Check On Explorer"
+      onPressBtn3={() => Linking.openURL(`${EVM_CHAIN_MAP[EvmChainId.POLYGON_MAINNET].explorer_url}${txId}`)}
     />
   );
 }
