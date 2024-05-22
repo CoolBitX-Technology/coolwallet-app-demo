@@ -1,5 +1,17 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# How to Pair Your App with CoolWallet Pro?
+
+If you want to support connecting CoolWallet Pro for transaction signing within your App, the minimal technical requirement is to use the Pairing Password feature to pair your App with the card. Once paired, you can send transaction data to CoolWallet Pro.
+
+CoolWallet Pro can pair with up to 3 Apps. You can see the paired devices in the CoolWallet App under `Card Settings > Device List`. The first parameter of `RNApduManager.registerDevice`, `name`, represents the registered name, which will be displayed in the Device List. The `name` can have up to 30 characters; it is recommended to use your App's name for this field.
+
+If CoolWallet Pro has already paired with 3 devices, you cannot pair a new device until you remove an existing one from `Card Settings > Device List`. On iOS, swipe left on the device to delete; on Android, long press to delete.
+
+You can refer to [this video](https://www.youtube.com/watch?v=BwBjUp2gqWE) for instructions on generating the Pairing Password using the CoolWallet App.
+
+You can find the code for connecting to the card in the file `src/features/cardPairing/RegisterCardContainer.tsx`.
+
 # Getting Started
 
 Last testing was conducted in the following environment:
