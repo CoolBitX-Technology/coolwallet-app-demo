@@ -2,6 +2,17 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
+Last testing was conducted in the following environment:
+
+```
+❯ node -v
+v18.16.0
+❯ yarn -v
+1.22.19
+❯ npm -v
+9.6.7
+```
+
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
