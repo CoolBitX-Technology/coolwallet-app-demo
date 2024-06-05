@@ -15,8 +15,16 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.REGISTER_CARD),
     },
     {
-      routeName: RouteName.REFRESH_PAIRING_PASSWORD,
-      onButtonPress: () => navigation.navigate(RouteName.REFRESH_PAIRING_PASSWORD),
+      routeName: RouteName.GET_PAIRING_PASSWORD,
+      onButtonPress: () => navigation.navigate(RouteName.GET_PAIRING_PASSWORD),
+    },
+    {
+      routeName: RouteName.REFRESH_APP_KEY_PAIR,
+      onButtonPress: () => navigation.navigate(RouteName.REFRESH_APP_KEY_PAIR),
+    },
+    {
+      routeName: RouteName.GET_PAIRED_APPS,
+      onButtonPress: () => navigation.navigate(RouteName.GET_PAIRED_APPS),
     },
     {
       routeName: RouteName.CREATE_MNEMONIC,
@@ -36,7 +44,5 @@ function useRouteItems() {
 
 export function CardPairingContainer() {
   const routeItems = useRouteItems();
-  return (
-    <RouteListView title={'Initialize your CoolWallet Pro'} items={routeItems} />
-  );
+  return <RouteListView title={'Initialize your CoolWallet Pro'} items={routeItems} />;
 }

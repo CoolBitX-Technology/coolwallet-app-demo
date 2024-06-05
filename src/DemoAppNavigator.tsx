@@ -8,22 +8,26 @@ import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer
 import { RegisterCardContainer } from '@src/features/cardPairing/RegisterCardContainer';
 import { GenerateMnemonicContainer } from '@src/features/cardPairing/GenerateMnemonicContainer';
 import { RecoverWalletContainer } from '@src/features/cardPairing/RecoverWalletContainer';
-import { RefreshPairingPasswordContainer } from '@src/features/cardPairing/RefreshPairingPasswordContainer';
 import { PersonalSignContainer } from '@src/features/tx/PersonalSignContainer';
 import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddressContainer';
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
 import { EIP1559CoinTransferContainer } from '@src/features/tx/EIP1559CoinTransferContainer';
 import { EIP1559TokenTransferContainer } from '@src/features/tx/EIP1559TokenTransferContainer';
+import { GetPairedAppsContainer } from '@src/features/cardPairing/GetPairedAppsContainer';
+import { RefreshAppKeyPairContainer } from '@src/features/cardPairing/RefreshAppKeyPairContainer';
+import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/GeneratePairingPasswordContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
+  [RouteName.REFRESH_APP_KEY_PAIR]: undefined;
   [RouteName.RESET_CARD]: undefined;
   [RouteName.REGISTER_CARD]: undefined;
   [RouteName.RECOVER_MNEMONIC]: undefined;
   [RouteName.CREATE_MNEMONIC]: undefined;
   [RouteName.RECOVER_ADDRESS]: undefined;
-  [RouteName.REFRESH_PAIRING_PASSWORD]: undefined;
+  [RouteName.GET_PAIRING_PASSWORD]: undefined;
+  [RouteName.GET_PAIRED_APPS]: undefined;
   [RouteName.EIP1559_COIN]: undefined;
   [RouteName.EIP1559_TOKEN]: undefined;
   [RouteName.PERSONAL_SIGN]: undefined;
@@ -65,6 +69,11 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
+        name={RouteName.GET_PAIRED_APPS}
+        component={GetPairedAppsContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
         name={RouteName.CREATE_MNEMONIC}
         component={GenerateMnemonicContainer}
         options={{ headerBackTitleVisible: false }}
@@ -80,12 +89,21 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
-        name={RouteName.REFRESH_PAIRING_PASSWORD}
-        component={RefreshPairingPasswordContainer}
+        name={RouteName.GET_PAIRING_PASSWORD}
+        component={GeneratePairingPasswordContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTransferContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTransferContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.REFRESH_APP_KEY_PAIR} component={RefreshAppKeyPairContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.EIP1559_COIN}
+        component={EIP1559CoinTransferContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.EIP1559_TOKEN}
+        component={EIP1559TokenTransferContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen
         name={RouteName.PERSONAL_SIGN}
         component={PersonalSignContainer}

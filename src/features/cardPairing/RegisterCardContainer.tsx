@@ -5,13 +5,13 @@ import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUse
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { generateRandomPassword } from '@src/features/home/utils/RandomUtils';
 import {
-    useAppId,
+  useAppId,
   useDispatchChangeAppInfo,
   useDispatchChangePairedPassword,
   usePairedPassword,
 } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export function RegisterCardContainer(): JSX.Element {
   const cardId = useCardId();
@@ -39,13 +39,23 @@ export function RegisterCardContainer(): JSX.Element {
       setPairingPassword(password);
     } catch (e) {
       const error = e as RNApduError;
-      if (error?.errorCode === '6985') {
-        addLog(
-          'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
-        );
-        return;
+      console.log('error?.errorCode=',error?.errorCode);
+      switch (error?.errorCode) {
+        case '6985':
+          addLog(
+            'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
+          );
+          break;
+        case '6A84':
+          addLog('REACHED THE LIMIT OF 3 DEVICES');
+          break;
+        case '6A80':
+          addLog('THIS DEVICE IS ALREADY REGISTERED');
+          break;
+        default:
+          addLog(`REGISTERED FAILED >>> ${e}`);
+          break;
       }
-      addLog(`REGISTERED FAILED >>> ${e}`);
     } finally {
       setIsRegistering(false);
     }

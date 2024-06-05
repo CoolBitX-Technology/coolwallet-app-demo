@@ -1,6 +1,6 @@
 import { crypto } from '@coolwallet/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash/isEmpty';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const CW_APP_KEYPAIR = 'cw_app_key_pair';
 export const CW_APP_ID = 'cw_appid';
@@ -36,9 +36,9 @@ export interface AppKeyPair {
   publicKey: string;
   privateKey: string;
 }
-export async function loadAppKeyPair(): Promise<AppKeyPair> {
+export async function loadAppKeyPair(isRefresh = false): Promise<AppKeyPair> {
   const nullableKeyPair = await loadObject(CW_APP_KEYPAIR);
-  if (isEmpty(nullableKeyPair)) {
+  if (isEmpty(nullableKeyPair) || isRefresh) {
     const newKeyPair = crypto.key.generateKeyPair();
     await saveObject(CW_APP_KEYPAIR, newKeyPair);
     return newKeyPair;

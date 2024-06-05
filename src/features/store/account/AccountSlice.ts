@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AccountState } from '@src/features/store/account/AccountTypes';
+import { AccountInfo, AccountState } from '@src/features/store/account/AccountTypes';
 import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: AccountState = {
@@ -17,14 +17,19 @@ export const AcountSlice = createSlice({
     resetMnemonic: (state: AccountState) => {
       state.mnemonic = '';
     },
-    setAppInfo: (state: AccountState, action: PayloadAction<{ cardId: string; appId: string; password: string }>) => {
-      const { cardId, appId, password } = action.payload;
-      state.accounts[cardId] = {
+    setAppInfo: (
+      state: AccountState,
+      action: PayloadAction<{ cardId: string; appId: string; password: string; deviceName?: string }>,
+    ) => {
+      const { cardId, deviceName, appId, password } = action.payload;
+      const accountInfo: AccountInfo = {
         isWalletRecovered: false,
         appId,
+        deviceName: deviceName || cardId,
         password,
         addresses: {},
       };
+      state.accounts[cardId] = accountInfo;
     },
     setAppPassword: (state: AccountState, action: PayloadAction<{ cardId: string; password: string }>) => {
       const { cardId, password } = action.payload;
