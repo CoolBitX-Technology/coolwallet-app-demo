@@ -102,7 +102,7 @@ export function PairedAppsView({
         <StyledButton onPress={onCanceled}>{'Cancel'}</StyledButton>
         <StyledButton
           opacity={notSelected ? 0.5 : 1}
-          disabled={!isConnected || notSelected}
+          disabled={!isConnected || notSelected || isFetching}
           isLoading={isRemoving}
           onPress={onRemove}
         >
