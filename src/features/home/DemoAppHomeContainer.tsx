@@ -28,7 +28,6 @@ export const DemoAppHomeContainer = () => {
   const isConnected = useIsConnected();
   useSubscribeConnectionEffect();
   useDisconnectAllEffect();
-  const log = useLog();
 
   const { disconnect } = useConnectBleUseCase();
 
