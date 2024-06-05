@@ -1,79 +1,78 @@
-import { RNApduError } from '@src/features/ble/RNApduError';
-import { RNApduManager } from '@src/features/ble/RNApduManager';
-import { DemoView } from '@src/features/components/DemoView';
-import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
-import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
-import { generateRandomPassword } from '@src/features/home/utils/RandomUtils';
+import { useRegisterDeviceUseCase } from '@src/features/cardPairing/usecases/useRegisterDeviceUseCase';
+import { BlueButton } from '@src/features/components/BlueButton';
+import { LogBox } from '@src/features/components/LogBox';
+import { TextInput } from '@src/features/components/TextInput';
+import { TextView } from '@src/features/components/TextView';
 import {
-  useAppId,
+  useDeviceName,
   useDispatchChangeAppInfo,
   useDispatchChangePairedPassword,
   usePairedPassword,
 } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import { VStack } from 'native-base';
 import React, { useState } from 'react';
+import { View } from 'react-native';
+import styled from 'styled-components';
+
+const Layout = styled(View)`
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 24px;
+  padding-horizontal: 20px;
+  padding-bottom: 100px;
+`;
+
+const ButtonLayout = styled(View)`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Button = styled(BlueButton)`
+  margin-top: 8px;
+`;
 
 export function RegisterCardContainer(): JSX.Element {
   const cardId = useCardId();
-  const appId = useAppId(cardId);
   const isConnected = useIsConnected();
-  const pairedPassword = usePairedPassword(cardId);
-  const [pairingPassword, setPairingPassword] = useState(pairedPassword);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const { log, addLog } = useLogUseCase();
+  const defaultPairedPassword = usePairedPassword(cardId);
+  const [pairingPassword, setPairingPassword] = useState(defaultPairedPassword);
+  const defaultDeviceName = useDeviceName(cardId);
+  const [deviceName, setDeviceName] = useState(defaultDeviceName);
+
+  const { appId, log, isRegistering, registerDevice } = useRegisterDeviceUseCase();
   const changeAppInfo = useDispatchChangeAppInfo();
   const changePairedPassword = useDispatchChangePairedPassword();
+
   const isBtnDisable = !isConnected;
 
-  useInitApduEffect();
-
-  const registerCard = async () => {
-    try {
-      setIsRegistering(true);
-      const password = pairingPassword || generateRandomPassword();
-      addLog(`REGISTRATION BEGIN, PLEASE PRESS THE CARD TO CONTINUE`);
-      const appId = await RNApduManager.getInstance().registerDevice(cardId, password);
-      changeAppInfo(cardId, appId, password);
-      changePairedPassword(cardId, password);
-      addLog(`REGISTERED SUCCESS, PASSWORD: ${password}`);
-      setPairingPassword(password);
-    } catch (e) {
-      const error = e as RNApduError;
-      console.log('error?.errorCode=',error?.errorCode);
-      switch (error?.errorCode) {
-        case '6985':
-          addLog(
-            'PAIRING DEVICE DENIED, PLEASE INSERT THE PAIRING PASSWORD AND REGISTER AGAIN.\n\nYOU CAN GET THE PAIRING PASSWORD FROM ANY DEVICE YOU HAVE PAIRED',
-          );
-          break;
-        case '6A84':
-          addLog('REACHED THE LIMIT OF 3 DEVICES');
-          break;
-        case '6A80':
-          addLog('THIS DEVICE IS ALREADY REGISTERED');
-          break;
-        default:
-          addLog(`REGISTERED FAILED >>> ${e}`);
-          break;
+  const registerCard = () => {
+    registerDevice(deviceName, pairingPassword).then((info) => {
+      if (info) {
+        const { appId, deviceName, password } = info;
+        changeAppInfo(cardId, appId, password, deviceName);
+        changePairedPassword(cardId, password);
       }
-    } finally {
-      setIsRegistering(false);
-    }
+    });
   };
 
   return (
-    <DemoView
-      log={log}
-      input={pairingPassword}
-      isBtnLoading={isRegistering}
-      textBoxBody={appId}
-      showCopy={false}
-      onPressBtn={registerCard}
-      isBtnDisable={isBtnDisable}
-      inputPlaceHolder="Pairing Password"
-      btnText="Register"
-      textBoxPlaceHolder='App Id'
-      onInputChanged={setPairingPassword}
-    />
+    <Layout>
+      <VStack space={2} justifyContent="center" alignContent="flex-start" w={'100%'}>
+        <LogBox log={log} />
+        <TextInput text={deviceName} isEditable={!isRegistering} placeholder="Device Name" onTextChanged={setDeviceName} />
+        <TextInput
+          text={pairingPassword}
+          isEditable={!isRegistering}
+          placeholder="Pairing Password"
+          onTextChanged={setPairingPassword}
+        />
+        <TextView text={appId} placeholder="App Id" />
+        <ButtonLayout>
+          <Button isLoading={isRegistering} disabled={isBtnDisable} onClicked={registerCard} text={'Register'} />
+        </ButtonLayout>
+      </VStack>
+    </Layout>
   );
 }
