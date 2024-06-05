@@ -54,6 +54,12 @@ export function usePairedPassword(cardId?: string) {
   return account.password;
 }
 
+export function useDeviceName(cardId?: string) {
+  const account = useAccount(cardId);
+  if (!account) return '';
+  return account.deviceName;
+}
+
 export function useAddressIndex(cardId?: string) {
   const account = useAccount(cardId);
   if (!account) return undefined;
