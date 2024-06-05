@@ -41,11 +41,12 @@ export function GetPairedAppsContainer(): JSX.Element {
 
   const onDeleted = (pairedAppId: string) => {
     if (pairedAppId === appId) {
-      addLog(`CANNOT REMOVE YOUR PAIRED ID: ${appId}`);
+      addLog(`CANNOT REMOVE CURRENT PAIRED ID`);
       return;
     }
     setIsRemoving(true);
-    addLog(`REMOVING OTHER PAIRED ID: ${pairedAppId} ....`);
+    addLog(`BEGIN TO REMOVE OTHER PAIRED ID: ${pairedAppId}`);
+    addLog(`PLEASE PRESS THE CARD TO CONTINUE`);
     RNApduManager.getInstance()
       .removePairedDevice(appId, pairedAppId)
       .then(() => {
@@ -73,6 +74,7 @@ export function GetPairedAppsContainer(): JSX.Element {
       isFetching={isFetching}
       isConnected={isConnected}
       isRemoving={isRemoving}
+      pairedAppId={appId}
       items={pairedApps}
       log={log}
       selectedIndex={selectedIndex}

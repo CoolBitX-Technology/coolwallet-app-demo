@@ -45,6 +45,7 @@ interface Props {
   log?: string;
   items: Array<PairedApp>;
   selectedIndex: number;
+  pairedAppId?: string;
   isFetching?: boolean;
   isRemoving?: boolean;
   isConnected?: boolean;
@@ -57,6 +58,7 @@ interface Props {
 export function PairedAppsView({
   style,
   items,
+  pairedAppId,
   log = getDefaultLog(),
   isFetching = false,
   isRemoving = false,
@@ -84,7 +86,13 @@ export function PairedAppsView({
           return (
             <View key={item.appId}>
               <ItemSeparator />
-              <AppItem index={index} app={item} isSelected={selectedIndex === index} onSelected={onSelected} />
+              <AppItem
+                index={index}
+                app={item}
+                isSelected={selectedIndex === index}
+                isPaired={pairedAppId === item.appId}
+                onSelected={onSelected}
+              />
             </View>
           );
         })}
@@ -96,7 +104,8 @@ export function PairedAppsView({
           opacity={notSelected ? 0.5 : 1}
           disabled={!isConnected || notSelected}
           isLoading={isRemoving}
-          onPress={onRemove}>
+          onPress={onRemove}
+        >
           {'Remove'}
         </StyledButton>
       </ButtonLayout>
