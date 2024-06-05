@@ -1,6 +1,6 @@
 import { crypto } from '@coolwallet/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash/isEmpty';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const CW_APP_KEYPAIR = 'cw_app_key_pair';
 export const CW_APP_ID = 'cw_appid';
