@@ -73,10 +73,17 @@ export function useAddress(cardId?: string, index?: number) {
   return account.addresses?.[index as number] || '';
 }
 
-export function useDispatchChangeAppInfo(): (cardId: string, appId: string, password: string) => void {
+export function useDispatchChangeAppInfo(): (cardId: string, appId: string, password: string, deviceName?: string) => void {
   const dispatch = useAppDispatch();
-  return (cardId, appId, password) => {
-    dispatch(AccountActions.setAppInfo({ cardId, appId, password }));
+  return (cardId, appId, password, deviceName) => {
+    dispatch(AccountActions.setAppInfo({ cardId, deviceName, appId, password }));
+  };
+}
+
+export function useDispatchClearAppInfo(): (cardId: string) => void {
+  const dispatch = useAppDispatch();
+  return (cardId) => {
+    dispatch(AccountActions.clearAppInfo(cardId));
   };
 }
 
