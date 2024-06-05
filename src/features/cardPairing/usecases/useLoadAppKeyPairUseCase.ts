@@ -1,6 +1,6 @@
 import { AppKeyPair, loadAppKeyPair } from '@src/features/ble/utils/StorageUtils';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
-import { useDispatchChangeAppInfo, useDispatchClearAppInfo } from '@src/features/store/account/AccountActionHooks';
+import { useDispatchClearAppInfo } from '@src/features/store/account/AccountActionHooks';
 import { useCardId } from '@src/features/store/device/DeviceActionHooks';
 import { useEffect, useState } from 'react';
 

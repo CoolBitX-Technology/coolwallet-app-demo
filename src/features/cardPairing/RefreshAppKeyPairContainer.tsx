@@ -1,8 +1,7 @@
+import { useLoadAppKeyPairUseCase } from '@src/features/cardPairing/usecases/useLoadAppKeyPairUseCase';
 import { BlueButton } from '@src/features/components/BlueButton';
 import { LogBox } from '@src/features/components/LogBox';
 import { TextView } from '@src/features/components/TextView';
-import { useLoadAppKeyPairUseCase } from '@src/features/home/usecases/useLoadAppKeyPairUseCase';
-import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { VStack } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
