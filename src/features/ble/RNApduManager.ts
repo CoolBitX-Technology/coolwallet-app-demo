@@ -3,6 +3,11 @@ import { AppKeyPair } from '@src/features/ble/utils/StorageUtils';
 import { SDKError } from '@coolwallet/core/lib/error';
 import { RNApduError } from '@src/features/ble/RNApduError';
 
+export interface PairedApp {
+  appId: string;
+  deviceName: string;
+}
+
 interface ApduManager {
   init(transport: Transport, appKeyPair: AppKeyPair): void;
   isInitialize(): boolean;
@@ -53,6 +58,26 @@ export class RNApduManager implements ApduManager {
     const sePublicKey = await this.getSEPublicKey();
     try {
       return await apdu.pair.register(this.getTransport(), publicKey, password, name, sePublicKey);
+    } catch (e) {
+      throw RNApduError.parseError(e as Error);
+    }
+  }
+
+  async getPairedApps(appId: string): Promise<PairedApp[]> {
+    const appKeyPair = this.getAppKeyPair();
+    const { privateKey } = appKeyPair;
+    try {
+      return await apdu.pair.getPairedApps(this.getTransport(), appId, privateKey);
+    } catch (e) {
+      throw RNApduError.parseError(e as Error);
+    }
+  }
+
+  async removePairedDevice(appId: string, pairedAppId: string): Promise<void> {
+    const appKeyPair = this.getAppKeyPair();
+    const { privateKey } = appKeyPair;
+    try {
+      return await apdu.pair.removePairedDevice(this.getTransport(), appId, privateKey, pairedAppId);
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }

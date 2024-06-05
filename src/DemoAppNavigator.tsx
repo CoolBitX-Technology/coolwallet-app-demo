@@ -14,6 +14,7 @@ import { RecoverAddressContainer } from '@src/features/cardPairing/RecoverAddres
 import { SignTypedDataContainer } from '@src/features/tx/SignTypedDataContainer';
 import { EIP1559CoinTransferContainer } from '@src/features/tx/EIP1559CoinTransferContainer';
 import { EIP1559TokenTransferContainer } from '@src/features/tx/EIP1559TokenTransferContainer';
+import { GetPairedAppsContainer } from '@src/features/cardPairing/GetPairedAppsContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -24,6 +25,7 @@ export type DemoAppParamList = {
   [RouteName.CREATE_MNEMONIC]: undefined;
   [RouteName.RECOVER_ADDRESS]: undefined;
   [RouteName.REFRESH_PAIRING_PASSWORD]: undefined;
+  [RouteName.GET_PAIRED_APPS]: undefined;
   [RouteName.EIP1559_COIN]: undefined;
   [RouteName.EIP1559_TOKEN]: undefined;
   [RouteName.PERSONAL_SIGN]: undefined;
@@ -65,6 +67,11 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
+        name={RouteName.GET_PAIRED_APPS}
+        component={GetPairedAppsContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
         name={RouteName.CREATE_MNEMONIC}
         component={GenerateMnemonicContainer}
         options={{ headerBackTitleVisible: false }}
@@ -84,8 +91,16 @@ export function DemoAppNavigator() {
         component={RefreshPairingPasswordContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.EIP1559_COIN} component={EIP1559CoinTransferContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.EIP1559_TOKEN} component={EIP1559TokenTransferContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.EIP1559_COIN}
+        component={EIP1559CoinTransferContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.EIP1559_TOKEN}
+        component={EIP1559TokenTransferContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen
         name={RouteName.PERSONAL_SIGN}
         component={PersonalSignContainer}
