@@ -2,43 +2,44 @@ import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { DemoView } from '@src/features/components/DemoView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
-import { useAppId, useDispatchChangePairedPassword, usePairedPassword } from '@src/features/store/account/AccountActionHooks';
+import { useAppId, usePairedPassword } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
 
-export function RefreshPairingPasswordContainer() {
+export function GeneratePairingPasswordContainer() {
   const isConnected = useIsConnected();
-  const changePairedPassword = useDispatchChangePairedPassword();
   const cardId = useCardId();
-  const pairPassword = usePairedPassword(cardId);
+  const defaultPairPassword = usePairedPassword(cardId);
+  const [pairPassword, setPairPassword] = useState(defaultPairPassword);
   const appId = useAppId(cardId);
   const { log, addLog } = useLogUseCase();
-  const isBtnDisable = !cardId || !isConnected || !pairPassword;
+  const isBtnDisable = !cardId || !isConnected || !defaultPairPassword;
   const [isRefreshing, setIsRefereshing] = useState(false);
 
   useInitApduEffect();
 
-  const refreshPairPassword = async () => {
+  const generatePairPassword = async () => {
     if (!appId || isBtnDisable) return;
     setIsRefereshing(true);
-    addLog('REFRESHING....');
+    addLog('GENERATING....');
     const newPairedPassword = await RNApduManager.getInstance().getPairPassword(appId);
+    setPairPassword(newPairedPassword);
     setIsRefereshing(false);
-    addLog('REFRESHED SUCCESS');
-    changePairedPassword(cardId, newPairedPassword);
+    addLog('GENERATED SUCCESS, PLEASE COPY NEW PAIR PASSWORD AND GO TO REFRESH APP KEY PAIR');
   };
 
   return (
     <DemoView
-      btnText="Refresh"
+      btnText="Generate"
       log={log}
       isBtnDisable={isBtnDisable}
-      onPressBtn={() => refreshPairPassword()}
+      onPressBtn={() => generatePairPassword()}
       textBoxBody={pairPassword}
       textBoxPlaceHolder="Your Pairing Password"
       isBtnLoading={isRefreshing}
       showInput={false}
-      showCopy={false}
+      showTextBox={!!pairPassword}
+      showCopy={defaultPairPassword !== pairPassword}
     />
   );
 }

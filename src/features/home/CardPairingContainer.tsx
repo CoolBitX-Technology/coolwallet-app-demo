@@ -15,8 +15,12 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.REGISTER_CARD),
     },
     {
-      routeName: RouteName.REFRESH_PAIRING_PASSWORD,
-      onButtonPress: () => navigation.navigate(RouteName.REFRESH_PAIRING_PASSWORD),
+      routeName: RouteName.GET_PAIRING_PASSWORD,
+      onButtonPress: () => navigation.navigate(RouteName.GET_PAIRING_PASSWORD),
+    },
+    {
+      routeName: RouteName.REFRESH_APP_KEY_PAIR,
+      onButtonPress: () => navigation.navigate(RouteName.REFRESH_APP_KEY_PAIR),
     },
     {
       routeName: RouteName.GET_PAIRED_APPS,
