@@ -6,5 +6,5 @@ export interface CardInfo {
   pairRemainTimes: number; // indicates the number of remaining pairing attempts allowed, with a maximum of 5 attempts
   accountDigest: string; // indicates the first 10 digits of the card's seed. Restoring with the same mnemonic will yield the same result
   accountDigest20?: string; // similar to accountDigest, but displays the first 20 digits of the card's seed.
-  cardanoSeed?: boolean; // indicates whether the Cardano seed has been imported.
+  cardanoSeed?: string; // indicates whether the Cardano seed has been imported.
 }
