@@ -2,10 +2,11 @@ import { PairedApp } from '@src/features/ble/RNApduManager';
 import { AppIcon } from '@src/features/components/AppIcon';
 import { StarIcon } from '@src/features/components/StarIcon';
 import React from 'react';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 
 interface LayoutProps {
+  isPaired: boolean;
   isSelected: boolean;
 }
 const Button = styled(Pressable)<LayoutProps>`
@@ -15,6 +16,8 @@ const Button = styled(Pressable)<LayoutProps>`
   align-items: center;
   padding-horizontal: 16px;
   background-color: ${(props) => (props.isSelected ? 'skyblue' : 'transparent')};
+  padding-start: ${(props) => (props.isPaired ? 8 : 28)}px;
+  padding-end: 8px;
 `;
 
 const ColumnLayout = styled(View)`
@@ -38,7 +41,7 @@ interface Props {
 export function AppItem({ index, app, isSelected, isPaired, onSelected }: Props): JSX.Element {
   const { deviceName, appId } = app;
   return (
-    <Button isSelected={isSelected} onPress={() => onSelected?.(index)}>
+    <Button isPaired={isPaired} isSelected={isSelected} onPress={() => onSelected?.(index)}>
       {isPaired && <StarIcon size={20} fillColor="#00BBFF" />}
       <AppIcon size={32} />
       <ColumnLayout>

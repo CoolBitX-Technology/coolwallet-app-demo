@@ -1,6 +1,6 @@
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
-import { useLoadAppKeyPairUseCase } from '@src/features/home/usecases/useLoadAppKeyPairUseCase';
+import { useLoadAppKeyPairUseCase } from '@src/features/cardPairing/usecases/useLoadAppKeyPairUseCase';
 import { useEffect } from 'react';
 
 export function useInitApduEffect() {
