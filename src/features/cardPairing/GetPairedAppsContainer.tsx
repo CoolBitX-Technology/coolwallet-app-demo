@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { RNApduError } from '@src/features/ble/RNApduError';
-import { PairedApp, RNApduManager } from '@src/features/ble/RNApduManager';
+import { RNApduManager } from '@src/features/ble/RNApduManager';
+import { PairedApp } from '@src/features/ble/data/PairedApp';
 import { PairedAppsView } from '@src/features/components/PairedAppsView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
