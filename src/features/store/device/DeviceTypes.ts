@@ -1,6 +1,7 @@
 export enum TransportType {
   Bluetooth = 'bluetooth',
   Http = 'http',
+  NFC = 'nfc',
 }
 
 export interface DeviceState {

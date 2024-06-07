@@ -1,7 +1,7 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
+// import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 import { DemoAppHomeContainer } from '@src/features/home/DemoAppHomeContainer';
 import { RouteName } from '@src/routes/type';
 import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer';
@@ -18,6 +18,8 @@ import { RefreshAppKeyPairContainer } from '@src/features/cardPairing/RefreshApp
 import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/GeneratePairingPasswordContainer';
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
 import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
+import NFCScanContainer from "@src/features/nfc/NFCScanContainer";
+import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
@@ -37,6 +39,7 @@ export type DemoAppParamList = {
   [RouteName.PERSONAL_SIGN]: undefined;
   [RouteName.SIGN_TYPED_DATA]: undefined;
   [RouteName.SEND_HEX]: undefined;
+  [RouteName.NFC_SCAN]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -45,14 +48,10 @@ export function useRootNavigation() {
   return useNavigation<RootNavigationProp>();
 }
 
-/**
- * type ScreenRouteType = ReturnType<typeof useRoute<RouteProp<SoftwareWalletParamList, RROUTE_NAME>>>
- * type ScreenRouteParamsType = ScreenRouteType['params']
- */
-export function useTypedRouteParams<RROUTE_NAME extends keyof DemoAppParamList>(): ReturnType<
-  typeof useRoute<RouteProp<DemoAppParamList, RROUTE_NAME>>
+export function useTypedRouteParams<ROUTE_NAME extends keyof DemoAppParamList>(): ReturnType<
+  typeof useRoute<RouteProp<DemoAppParamList, ROUTE_NAME>>
 >['params'] {
-  return useRoute<RouteProp<DemoAppParamList, RROUTE_NAME>>().params;
+  return useRoute<RouteProp<DemoAppParamList, ROUTE_NAME>>().params;
 }
 
 const Stack = createNativeStackNavigator();
@@ -67,6 +66,13 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen name={RouteName.HTTP_SCAN} component={HttpScanContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen
+        name={RouteName.NFC_SCAN}
+        component={NFCScanContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
