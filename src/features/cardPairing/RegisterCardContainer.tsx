@@ -53,6 +53,8 @@ export function RegisterCardContainer(): JSX.Element {
         const { appId, deviceName, password } = info;
         changeAppInfo(cardId, appId, password, deviceName);
         changePairedPassword(cardId, password);
+        setDeviceName(deviceName);
+        setPairingPassword(password);
       }
     });
   };

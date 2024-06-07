@@ -1,10 +1,7 @@
+import { useChangeTransportType } from '@src/features/store/device/DeviceActionHooks';
+import { TransportType } from '@src/features/store/device/DeviceTypes';
 import { Actionsheet, Box, Text } from 'native-base';
 import React, { MutableRefObject, useState } from 'react';
-
-export enum TransportType {
-  Bluetooth = 'bluetooth',
-  Http = 'http',
-}
 
 interface Props {
   showRef: MutableRefObject<() => void>;
@@ -12,12 +9,14 @@ interface Props {
 }
 export function TransportSelectorContainer({ showRef, onSelected }: Props): JSX.Element {
   const [visible, setVisible] = useState(false);
+  const changeTransportType = useChangeTransportType();
 
   showRef.current = () => setVisible(true);
 
   const onSelectedInternal = (transportType: TransportType) => {
     onSelected(transportType);
     setVisible(false);
+    changeTransportType(transportType);
   };
 
   return (
