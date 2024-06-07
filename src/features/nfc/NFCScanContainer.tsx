@@ -1,41 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Button, TextInput, ScrollView } from 'react-native';
 import RNNfcTransport from './RNNfcTransport';
+import { TagEvent } from 'react-native-nfc-manager';
 
 const NFCScanContainer = () => {
   const [nfcData, setNfcData] = useState<string | null>(null);
-  const [inputData, setInputData] = useState<string>('');
+  const [inputData, setInputData] = useState('');
   const [log, setLog] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   const addLog = (entry: string) => {
     setLog((prevLog) => [...prevLog, entry]);
   };
 
-  const handleReadData = async () => {
-    try {
-      await RNNfcTransport.connect();
-      const data = await RNNfcTransport.readData();
-      if (data) {
-        setNfcData(data.join(', '));
-        addLog(`>> read: ${data.join(', ')}`);
+  useEffect(() => {
+    const onTagDiscovered = async (tag: TagEvent) => {
+      console.log('onTagDiscovered')
+      console.log(tag)
+      try {
+        const data = await RNNfcTransport.readData(tag);
+        if (data) {
+          setNfcData(data);
+          addLog(`>> read: ${data}`);
+        }
+      } catch (err) {
+        setError(`Failed to read NFC data: ${err}`);
       }
-    } catch (error) {
-      console.error('Failed to read NFC data:', error);
-    } finally {
-      await RNNfcTransport.disconnect();
-    }
-  };
+    };
+
+    RNNfcTransport.connect(onTagDiscovered)
+      .then(() => setIsConnected(true))
+      .catch(err => setError(`Failed to connect to NFC tag: ${err}`));
+
+    return () => {
+      RNNfcTransport.disconnect();
+      setIsConnected(false);
+    };
+  }, []);
 
   const handleWriteData = async () => {
     try {
-      await RNNfcTransport.connect();
       await RNNfcTransport.writeData(inputData);
+      setNfcData(`Wrote: ${inputData}`);
       addLog(`>> write: ${inputData}`);
-      setInputData('');
-    } catch (error) {
-      console.error('Failed to write NFC data:', error);
-    } finally {
-      await RNNfcTransport.disconnect();
+    } catch (e: any) {
+      console.error('Failed to write NFC data:', e);
+      addLog(`>> write error: ${e.message}`);
     }
   };
 
@@ -49,19 +60,17 @@ const NFCScanContainer = () => {
         ))}
       </ScrollView>
       <View style={styles.inputContainer}>
-        <View style={styles.buttonContainer}>
-          <Button title="Read" onPress={handleReadData} />
-        </View>
         <TextInput
           style={styles.input}
           placeholder="Enter data to write"
           value={inputData}
           onChangeText={setInputData}
-          onSubmitEditing={handleWriteData}
         />
-        <View style={styles.buttonContainer}>
-          <Button title="Write" onPress={handleWriteData} />
-        </View>
+        <Button title="Write" onPress={() => {
+          if (isConnected) {
+            handleWriteData()
+          }
+        }} />
       </View>
     </View>
   );

@@ -1,37 +1,19 @@
 // src/features/nfc/RNNfcTransport.ts
+import { TagEvent } from 'react-native-nfc-manager';
 import NfcManager from './NFCManager';
 import RNNfcError from './RNNfcError';
 
 class RNNfcTransport {
-  async readData() {
+  
+  async connect(onTagDiscovered: (tag: TagEvent) => void) {
     try {
-      await this.connect();
-      const data = await NfcManager.readData();
-      console.log('read NFC',data)
-      return data;
-    } catch (error) {
-      const errorMsg = `Failed to read NFC: ${error}`;
-      console.error(errorMsg);
-      throw new RNNfcError(errorMsg);
-    }
-  }
-
-  async writeData(data: string) {
-    try {
-      await this.connect();
-      await NfcManager.writeData(data);
-    } catch (error) {
-      const errorMsg = `Failed to write NFC: ${error}`;
-      console.error(errorMsg);
-      throw new RNNfcError(errorMsg);
-    }
-  }
-
-  async connect() {
-    try {
-      await NfcManager.connect();
-    } catch (error) {
-      const errorMsg = `Failed to connect to NFC: ${error}`;
+      console.log('execute connect..')
+      await NfcManager.start();
+      await NfcManager.requestNdefTechnology();
+      const tag = await NfcManager.getTag();
+      if(tag)onTagDiscovered(tag); 
+    } catch (e) {
+      const errorMsg = `Failed to connect to NFC tag: ${JSON.stringify(e)}`;
       console.error(errorMsg);
       throw new RNNfcError(errorMsg);
     }
@@ -39,31 +21,41 @@ class RNNfcTransport {
 
   async disconnect() {
     try {
-      await NfcManager.disconnect();
-    } catch (error) {
-      const errorMsg = `Failed to disconnect from NFC: ${error}`;
+      console.log('execute disconnect..')
+      await NfcManager.cancelTechnologyRequest();
+      NfcManager.removeTagDiscoveredListener();
+      console.log('Disconnected from NFC tag successfully');
+    } catch (e) {
+      const errorMsg=`Failed to disconnect from NFC tag: ${JSON.stringify(e)}`;
       console.error(errorMsg);
       throw new RNNfcError(errorMsg);
     }
   }
 
-  startScan(callback: (data: any) => void) {
+ 
+  async readData(tag: TagEvent): Promise<string | null> {
     try {
-      NfcManager.startScan(callback);
-    } catch (error) {
-      const errorMsg = `Failed to start NFC scan: ${error}`;
+      const data = await NfcManager.readData(tag);
+      console.log('NFC data read successfully:', data);
+      return data;
+    } catch (e) {
+      const errorMsg = `Failed to read NFC data: ${JSON.stringify(e)}`;
       console.error(errorMsg);
       throw new RNNfcError(errorMsg);
+    } finally {
+      // await this.disconnect(); 
     }
   }
 
-  stopScan() {
+  async writeData(data: string) {
     try {
-      NfcManager.stopScan();
-    } catch (error) {
-      const errorMsg = `Failed to stop NFC scan: ${error}`;
+      await NfcManager.writeData(data);
+    } catch (e) {
+      const errorMsg = `Failed to write NFC data: ${JSON.stringify(e)}`;
       console.error(errorMsg);
       throw new RNNfcError(errorMsg);
+    } finally {
+      // await this.disconnect();
     }
   }
 }
