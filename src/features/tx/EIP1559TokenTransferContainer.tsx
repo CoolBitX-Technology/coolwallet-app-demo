@@ -1,5 +1,5 @@
-import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { DemoSignView } from '@src/features/components/DemoSignView';
+import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumApiAdapter } from '@src/features/sdk/evm/EthereumApiAdater';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
 
 export function EIP1559TokenTransferContainer() {
-  const transport = useBleTransport();
+  const transport = useTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const index = useAddressIndex(cardId);

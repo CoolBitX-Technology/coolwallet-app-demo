@@ -1,3 +1,4 @@
+import { Transport } from '@coolwallet/core';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useLoadAppKeyPairUseCase } from '@src/features/cardPairing/usecases/useLoadAppKeyPairUseCase';
@@ -7,12 +8,17 @@ import { useEffect } from 'react';
 
 export function useInitApduEffect() {
   const { appKeyPair } = useLoadAppKeyPairUseCase();
-  const bleTransport = useBleTransport();
-  // const httpTransport = useHttpTransport();
-  const type = useTransportType();
+  const transport = useTransport();
   useEffect(() => {
-    if (!appKeyPair) return;
-    if (type === TransportType.Bluetooth && bleTransport) RNApduManager.getInstance().init(bleTransport, appKeyPair);
-    // if (type === TransportType.Http && httpTransport) RNApduManager.getInstance().init(httpTransport, appKeyPair);
-  }, [type, bleTransport, appKeyPair]);
+    if (!appKeyPair || !transport) return;
+    RNApduManager.getInstance().init(transport, appKeyPair);
+  }, [transport, appKeyPair]);
+}
+
+export function useTransport(): Transport | undefined {
+  const bleTransport = useBleTransport();
+  const type = useTransportType();
+  // const httpTransport = useHttpTransport();
+  if (type === TransportType.Bluetooth) return bleTransport;
+  // if (type === TransportType.Http) return httpTransport;
 }

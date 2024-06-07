@@ -1,5 +1,5 @@
-import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { DemoSignView } from '@src/features/components/DemoSignView';
+import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
@@ -10,7 +10,7 @@ import ObjectUtils from '@src/features/utils/ObjectUtils';
 import { useEffect, useState } from 'react';
 
 export function PersonalSignContainer(): JSX.Element {
-  const transport = useBleTransport();
+  const transport = useTransport();
   const cardId = useCardId();
   const appId = useAppId(cardId);
   const isConnected = useIsConnected();
