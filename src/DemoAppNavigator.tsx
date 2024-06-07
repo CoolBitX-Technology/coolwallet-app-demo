@@ -17,10 +17,12 @@ import { GetPairedAppsContainer } from '@src/features/cardPairing/GetPairedAppsC
 import { RefreshAppKeyPairContainer } from '@src/features/cardPairing/RefreshAppKeyPairContainer';
 import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/GeneratePairingPasswordContainer';
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
+import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
 
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
+  [RouteName.HTTP_SCAN]: undefined;
   [RouteName.REFRESH_APP_KEY_PAIR]: undefined;
   [RouteName.GET_CARD_INFO]: undefined;
   [RouteName.RESET_CARD]: undefined;
@@ -64,6 +66,7 @@ export function DemoAppNavigator() {
         component={BluetoothScanContainer}
         options={{ headerBackTitleVisible: false }}
       />
+      <Stack.Screen name={RouteName.HTTP_SCAN} component={HttpScanContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
