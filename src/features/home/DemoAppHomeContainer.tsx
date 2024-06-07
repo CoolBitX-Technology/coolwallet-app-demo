@@ -8,7 +8,7 @@ import {
   useSubscribeConnectionEffect,
   useDisconnectAllEffect,
 } from '@src/features/ble/usecases/useConnectBleUseCase';
-import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import { useBluetoothInfo, useDispatchConnectStatus, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { TabViewContainer } from '@src/features/home/TabViewContainer';
 import { TransportSelectorContainer } from '@src/features/home/TransportSelectorContainer';
 import { TransportType } from '@src/features/store/device/DeviceTypes';
@@ -20,7 +20,11 @@ export const DemoAppHomeContainer = () => {
   useDisconnectAllEffect();
 
   const { disconnect } = useConnectBleUseCase();
-  const disconnectByDeviceId = () => bleInfo && disconnect(bleInfo?.deviceId);
+  const changeConnectStatus = useDispatchConnectStatus();
+  const disconnectByDeviceId = () => {
+    if (bleInfo) disconnect(bleInfo?.deviceId);
+    if (isConnected) changeConnectStatus(false);
+  };
 
   const showTransportSelectorRef = useRef(() => {});
   const showTransportSelector = () => showTransportSelectorRef.current();
