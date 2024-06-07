@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 interface LogOutput {
   log?: string;
   addLog: (newLog: string) => void;
+  resetLog: () => void;
 }
 export function useLogUseCase(): LogOutput {
   const log = useLog();
@@ -17,5 +18,6 @@ export function useLogUseCase(): LogOutput {
   return {
     log,
     addLog,
+    resetLog,
   };
 }

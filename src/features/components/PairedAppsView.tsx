@@ -2,9 +2,9 @@ import React from 'react';
 import { ViewStyle, View, ScrollView, RefreshControl, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { Button, Text, VStack } from 'native-base';
-import { PairedApp } from '@src/features/ble/RNApduManager';
 import { AppItem } from '@src/features/components/AppItem';
 import { LogBox, getDefaultLog } from '@src/features/components/LogBox';
+import { PairedApp } from '@src/features/ble/data/PairedApp';
 
 const StyledButton = styled(Button)`
   width: 90px;

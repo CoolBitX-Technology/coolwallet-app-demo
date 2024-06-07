@@ -7,6 +7,10 @@ function useRouteItems() {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
   const routeItems: Array<RouteItem> = [
     {
+      routeName: RouteName.GET_CARD_INFO,
+      onButtonPress: () => navigation.navigate(RouteName.GET_CARD_INFO),
+    },
+    {
       routeName: RouteName.RESET_CARD,
       onButtonPress: () => navigation.navigate(RouteName.RESET_CARD),
     },

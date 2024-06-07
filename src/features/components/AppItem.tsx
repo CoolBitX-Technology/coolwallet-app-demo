@@ -1,4 +1,4 @@
-import { PairedApp } from '@src/features/ble/RNApduManager';
+import { PairedApp } from '@src/features/ble/data/PairedApp';
 import { AppIcon } from '@src/features/components/AppIcon';
 import { StarIcon } from '@src/features/components/StarIcon';
 import React from 'react';

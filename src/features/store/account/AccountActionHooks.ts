@@ -79,7 +79,7 @@ export function useAddress(cardId?: string, index?: number) {
   return account.addresses?.[index as number] || '';
 }
 
-export function useDispatchChangeAppInfo(): (cardId: string, appId: string, password: string, deviceName?: string) => void {
+export function useDispatchChangeAppInfo(): (cardId: string, appId: string, password: string, deviceName: string) => void {
   const dispatch = useAppDispatch();
   return (cardId, appId, password, deviceName) => {
     dispatch(AccountActions.setAppInfo({ cardId, deviceName, appId, password }));

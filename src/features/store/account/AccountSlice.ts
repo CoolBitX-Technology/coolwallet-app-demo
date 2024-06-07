@@ -19,13 +19,13 @@ export const AcountSlice = createSlice({
     },
     setAppInfo: (
       state: AccountState,
-      action: PayloadAction<{ cardId: string; appId: string; password: string; deviceName?: string }>,
+      action: PayloadAction<{ cardId: string; appId: string; deviceName: string; password: string }>,
     ) => {
       const { cardId, deviceName, appId, password } = action.payload;
       const accountInfo: AccountInfo = {
         isWalletRecovered: false,
         appId,
-        deviceName: deviceName || cardId,
+        deviceName,
         password,
         addresses: {},
       };

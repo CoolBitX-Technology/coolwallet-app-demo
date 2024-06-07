@@ -2,18 +2,18 @@ import { Transport, apdu, config } from '@coolwallet/core';
 import { AppKeyPair } from '@src/features/ble/utils/StorageUtils';
 import { SDKError } from '@coolwallet/core/lib/error';
 import { RNApduError } from '@src/features/ble/RNApduError';
-
-export interface PairedApp {
-  appId: string;
-  deviceName: string;
-}
+import { PairedApp } from '@src/features/ble/data/PairedApp';
+import { CardInfo } from '@src/features/ble/data/CardInfo';
 
 interface ApduManager {
   init(transport: Transport, appKeyPair: AppKeyPair): void;
   isInitialize(): boolean;
+  getCardInfo(): Promise<CardInfo>;
+  resetDevice(): Promise<boolean>;
   registerDevice(name: string, password: string): Promise<string>;
   getPairPassword(appId: string): Promise<string>;
-  resetDevice(): Promise<boolean>;
+  getPairedApps(appId: string): Promise<PairedApp[]>;
+  removePairedDevice(appId: string, pairedAppId: string): Promise<void>;
 }
 
 export class RNApduManager implements ApduManager {
@@ -50,6 +50,14 @@ export class RNApduManager implements ApduManager {
   private async getSEPublicKey(): Promise<string> {
     if (!this.isInitialize()) throw new SDKError('NOT_INITIALIZE', 'RNApduManager is not initialzie');
     return await config.getSEPublicKey(this.getTransport());
+  }
+
+  async getCardInfo(): Promise<CardInfo> {
+    try {
+      return await apdu.info.getCardInfo(this.getTransport());
+    } catch (e) {
+      throw RNApduError.parseError(e as Error);
+    }
   }
 
   async registerDevice(name: string, password: string): Promise<string> {
