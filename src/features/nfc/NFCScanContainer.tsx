@@ -1,36 +1,104 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import NFCScanView from '@src/features/nfc/NFCScanView';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Button, TextInput, ScrollView } from 'react-native';
+import RNNfcTransport from './RNNfcTransport';
 
 const NFCScanContainer = () => {
+  const [nfcData, setNfcData] = useState<string | null>(null);
+  const [inputData, setInputData] = useState<string>('');
+  const [log, setLog] = useState<string[]>([]);
+
+  const addLog = (entry: string) => {
+    setLog((prevLog) => [...prevLog, entry]);
+  };
+
+  const handleReadData = async () => {
+    try {
+      await RNNfcTransport.connect();
+      const data = await RNNfcTransport.readData();
+      if (data) {
+        setNfcData(data.join(', '));
+        addLog(`>> read: ${data.join(', ')}`);
+      }
+    } catch (error) {
+      console.error('Failed to read NFC data:', error);
+    } finally {
+      await RNNfcTransport.disconnect();
+    }
+  };
+
+  const handleWriteData = async () => {
+    try {
+      await RNNfcTransport.connect();
+      await RNNfcTransport.writeData(inputData);
+      addLog(`>> write: ${inputData}`);
+      setInputData('');
+    } catch (error) {
+      console.error('Failed to write NFC data:', error);
+    } finally {
+      await RNNfcTransport.disconnect();
+    }
+  };
+
   return (
-    <View style={styles.outerContainer}>
-      <View style={styles.container}>
-        <NFCScanView />
+    <View style={styles.container}>
+      <ScrollView style={styles.logContainer}>
+        {log.map((entry, index) => (
+          <Text key={index} style={styles.logEntry}>
+            {entry}
+          </Text>
+        ))}
+      </ScrollView>
+      <View style={styles.inputContainer}>
+        <View style={styles.buttonContainer}>
+          <Button title="Read" onPress={handleReadData} />
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter data to write"
+          value={inputData}
+          onChangeText={setInputData}
+          onSubmitEditing={handleWriteData}
+        />
+        <View style={styles.buttonContainer}>
+          <Button title="Write" onPress={handleWriteData} />
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  outerContainer: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  container: {
-    width: '80%',
-    height: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
+  },
+  logContainer: {
+    flex: 1,
+    width: '100%',
+    marginBottom: 16,
+  },
+  logEntry: {
+    fontSize: 16,
+    marginVertical: 4,
+  },
+  inputContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 8,
+    marginHorizontal: 8,
+  },
+  buttonContainer: {
+    marginHorizontal: 4,
   },
 });
 
