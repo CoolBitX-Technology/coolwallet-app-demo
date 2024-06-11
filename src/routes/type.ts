@@ -1,6 +1,7 @@
 export enum RouteName {
   DEMO_HOME = 'CoolWallet Demo App',
   BLUETOOTH_SCAN = 'BluetoothScan',
+  HTTP_SCAN = 'HTTPScan',
   REFRESH_APP_KEY_PAIR = 'Refresh App Key Pair',
   RESET_CARD = 'Reset Card',
   GET_CARD_INFO = 'Get Card Info',

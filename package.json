@@ -75,6 +75,7 @@
     "string_decoder": "^0.10.31",
     "styled-components": "^6.0.7",
     "timers-browserify": "^1.4.2",
+    "transport-jre-http": "^1.1.2",
     "tty-browserify": "^0.0.0",
     "url": "^0.10.3",
     "util": "^0.10.4",

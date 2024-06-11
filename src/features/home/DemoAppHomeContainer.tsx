@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
 import { RouteName } from '@src/routes/type';
 import { ConnectCardView } from '@src/features/home/ConnectCardView';
@@ -11,6 +10,7 @@ import {
 } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { TabViewContainer } from '@src/features/home/TabViewContainer';
+import { TransportSelectorContainer, TransportType } from '@src/features/home/TransportSelectorContainer';
 
 export const DemoAppHomeContainer = () => {
   const bleInfo = useBluetoothInfo();
@@ -19,28 +19,28 @@ export const DemoAppHomeContainer = () => {
   useDisconnectAllEffect();
 
   const { disconnect } = useConnectBleUseCase();
+  const disconnectByDeviceId = () => disconnect(bleInfo?.deviceId);
+
+  const showTransportSelectorRef = useRef(() => {});
+  const showTransportSelector = () => showTransportSelectorRef.current();
 
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
-  const OnPressButton = () => {
-    if (isConnected && bleInfo) return disconnect(bleInfo.deviceId);
-    return navigation.navigate(RouteName.BLUETOOTH_SCAN);
+  const navigateToScan = (type: TransportType) => {
+    if (type === TransportType.Bluetooth) navigation.navigate(RouteName.BLUETOOTH_SCAN);
+    else if (type === TransportType.Http) navigation.navigate(RouteName.HTTP_SCAN);
+    else throw new Error(`navigateToScan get unknown type: ${type}`);
   };
 
   return (
     <>
-      <View style={styles.homeContainer}>
-        <ConnectCardView cardId={bleInfo?.cardId} onPress={OnPressButton} isConnected={isConnected} />
-      </View>
+      <ConnectCardView
+        cardId={bleInfo?.cardId}
+        isConnected={isConnected}
+        onConnectPressed={showTransportSelector}
+        onDisconnectPressed={disconnectByDeviceId}
+      />
       <TabViewContainer />
+      <TransportSelectorContainer showRef={showTransportSelectorRef} onSelected={navigateToScan} />
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  homeContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  titleText: { fontSize: 32, fontWeight: '500' },
-});
