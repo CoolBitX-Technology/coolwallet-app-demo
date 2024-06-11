@@ -1,5 +1,12 @@
+export enum TransportType {
+  Bluetooth = 'bluetooth',
+  Http = 'http',
+}
+
 export interface DeviceState {
-  bleInfo?: BluetoothInfo;
+  isConnected: boolean;
+  transportType?: TransportType;
+  deviceInfoMap: Record<string, DeviceInfo>;
 }
 
 export interface BluetoothInfo {
@@ -20,12 +27,16 @@ export interface BluetoothInfo {
   mtu: number;
 
   /**
-   * Connect status of device.
-   */
-  isConnected: boolean;
-
-  /**
    * User friendly id of device.
    */
   cardId: string;
 }
+
+export interface HttpInfo {
+  hostname: string;
+  port: string;
+  url: string;
+  cardId?: string;
+}
+
+export type DeviceInfo = BluetoothInfo | HttpInfo;

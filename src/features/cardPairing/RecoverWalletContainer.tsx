@@ -1,5 +1,5 @@
-import { useBleTransport } from '@src/features/ble/usecases/useConnectBleUseCase';
 import { DemoView } from '@src/features/components/DemoView';
+import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
@@ -12,7 +12,7 @@ export function RecoverWalletContainer() {
   const defaultMnemonic = useMnemonic();
   const cardId = useCardId();
   const appId = useAppId(cardId);
-  const transport = useBleTransport();
+  const transport = useTransport();
   const [isRecovering, setIsRecovering] = useState(false);
   const [mnemonic, setMnemonic] = useState(defaultMnemonic);
   const isBtnDisable = !cardId || !appId || !transport || !mnemonic || isRecovering;

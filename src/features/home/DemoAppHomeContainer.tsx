@@ -8,18 +8,34 @@ import {
   useSubscribeConnectionEffect,
   useDisconnectAllEffect,
 } from '@src/features/ble/usecases/useConnectBleUseCase';
-import { useBluetoothInfo, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
+import {
+  useBluetoothInfo,
+  useCardId,
+  useClearDeviceInfo,
+  useDispatchConnectStatus,
+  useIsConnected,
+  useTransportType,
+} from '@src/features/store/device/DeviceActionHooks';
 import { TabViewContainer } from '@src/features/home/TabViewContainer';
-import { TransportSelectorContainer, TransportType } from '@src/features/home/TransportSelectorContainer';
+import { TransportSelectorContainer } from '@src/features/home/TransportSelectorContainer';
+import { TransportType } from '@src/features/store/device/DeviceTypes';
 
 export const DemoAppHomeContainer = () => {
+  const type = useTransportType();
   const bleInfo = useBluetoothInfo();
+  const cardId = useCardId();
   const isConnected = useIsConnected();
+  const clearDeviceInfo = useClearDeviceInfo();
   useSubscribeConnectionEffect();
   useDisconnectAllEffect();
 
-  const { disconnect } = useConnectBleUseCase();
-  const disconnectByDeviceId = () => disconnect(bleInfo?.deviceId);
+  const { disconnect: disconnectBle } = useConnectBleUseCase();
+  const changeConnectStatus = useDispatchConnectStatus();
+  const disconnectByDeviceId = () => {
+    if (bleInfo) disconnectBle(bleInfo?.deviceId);
+    if (isConnected) changeConnectStatus(false);
+    if (type) clearDeviceInfo(type);
+  };
 
   const showTransportSelectorRef = useRef(() => {});
   const showTransportSelector = () => showTransportSelectorRef.current();
@@ -34,7 +50,7 @@ export const DemoAppHomeContainer = () => {
   return (
     <>
       <ConnectCardView
-        cardId={bleInfo?.cardId}
+        cardId={cardId}
         isConnected={isConnected}
         onConnectPressed={showTransportSelector}
         onDisconnectPressed={disconnectByDeviceId}
