@@ -1,6 +1,6 @@
 import { Transport } from '@coolwallet/core';
 import { RNBleManager } from '@src/features/ble/RNBleManager';
-import { useBluetoothInfo, useClearBluetoothInfo, useDispatchBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
+import { useBluetoothInfo, useDispatchBluetoothInfo } from '@src/features/store/device/DeviceActionHooks';
 import { useEffect, useState } from 'react';
 import { BleError, Device as BluetoothDevice } from 'react-native-ble-plx';
 
@@ -8,7 +8,6 @@ export function useConnectBleUseCase() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectError, setConnectError] = useState<Error>();
   const updateBleInfo = useDispatchBluetoothInfo();
-  const clearBleInfo = useClearBluetoothInfo();
 
   const listener = (device: BluetoothDevice, bleError?: BleError) => {
     setIsConnecting(false);
@@ -31,7 +30,6 @@ export function useConnectBleUseCase() {
     setIsConnecting(false);
     setConnectError(undefined);
     RNBleManager.getInstance().disconnectedById(deviceId);
-    clearBleInfo();
   };
 
   const transport = useBleTransport();
