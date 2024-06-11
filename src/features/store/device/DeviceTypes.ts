@@ -32,4 +32,11 @@ export interface BluetoothInfo {
   cardId: string;
 }
 
-export type DeviceInfo = BluetoothInfo;
+export interface HttpInfo {
+  hostname: string;
+  port: string;
+  url: string;
+  cardId?: string;
+}
+
+export type DeviceInfo = BluetoothInfo | HttpInfo;

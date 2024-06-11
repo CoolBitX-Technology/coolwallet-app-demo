@@ -24,6 +24,7 @@ const DeviceSlice = createSlice({
     clearDeviceInfo: (state: DeviceState, action: PayloadAction<TransportType>) => {
       const type = action.payload;
       delete state.deviceInfoMap?.[type];
+      state.transportType = undefined;
     },
   },
 });

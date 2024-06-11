@@ -13,4 +13,14 @@ export class DeviceInfoMapper {
       mtu: device.mtu,
     } as DeviceInfo;
   }
+
+  static mapFromHttpInfo(hostname: string, port: string, cardId?: string): DeviceInfo {
+    const url = `http://${hostname}:${port}`;
+    return {
+      hostname,
+      port,
+      url,
+      cardId,
+    } as DeviceInfo;
+  }
 }

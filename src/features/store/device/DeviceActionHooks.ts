@@ -2,7 +2,7 @@ import { RootState } from '@src/features/store/store';
 import { useAppSelector, useAppDispatch } from '@src/features/store/hooks';
 import { DeviceActions } from '@src/features/store/device/DeviceSlice';
 import { Device as BluetoothDevice } from 'react-native-ble-plx';
-import { BluetoothInfo, DeviceInfo, DeviceState, TransportType } from '@src/features/store/device/DeviceTypes';
+import { BluetoothInfo, DeviceInfo, DeviceState, HttpInfo, TransportType } from '@src/features/store/device/DeviceTypes';
 import { DeviceInfoMapper } from '@src/features/store/device/DeviceInfoMapper';
 
 function getCardInfo(state: RootState): DeviceState {
@@ -32,6 +32,12 @@ export function useBluetoothInfo(): BluetoothInfo | undefined {
   const deviceInfo = useDeviceInfo(TransportType.Bluetooth);
   if (!deviceInfo) return;
   return deviceInfo as BluetoothInfo;
+}
+
+export function useHttpInfo(): HttpInfo | undefined {
+  const deviceInfo = useDeviceInfo(TransportType.Http);
+  if (!deviceInfo) return;
+  return deviceInfo as HttpInfo;
 }
 
 export function useCardId() {
@@ -66,10 +72,24 @@ export function useDispatchBluetoothInfo(): (device: BluetoothDevice) => void {
   };
 }
 
-export function useClearBluetoothInfo(): () => void {
+export function useDispatchHttpInfo(): (hostName: string, port: string, cardId?: string) => void {
   const dispatch = useAppDispatch();
-  return () => {
-    const type = TransportType.Bluetooth;
+  return (hostname, port, cardId) => {
+    const type = TransportType.Http;
+    const deviceInfo = DeviceInfoMapper.mapFromHttpInfo(hostname, port, cardId);
+    dispatch(
+      DeviceActions.updateDeviceInfo({
+        type,
+        deviceInfo,
+      }),
+    );
+    dispatch(DeviceActions.updateConnectStatus(true));
+  };
+}
+
+export function useClearDeviceInfo(): (type: TransportType) => void {
+  const dispatch = useAppDispatch();
+  return (type) => {
     dispatch(DeviceActions.clearDeviceInfo(type));
     dispatch(DeviceActions.updateConnectStatus(false));
   };
