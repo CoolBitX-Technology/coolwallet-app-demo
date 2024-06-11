@@ -21,11 +21,8 @@ export function useTransportType(): TransportType | undefined {
   return useCardInfo()?.transportType;
 }
 
-export function useDeviceInfo(type: TransportType): DeviceInfo | undefined {
-  const map = useDeviceInfoMap();
-  const deviceInfo = map?.[type];
-  if (!deviceInfo) return;
-  return deviceInfo;
+export function useDeviceInfo(type: TransportType = TransportType.Bluetooth): DeviceInfo | undefined {
+  return useDeviceInfoMap()?.[type];
 }
 
 export function useBluetoothInfo(): BluetoothInfo | undefined {
@@ -41,7 +38,10 @@ export function useHttpInfo(): HttpInfo | undefined {
 }
 
 export function useCardId() {
-  return useBluetoothInfo()?.cardId || '';
+  const transportType = useTransportType();
+  const deviceInfo = useDeviceInfo(transportType);
+
+  return deviceInfo?.cardId || '';
 }
 
 export function useIsConnected() {

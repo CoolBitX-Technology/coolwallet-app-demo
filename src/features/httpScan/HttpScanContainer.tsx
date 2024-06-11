@@ -14,12 +14,8 @@ export function HttpScanContainer(): JSX.Element {
 
   const { connect, log } = useCreateHttpTransportUseCase();
 
+  const connectByUrl = () => connect(hostname, port);
   const goBack = useNavigation().goBack;
-
-  const connectByUrl = () => {
-    connect(hostname, port);
-    goBack();
-  };
 
   return (
     <HttpScanView
