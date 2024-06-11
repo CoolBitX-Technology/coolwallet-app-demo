@@ -1,20 +1,23 @@
 import { useNavigation } from '@react-navigation/native';
 import { HttpScanView } from '@src/features/httpScan/HttpScanView';
 import { useCreateHttpTransportUseCase } from '@src/features/httpScan/useCreateHttpTransportUseCase';
-import { useHttpInfo } from '@src/features/store/device/DeviceActionHooks';
-import React, { useState } from 'react';
+import { useAsyncStorageState } from '@src/features/utils/Hooks';
+import React from 'react';
 
-const DEFAULT_HOSTNAME = '10.0.0.241';
-const DEFAULT_PORT = '9090';
+const HOSTNAME_STORAGE_KEY = 'HttpScanContainer:userInput:hostname';
+const PORT_STORAGE_KEY = 'HttpScanContainer:userInput:port';
 
 export function HttpScanContainer(): JSX.Element {
-  const httpInfo = useHttpInfo();
-  const [hostname, setHostname] = useState(httpInfo?.hostname || DEFAULT_HOSTNAME);
-  const [port, setPort] = useState(httpInfo?.port || DEFAULT_PORT);
+  const { value: hostname, setValue: setHostname, store: storeHostname } = useAsyncStorageState(HOSTNAME_STORAGE_KEY);
+  const { value: port, setValue: setPort, store: storePort } = useAsyncStorageState(PORT_STORAGE_KEY);
 
   const { connect, log } = useCreateHttpTransportUseCase();
 
-  const connectByUrl = () => connect(hostname, port);
+  const connectByUrl = () => {
+    connect(hostname, port);
+    storeHostname();
+    storePort();
+  };
   const goBack = useNavigation().goBack;
 
   return (
