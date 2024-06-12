@@ -503,7 +503,7 @@ PODS:
     - React-perflogger (= 0.72.4)
   - RNCAsyncStorage (1.23.1):
     - React-Core
-  - RNCClipboard (1.14.1):
+  - RNCClipboard (1.11.2):
     - React-Core
   - RNGestureHandler (2.16.2):
     - RCT-Folly (= 2021.07.22.00)
@@ -790,7 +790,7 @@ SPEC CHECKSUMS:
   React-utils: b79f2411931f9d3ea5781404dcbb2fa8a837e13a
   ReactCommon: 4b2bdcb50a3543e1c2b2849ad44533686610826d
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
-  RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
+  RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNGestureHandler: d678f94a8f74de70ce3d9f5d23eb0f97b686e943
   RNOS: 94330d67e75b1ffa26ac81dc46b69a85658322b5
   RNPermissions: 81313be373597856123b55d0842c0e2474366218
@@ -803,4 +803,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 83bfca70b10edfc3bd213446b108efe8e3c50147
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.12.1
