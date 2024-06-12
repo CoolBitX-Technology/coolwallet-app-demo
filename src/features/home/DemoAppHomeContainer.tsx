@@ -16,7 +16,7 @@ import {
   useIsConnected,
   useTransportType,
 } from '@src/features/store/device/DeviceActionHooks';
-import { TabViewContainer } from '@src/features/home/TabViewContainer';
+import { TabViewContainer } from '@src/features/home/TabViewContainer';;
 import { TransportSelectorContainer } from '@src/features/home/TransportSelectorContainer';
 import { TransportType } from '@src/features/store/device/DeviceTypes';
 
@@ -41,10 +41,12 @@ export const DemoAppHomeContainer = () => {
   const showTransportSelector = () => showTransportSelectorRef.current();
 
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
+
   const navigateToScan = (type: TransportType) => {
     if (type === TransportType.Bluetooth) navigation.navigate(RouteName.BLUETOOTH_SCAN);
     else if (type === TransportType.Http) navigation.navigate(RouteName.HTTP_SCAN);
-    else throw new Error(`navigateToScan get unknown type: ${type}`);
+    else if (type === TransportType.NFC) navigation.navigate(RouteName.NFC_SCAN);
+    else throw new Error(`Unrecognized Transport: ${type}`);
   };
 
   return (

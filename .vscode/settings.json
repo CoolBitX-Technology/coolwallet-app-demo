@@ -3,5 +3,6 @@
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.insertFinalNewline": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

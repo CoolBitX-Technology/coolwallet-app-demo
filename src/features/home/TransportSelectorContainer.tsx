@@ -25,6 +25,7 @@ export function TransportSelectorContainer({ showRef, onSelected }: Props): JSX.
         <ActionSheetHeader />
         <Actionsheet.Item onPress={() => onSelectedInternal(TransportType.Bluetooth)}>Bluetooth</Actionsheet.Item>
         <Actionsheet.Item onPress={() => onSelectedInternal(TransportType.Http)}>HTTP</Actionsheet.Item>
+        <Actionsheet.Item onPress={() => onSelectedInternal(TransportType.NFC)}>NFC</Actionsheet.Item>
       </Actionsheet.Content>
     </Actionsheet>
   );
