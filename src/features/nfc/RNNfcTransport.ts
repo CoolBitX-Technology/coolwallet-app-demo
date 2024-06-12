@@ -78,22 +78,14 @@ class RNNfcTransport {
     try {
       console.log('execute writeData..')
       await NfcManager.start();
-      if(!this.isIsoDepTechnologyRequested){
-        await NfcManager.requestIsoDepTechnology();
-        this.isIsoDepTechnologyRequested = true;
-      }
+      await NfcManager.requestIsoDepTechnology();
       return await NfcManager.writeData(data);
     } catch (e) {
       const errorMsg = `Failed to write NFC data: ${JSON.stringify(e)}`;
       console.error(errorMsg);
       throw new RNNfcError(errorMsg);
     } finally {
-      // Reconnect after a short delay to avoid race conditions
-      // await this.disconnect(true);
-      // await this.connect(onTagDiscovered);
-      // setTimeout(async () => {
-      //   await this.connect(onTagDiscovered);
-      // }, 1000); 
+      await NfcManager.cancelTechnologyRequest();
     }
   }
 }
