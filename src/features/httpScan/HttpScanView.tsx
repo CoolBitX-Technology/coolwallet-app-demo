@@ -11,12 +11,12 @@ const TextInputLayout = styled(VStack)`
   margin-bottom: 8px;
 `;
 
-const StyledButton = styled(Button)`
+export const StyledButton = styled(Button)`
   width: 90px;
   height: 40px;
 `;
 
-const ButtonLayout = styled(View)`
+export const ButtonLayout = styled(View)`
   width: 100%;
   height: 40px;
   margin-top: 24px;
