@@ -5,8 +5,9 @@ import { TagEvent } from 'react-native-nfc-manager';
 
 const NFCScanContainer = () => {
   const [nfcData, setNfcData] = useState<string | null>(null);
-  //GetCardInfo
-  const [inputData, setInputData] = useState('0009806600000000000000');
+  //GetCardInfo 80660000
+  //SelectApplet
+  const [inputData, setInputData] = useState('00a404000d436f6f6c57616c6c657450524f');
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -18,7 +19,7 @@ const NFCScanContainer = () => {
   const handleTagDiscovered = async (tag: TagEvent) => {
     console.log('onTagDiscovered', tag);
     try {
-      const data = await RNNfcTransport.readData(tag);
+      const data = await RNNfcTransport.readData(tag, handleTagDiscovered);
       if (data) {
         setNfcData(data);
         addLog(`>> read: ${data}`);
@@ -66,9 +67,10 @@ const NFCScanContainer = () => {
 
   const handleWriteData = async () => {
     try {
-      await RNNfcTransport.writeData(inputData);
+      const response = await RNNfcTransport.writeData(inputData, handleTagDiscovered);
       setNfcData(`Wrote: ${inputData}`);
       addLog(`>> write: ${inputData}`);
+      addLog(`>> return: ${response}`);
     } catch (e: any) {
       console.error('Failed to write NFC data:', e);
       addLog(`>> write error: ${e.message}`);

@@ -1,4 +1,5 @@
-import NfcManager, { NfcTech, Ndef, TagEvent, NfcEvents } from 'react-native-nfc-manager';
+import { hexStringToNumberArray, numberArrayToHexString } from '@src/features/nfc/util';
+import NfcManager, { NfcTech, TagEvent, NfcEvents, Ndef } from 'react-native-nfc-manager';
 
 class NFCManager {
   constructor() {
@@ -30,10 +31,24 @@ class NFCManager {
 
   async requestNdefTechnology() {
     try {
+      console.log('await NfcTech.Ndef request...');
       await NfcManager.requestTechnology(NfcTech.Ndef);
       console.log('NfcTech.Ndef requested successfully');
     } catch (error) {
       console.error('Failed to request NfcTech.Ndef:', error);
+      throw error;
+    }
+  }
+
+  async requestIsoDepTechnology() {
+    try {
+      console.log('await NfcTech.IsoDep request...');
+      await NfcManager.requestTechnology(NfcTech.IsoDep ,{
+        alertMessage: 'Ready to write NFC tags!'
+      });
+      console.log('NfcTech.IsoDep requested successfully');
+    } catch (error) {
+      console.error('Failed to request NfcTech.IsoDep:', error);
       throw error;
     }
   }
@@ -64,36 +79,37 @@ class NFCManager {
     }
   }
 
-  async writeData(data: string) {
+  async writeData(data: string):Promise<string> {
     try {
-      const bytes = Ndef.encodeMessage([Ndef.textRecord(data)]);
-      if (bytes) {
-        await NfcManager.ndefHandler.writeNdefMessage(bytes);
-        console.log('NFC data written successfully');
-      }
+      const apduCommand = hexStringToNumberArray(data);
+      const response = await NfcManager.isoDepHandler.transceive(apduCommand);
+      const responseHex = numberArrayToHexString(response)
+      console.log('Response from NFC:',responseHex );
+      return responseHex;
     } catch (error) {
       console.error('Failed to write NFC data:', error);
       throw error;
     }
   }
 
-  setTagDiscoveredListener(listener: (tag: TagEvent) => void) {
+  registerTagEvent(listener: (tag: TagEvent) => void) {
     try {
       NfcManager.setEventListener(NfcEvents.DiscoverTag, listener);
-      console.log('Tag discovered listener set successfully');
+      console.log('Register tag listener set successfully');
     } catch (error) {
       console.error('Failed to set tag discovered listener:', error);
     }
   }
 
-  removeTagDiscoveredListener() {
+  unregisterTagEvent() {
     try {
       NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
-      console.log('Tag discovered listener removed successfully');
+      console.log('Unregister tag event successfully');
     } catch (error) {
       console.error('Failed to remove tag discovered listener:', error);
     }
   }
+
 }
 
 export default new NFCManager();
