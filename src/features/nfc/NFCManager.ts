@@ -15,6 +15,15 @@ class NFCManager {
     }
   }
   
+  async isEnabled():Promise<boolean> {
+    try {
+      return NfcManager.isEnabled();
+    } catch (error) {
+      console.error('Failed to check if NfcManager is enabled:', error);
+      return false;
+    }
+  }
+
   async getTag() {
     return await NfcManager.getTag();
   }

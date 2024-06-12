@@ -5,7 +5,8 @@ import { TagEvent } from 'react-native-nfc-manager';
 
 const NFCScanContainer = () => {
   const [nfcData, setNfcData] = useState<string | null>(null);
-  const [inputData, setInputData] = useState('');
+  //GetCardInfo
+  const [inputData, setInputData] = useState('0009806600000000000000');
   const [log, setLog] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -14,28 +15,52 @@ const NFCScanContainer = () => {
     setLog((prevLog) => [...prevLog, entry]);
   };
 
+  const handleTagDiscovered = async (tag: TagEvent) => {
+    console.log('onTagDiscovered', tag);
+    try {
+      const data = await RNNfcTransport.readData(tag);
+      if (data) {
+        setNfcData(data);
+        addLog(`>> read: ${data}`);
+      }
+    } catch (err) {
+      setError(`Failed to read NFC data: ${err}`);
+    }
+  };
+
   useEffect(() => {
-    const onTagDiscovered = async (tag: TagEvent) => {
-      console.log('onTagDiscovered')
-      console.log(tag)
-      try {
-        const data = await RNNfcTransport.readData(tag);
-        if (data) {
-          setNfcData(data);
-          addLog(`>> read: ${data}`);
-        }
-      } catch (err) {
-        setError(`Failed to read NFC data: ${err}`);
+    const checkNfc = async () => {
+      const enabled = await RNNfcTransport.startNfc();
+      if (!enabled) {
+        console.error('NFC is not enabled on this device')
       }
     };
 
-    RNNfcTransport.connect(onTagDiscovered)
-      .then(() => setIsConnected(true))
-      .catch(err => setError(`Failed to connect to NFC tag: ${err}`));
+    checkNfc();
+
+    const connectNfc = async () => {
+      try {
+        await RNNfcTransport.connect(handleTagDiscovered);
+        setIsConnected(true);
+      } catch (err) {
+        setError(`Failed to connect to NFC tag: ${err}`);
+      }
+    };
+
+    connectNfc();
 
     return () => {
-      RNNfcTransport.disconnect();
-      setIsConnected(false);
+      const disconnectNfc = async () => {
+        try {
+          await RNNfcTransport.disconnect(true);
+        } catch (err) {
+          console.warn('Failed to disconnect NFC:', err);
+        } finally {
+          setIsConnected(false);
+        }
+      };
+
+      disconnectNfc();
     };
   }, []);
 
