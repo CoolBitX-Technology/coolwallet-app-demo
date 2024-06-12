@@ -73,8 +73,6 @@ export function DemoAppNavigator() {
         component={NFCScanContainer}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.REGISTER_CARD}
         component={RegisterCardContainer}

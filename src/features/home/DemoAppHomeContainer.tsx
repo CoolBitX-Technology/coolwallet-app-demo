@@ -49,11 +49,6 @@ export const DemoAppHomeContainer = () => {
     else throw new Error(`Unrecognized Transport: ${type}`);
   };
 
-  const OnPressButton = () => {
-    if (isConnected && bleInfo) return disconnectBle(bleInfo.deviceId);
-    return navigation.navigate(RouteName.BLUETOOTH_SCAN);
-  };
-
   return (
     <>
       <ConnectCardView
