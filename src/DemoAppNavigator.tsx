@@ -1,7 +1,7 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
+import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
 import { DemoAppHomeContainer } from '@src/features/home/DemoAppHomeContainer';
 import { RouteName } from '@src/routes/type';
 import { ResetCardContainer } from '@src/features/cardPairing/ResetCardContainer';
@@ -19,8 +19,6 @@ import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/Gene
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
 import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
 import NFCScanContainer from "@src/features/nfc/NFCScanContainer";
-import { BluetoothScanContainer } from '@src/features/ble/BluetoothScanContainer';
-
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
