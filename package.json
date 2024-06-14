@@ -20,8 +20,9 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
-    "@coolwallet/core": "^1.1.18",
+    "@coolwallet/core": "2.0.0-beta.3",
     "@coolwallet/evm": "^1.0.27",
+    "@coolwallet/transport-jre-http": "2.0.0-beta.1",
     "@react-native-async-storage/async-storage": "^1.19.2",
     "@react-native-clipboard/clipboard": "1.11.2",
     "@react-navigation/material-top-tabs": "^6.6.3",
@@ -76,7 +77,6 @@
     "string_decoder": "^0.10.31",
     "styled-components": "^6.0.7",
     "timers-browserify": "^1.4.2",
-    "transport-jre-http": "^1.1.2",
     "tty-browserify": "^0.0.0",
     "url": "^0.10.3",
     "util": "^0.10.4",

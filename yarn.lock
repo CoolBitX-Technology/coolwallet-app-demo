@@ -1189,10 +1189,32 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@coolwallet/core@^1.1.18":
-  version "1.1.24"
-  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-1.1.24.tgz#e5ab630bef3bf648fb93b2d2c223515c461b2bf7"
-  integrity sha512-1ymjDPCOo8tlXzcxff96NApO2gGVL7nQMBfPsw8O85cCO+Guf0WfEIUu3b8nnX0DaIHgWFr+RLnwZeplitSn2Q==
+"@coolwallet/core@2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.2.tgz#e25d4e0e9b5b88303292d7f1a9763eb30f40c7bc"
+  integrity sha512-jGjXOrzREe+3OfohhlgspoXrgbJgqTxIqDpHaaK5n0cbTzRB34aIGpMBzlo5+xHquT4lYBlcdGZbSXzowlOfHg==
+  dependencies:
+    "@types/elliptic" "^6.4.14"
+    "@types/lodash" "^4.14.177"
+    "@types/node" "^14.0.13"
+    "@types/pbkdf2" "^3.1.0"
+    "@types/web-bluetooth" "^0.0.11"
+    bip32 "^2.0.4"
+    bip39 "^3.0.2"
+    bip66 "^1.1.5"
+    bn.js "^5.1.1"
+    elliptic "^6.5.3"
+    jwt-decode "^3.1.2"
+    key-encoder "^2.0.3"
+    lodash "^4.17.21"
+    pbkdf2 "^3.1.2"
+    react-native-ble-plx "^2.0.3"
+    rlp "^2.2.3"
+
+"@coolwallet/core@2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.3.tgz#135b70ad09dbf5697eba62d0629f95f974015102"
+  integrity sha512-dkLzSJjdcsdpRcXJmPjzD5y4R80X65vU50al1hHgMBPjzCS3ETk/2jBDXa89l0WBepgtxd029VnyaCejXeVhIg==
   dependencies:
     "@types/elliptic" "^6.4.14"
     "@types/lodash" "^4.14.177"
@@ -1223,6 +1245,15 @@
     keccak "^3.0.2"
     lodash "^4.17.21"
     rlp "^3.0.0"
+
+"@coolwallet/transport-jre-http@2.0.0-beta.1":
+  version "2.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@coolwallet/transport-jre-http/-/transport-jre-http-2.0.0-beta.1.tgz#58276457fbee31f956b8cc15c4e80692aa492395"
+  integrity sha512-H09kvqd+XME9HAQ59OkGmhlMoAt4ZcKnDz31caYpwMKCzVTFf13whPGqR/QBbbhQBBMgqnYGtqtWQtYIZd0TGw==
+  dependencies:
+    "@coolwallet/core" "2.0.0-beta.2"
+    axios "^0.25.0"
+    lodash "^4.17.21"
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -10869,14 +10900,6 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
-
-transport-jre-http@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/transport-jre-http/-/transport-jre-http-1.1.2.tgz#c5b54129cc2e81dcf2cbc9af2aebecdf25b74fec"
-  integrity sha512-rFCd5WuMm5l3g6DKh5CNNc9wNh3Q19kCieT5GQIm40Wa+2aq9uJ010Xkts6sa+0abULn9SrJgi/gI3PgH7s5NQ==
-  dependencies:
-    axios "^0.25.0"
-    lodash "^4.17.21"
 
 tslib@2.4.0:
   version "2.4.0"

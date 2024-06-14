@@ -1,8 +1,8 @@
-import { Transport, apdu } from '@coolwallet/core';
+import { Transport, info } from '@coolwallet/core';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { useDispatchHttpInfo, useHttpInfo } from '@src/features/store/device/DeviceActionHooks';
 import { useEffect, useState } from 'react';
-import { HttpTransport } from 'transport-jre-http';
+import { HttpTransport } from '@coolwallet/transport-jre-http';
 
 export function useCreateHttpTransportUseCase() {
   const changeHttpInfo = useDispatchHttpInfo();
@@ -18,7 +18,7 @@ export function useCreateHttpTransportUseCase() {
     const transport = new HttpTransport(url);
     addLog(`Successfully created a transport with: ${url} ...`);
 
-    const cardIdHex = await apdu.general.getCardId(transport);
+    const cardIdHex = await info.getCardId(transport);
     const cardId = Buffer.from(cardIdHex, 'hex').toString();
     addLog(`Successfully got card id: ${cardId}`);
 
