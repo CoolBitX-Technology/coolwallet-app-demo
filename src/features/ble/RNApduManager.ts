@@ -1,4 +1,4 @@
-import { Transport, apdu, config } from '@coolwallet/core';
+import { Transport, config, info, setting, wallet } from '@coolwallet/core';
 import { AppKeyPair } from '@src/features/ble/utils/StorageUtils';
 import { SDKError } from '@coolwallet/core/lib/error';
 import { RNApduError } from '@src/features/ble/RNApduError';
@@ -54,7 +54,7 @@ export class RNApduManager implements ApduManager {
 
   async getCardInfo(): Promise<CardInfo> {
     try {
-      return await apdu.info.getCardInfo(this.getTransport());
+      return await info.getCardInfo(this.getTransport());
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }
@@ -65,7 +65,7 @@ export class RNApduManager implements ApduManager {
     const { publicKey } = appKeyPair;
     const sePublicKey = await this.getSEPublicKey();
     try {
-      return await apdu.pair.register(this.getTransport(), publicKey, password, name, sePublicKey);
+      return await wallet.client.register(this.getTransport(), publicKey, password, name, sePublicKey);
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }
@@ -75,7 +75,7 @@ export class RNApduManager implements ApduManager {
     const appKeyPair = this.getAppKeyPair();
     const { privateKey } = appKeyPair;
     try {
-      return await apdu.pair.getPairedApps(this.getTransport(), appId, privateKey);
+      return await wallet.client.getPairedApps(this.getTransport(), appId, privateKey);
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }
@@ -85,7 +85,7 @@ export class RNApduManager implements ApduManager {
     const appKeyPair = this.getAppKeyPair();
     const { privateKey } = appKeyPair;
     try {
-      return await apdu.pair.removePairedDevice(this.getTransport(), appId, privateKey, pairedAppId);
+      return await wallet.client.removePairedDevice(this.getTransport(), appId, privateKey, pairedAppId);
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }
@@ -93,7 +93,7 @@ export class RNApduManager implements ApduManager {
 
   async resetDevice(): Promise<boolean> {
     try {
-      const status = await apdu.general.resetCard(this.getTransport());
+      const status = await setting.card.resetCard(this.getTransport());
       return status;
     } catch (e) {
       throw RNApduError.parseError(e as Error);
@@ -104,7 +104,7 @@ export class RNApduManager implements ApduManager {
     const appKeyPair = this.getAppKeyPair();
     const { privateKey } = appKeyPair;
     try {
-      return await apdu.pair.getPairingPassword(this.getTransport(), appId, privateKey);
+      return await wallet.client.getPairingPassword(this.getTransport(), appId, privateKey);
     } catch (e) {
       throw RNApduError.parseError(e as Error);
     }
