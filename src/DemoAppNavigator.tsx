@@ -18,7 +18,7 @@ import { RefreshAppKeyPairContainer } from '@src/features/cardPairing/RefreshApp
 import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/GeneratePairingPasswordContainer';
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
 import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
-import NFCScanContainer from "@src/features/nfc/NFCScanContainer";
+import NFCScanContainer from '@src/features/nfcScan/NFCScanContainer';
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
@@ -66,11 +66,7 @@ export function DemoAppNavigator() {
       <Stack.Screen name={RouteName.HTTP_SCAN} component={HttpScanContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
-      <Stack.Screen
-        name={RouteName.NFC_SCAN}
-        component={NFCScanContainer}
-        options={{ headerBackTitleVisible: false }}
-      />
+      <Stack.Screen name={RouteName.NFC_SCAN} component={NFCScanContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.REGISTER_CARD}
         component={RegisterCardContainer}

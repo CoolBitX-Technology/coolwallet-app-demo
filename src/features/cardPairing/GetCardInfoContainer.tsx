@@ -1,4 +1,5 @@
 import { RNApduError } from '@src/features/ble/RNApduError';
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { useGetCardInfoUseCase } from '@src/features/cardPairing/usecases/useGetCardInfoUseCase';
 import { BlueButton } from '@src/features/components/BlueButton';
 import { LogBox } from '@src/features/components/LogBox';
@@ -35,7 +36,11 @@ export function GetCardInfoContainer(): JSX.Element {
   const isBtnDisable = !isConnected || isQuerying;
   const { log, addLog, resetLog } = useLogUseCase();
 
-  const onClick = () => {
+  const { connect, disconnect } = useConnectCardUseCase();
+
+  const onClick = async () => {
+    await connect();
+
     resetLog();
     addLog('QUERYING....');
     getCardInfo()
@@ -66,6 +71,9 @@ export function GetCardInfoContainer(): JSX.Element {
       .catch((e) => {
         const error = e as RNApduError;
         addLog('QUERIED FAILED >>> ERROR=' + error);
+      })
+      .finally(() => {
+        disconnect();
       });
   };
   return (

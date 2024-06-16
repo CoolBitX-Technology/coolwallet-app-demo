@@ -1,8 +1,10 @@
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { useRegisterDeviceUseCase } from '@src/features/cardPairing/usecases/useRegisterDeviceUseCase';
 import { BlueButton } from '@src/features/components/BlueButton';
 import { LogBox } from '@src/features/components/LogBox';
 import { TextInput } from '@src/features/components/TextInput';
 import { TextView } from '@src/features/components/TextView';
+import { NFCManager } from '@src/features/nfcScan/utils/NfcManager';
 import {
   useDeviceName,
   useDispatchChangeAppInfo,
@@ -45,18 +47,26 @@ export function RegisterCardContainer(): JSX.Element {
   const changeAppInfo = useDispatchChangeAppInfo();
   const changePairedPassword = useDispatchChangePairedPassword();
 
+  const { connect, disconnect } = useConnectCardUseCase();
+
   const isBtnDisable = !isConnected;
 
-  const registerCard = () => {
-    registerDevice(deviceName, pairingPassword).then((info) => {
-      if (info) {
-        const { appId, deviceName, password } = info;
-        changeAppInfo(cardId, appId, password, deviceName);
-        changePairedPassword(cardId, password);
-        setDeviceName(deviceName);
-        setPairingPassword(password);
-      }
-    });
+  const registerCard = async () => {
+    await connect();
+
+    registerDevice(deviceName, pairingPassword)
+      .then((info) => {
+        if (info) {
+          const { appId, deviceName, password } = info;
+          changeAppInfo(cardId, appId, password, deviceName);
+          changePairedPassword(cardId, password);
+          setDeviceName(deviceName);
+          setPairingPassword(password);
+        }
+      })
+      .finally(() => {
+        disconnect();
+      });
   };
 
   return (
