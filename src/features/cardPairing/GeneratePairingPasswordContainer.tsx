@@ -1,4 +1,5 @@
 import { RNApduManager } from '@src/features/ble/RNApduManager';
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { DemoView } from '@src/features/components/DemoView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
@@ -16,16 +17,23 @@ export function GeneratePairingPasswordContainer() {
   const isBtnDisable = !cardId || !isConnected || !defaultPairPassword;
   const [isRefreshing, setIsRefereshing] = useState(false);
 
+  const { connect, disconnect } = useConnectCardUseCase();
+
   useInitApduEffect();
 
   const generatePairPassword = async () => {
     if (!appId || isBtnDisable) return;
+
+    await connect();
+
     setIsRefereshing(true);
     addLog('GENERATING....');
     const newPairedPassword = await RNApduManager.getInstance().getPairPassword(appId);
     setPairPassword(newPairedPassword);
     setIsRefereshing(false);
     addLog('GENERATED SUCCESS, PLEASE COPY NEW PAIR PASSWORD AND GO TO REFRESH APP KEY PAIR');
+
+    await disconnect();
   };
 
   return (

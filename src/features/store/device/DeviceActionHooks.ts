@@ -2,7 +2,7 @@ import { RootState } from '@src/features/store/store';
 import { useAppSelector, useAppDispatch } from '@src/features/store/hooks';
 import { DeviceActions } from '@src/features/store/device/DeviceSlice';
 import { Device as BluetoothDevice } from 'react-native-ble-plx';
-import { BluetoothInfo, DeviceInfo, DeviceState, HttpInfo, TransportType } from '@src/features/store/device/DeviceTypes';
+import { BluetoothInfo, DeviceInfo, DeviceState, HttpInfo, NfcInfo, TransportType } from '@src/features/store/device/DeviceTypes';
 import { DeviceInfoMapper } from '@src/features/store/device/DeviceInfoMapper';
 
 function getCardInfo(state: RootState): DeviceState {
@@ -35,6 +35,12 @@ export function useHttpInfo(): HttpInfo | undefined {
   const deviceInfo = useDeviceInfo(TransportType.Http);
   if (!deviceInfo) return;
   return deviceInfo as HttpInfo;
+}
+
+export function useNfcInfo(): NfcInfo | undefined {
+  const deviceInfo = useDeviceInfo(TransportType.NFC);
+  if (!deviceInfo) return;
+  return deviceInfo as NfcInfo;
 }
 
 export function useCardId() {
@@ -77,6 +83,21 @@ export function useDispatchHttpInfo(): (hostName: string, port: string, cardId?:
   return (hostname, port, cardId) => {
     const type = TransportType.Http;
     const deviceInfo = DeviceInfoMapper.mapFromHttpInfo(hostname, port, cardId);
+    dispatch(
+      DeviceActions.updateDeviceInfo({
+        type,
+        deviceInfo,
+      }),
+    );
+    dispatch(DeviceActions.updateConnectStatus(true));
+  };
+}
+
+export function useDispatchNfcInfo(): (cardId?: string) => void {
+  const dispatch = useAppDispatch();
+  return (cardId) => {
+    const type = TransportType.NFC;
+    const deviceInfo = DeviceInfoMapper.mapFromNfcInfo(cardId);
     dispatch(
       DeviceActions.updateDeviceInfo({
         type,
