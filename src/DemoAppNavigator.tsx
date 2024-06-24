@@ -39,7 +39,7 @@ export type DemoAppParamList = {
   [RouteName.SIGN_TYPED_DATA]: undefined;
   [RouteName.SEND_HEX]: undefined;
   [RouteName.NFC_SCAN]: undefined;
-  [RouteName.DERIVE_MASTER_KEY]: undefined;
+  [RouteName.CREATE_MASTER_KEY]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -90,7 +90,7 @@ export function DemoAppNavigator() {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
-        name={RouteName.DERIVE_MASTER_KEY}
+        name={RouteName.CREATE_MASTER_KEY}
         component={GenerateMasterKeyContainer}
         options={{ headerBackTitleVisible: false }}
       />

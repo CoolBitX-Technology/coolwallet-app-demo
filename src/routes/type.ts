@@ -9,7 +9,7 @@ export enum RouteName {
   REGISTER_CARD = 'Register Card',
   CREATE_MNEMONIC = 'Create Mnemonic',
   RECOVER_MNEMONIC = 'Recover Mnemonic',
-  DERIVE_MASTER_KEY = 'Derive Master Key',
+  CREATE_MASTER_KEY = 'Create Master Key',
   RECOVER_ADDRESS = 'Recover Address',
   GET_PAIRING_PASSWORD = 'Get Pairing Password',
   GET_PAIRED_APPS = 'Get Paired Apps',

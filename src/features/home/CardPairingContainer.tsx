@@ -39,8 +39,8 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.RECOVER_MNEMONIC),
     },
     {
-      routeName: RouteName.DERIVE_MASTER_KEY,
-      onButtonPress: () => navigation.navigate(RouteName.DERIVE_MASTER_KEY),
+      routeName: RouteName.CREATE_MASTER_KEY,
+      onButtonPress: () => navigation.navigate(RouteName.CREATE_MASTER_KEY),
     },
     {
       routeName: RouteName.RECOVER_ADDRESS,
