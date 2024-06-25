@@ -3,7 +3,6 @@ import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnec
 import { DemoView } from '@src/features/components/DemoView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
-import { NFCManager } from '@src/features/nfcScan/utils/NfcManager';
 import { useDispatchClearAppId } from '@src/features/store/account/AccountActionHooks';
 import { useCardId, useIsConnected } from '@src/features/store/device/DeviceActionHooks';
 import { useState } from 'react';
