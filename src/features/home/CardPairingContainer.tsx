@@ -1,11 +1,11 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { DemoAppParamList } from '@src/DemoAppNavigator';
-import { RouteItem, RouteListView } from '@src/features/components/RouteListView';
+import { RouteListView } from '@src/features/components/RouteListView';
 import { RouteName } from '@src/routes/type';
 
 function useRouteItems() {
   const navigation = useNavigation<NavigationProp<DemoAppParamList>>();
-  const routeItems: Array<RouteItem> = [
+  return [
     {
       routeName: RouteName.GET_CARD_INFO,
       onButtonPress: () => navigation.navigate(RouteName.GET_CARD_INFO),
@@ -39,11 +39,14 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.RECOVER_MNEMONIC),
     },
     {
+      routeName: RouteName.CREATE_MASTER_KEY,
+      onButtonPress: () => navigation.navigate(RouteName.CREATE_MASTER_KEY),
+    },
+    {
       routeName: RouteName.RECOVER_ADDRESS,
       onButtonPress: () => navigation.navigate(RouteName.RECOVER_ADDRESS),
     },
   ];
-  return routeItems;
 }
 
 export function CardPairingContainer() {

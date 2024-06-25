@@ -19,6 +19,7 @@ import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/Gene
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
 import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
 import NFCScanContainer from '@src/features/nfcScan/NFCScanContainer';
+import { GenerateMasterKeyContainer } from '@src/features/cardPairing/GenerateMasterKeyContainer';
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
@@ -38,6 +39,7 @@ export type DemoAppParamList = {
   [RouteName.SIGN_TYPED_DATA]: undefined;
   [RouteName.SEND_HEX]: undefined;
   [RouteName.NFC_SCAN]: undefined;
+  [RouteName.CREATE_MASTER_KEY]: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<DemoAppParamList>;
@@ -85,6 +87,11 @@ export function DemoAppNavigator() {
       <Stack.Screen
         name={RouteName.RECOVER_MNEMONIC}
         component={RecoverWalletContainer}
+        options={{ headerBackTitleVisible: false }}
+      />
+      <Stack.Screen
+        name={RouteName.CREATE_MASTER_KEY}
+        component={GenerateMasterKeyContainer}
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
