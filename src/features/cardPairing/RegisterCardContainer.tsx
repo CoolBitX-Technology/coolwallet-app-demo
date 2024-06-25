@@ -4,7 +4,6 @@ import { BlueButton } from '@src/features/components/BlueButton';
 import { LogBox } from '@src/features/components/LogBox';
 import { TextInput } from '@src/features/components/TextInput';
 import { TextView } from '@src/features/components/TextView';
-import { NFCManager } from '@src/features/nfcScan/utils/NfcManager';
 import {
   useDeviceName,
   useDispatchChangeAppInfo,

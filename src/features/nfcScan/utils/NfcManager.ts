@@ -1,10 +1,17 @@
 import NfcManager, { NfcTech, TagEvent } from 'react-native-nfc-manager';
 
 export class NFCManager {
+  private static instance: NFCManager;
+
   private isRequested: boolean = false;
 
-  constructor() {
+  private constructor() {
     this.start();
+  }
+
+  static getInstance() {
+    if (!this.instance) this.instance = new NFCManager();
+    return this.instance;
   }
 
   private async start(): Promise<void> {

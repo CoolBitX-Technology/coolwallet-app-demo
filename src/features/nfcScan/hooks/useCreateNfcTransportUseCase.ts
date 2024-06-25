@@ -14,7 +14,7 @@ export function useCreateNfcTransportUseCase() {
   const connect = async () => {
     setLoading(true);
 
-    const nfcManager = new NFCManager();
+    const nfcManager = NFCManager.getInstance();
 
     try {
       const isEnabled = await nfcManager.isEnabled();

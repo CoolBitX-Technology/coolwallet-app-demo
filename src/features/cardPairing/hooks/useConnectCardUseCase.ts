@@ -27,14 +27,14 @@ export function useConnectCardUseCase(): Output {
 }
 
 function useNfcConnection() {
-  const nfcManagerRef = useRef(new NFCManager());
+  const nfcManager = NFCManager.getInstance();
 
   const connect = async () => {
-    await nfcManagerRef.current.requestTechnology();
+    await nfcManager.requestTechnology();
   };
 
   const disconnect = async () => {
-    await nfcManagerRef.current.cancelTechnologyRequest();
+    await nfcManager.cancelTechnologyRequest();
   };
 
   return { connect, disconnect };
