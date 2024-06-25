@@ -70,10 +70,10 @@
 	<false/>
 	<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
 	<array>
-		<!-- CoolWalletLITE -->
 		<string>436F6F6C57616C6C65744C495445</string>
-		<!-- BackupApplet -->
 		<string>4261636B75704170706C6574</string>
 	</array>
+	<key>NFCReaderUsageDescription</key>
+	<string>We need to use NFC</string>
 </dict>
 </plist>
