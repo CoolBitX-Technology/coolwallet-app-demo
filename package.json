@@ -5,13 +5,14 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios:install-pods": "bundle install && cd ios && bundle exec pod install",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
     "adbremote": "adb reverse tcp:8081 tcp:8081",
     "patch:rn-nodeify": "npx rn-nodeify --install --hack",
     "patch:jetify": "npx jetify",
-    "postinstall": "yarn patch:rn-nodeify && yarn patch:jetify && react-native setup-ios-permissions && pod-install"
+    "postinstall": "yarn patch:rn-nodeify && yarn patch:jetify && react-native setup-ios-permissions && yarn ios:install-pods"
   },
   "reactNativePermissionsIOS": [
     "BluetoothPeripheral",
