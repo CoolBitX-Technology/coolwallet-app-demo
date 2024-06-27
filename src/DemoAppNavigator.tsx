@@ -19,12 +19,15 @@ import { GeneratePairingPasswordContainer } from '@src/features/cardPairing/Gene
 import { GetCardInfoContainer } from '@src/features/cardPairing/GetCardInfoContainer';
 import { HttpScanContainer } from '@src/features/httpScan/HttpScanContainer';
 import NFCScanContainer from "@src/features/nfc/NFCScanContainer";
+import { FirmwareUpgradeContainer } from '@src/features/cardPairing/FirmwareUpgradeContainer';
+
 export type DemoAppParamList = {
   [RouteName.DEMO_HOME]: undefined;
   [RouteName.BLUETOOTH_SCAN]: undefined;
   [RouteName.HTTP_SCAN]: undefined;
   [RouteName.REFRESH_APP_KEY_PAIR]: undefined;
   [RouteName.GET_CARD_INFO]: undefined;
+  [RouteName.FIRMWARE_UPGRADE]: undefined;
   [RouteName.RESET_CARD]: undefined;
   [RouteName.REGISTER_CARD]: undefined;
   [RouteName.RECOVER_MNEMONIC]: undefined;
@@ -66,6 +69,7 @@ export function DemoAppNavigator() {
       <Stack.Screen name={RouteName.HTTP_SCAN} component={HttpScanContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.RESET_CARD} component={ResetCardContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen name={RouteName.GET_CARD_INFO} component={GetCardInfoContainer} options={{ headerBackTitleVisible: false }} />
+      <Stack.Screen name={RouteName.FIRMWARE_UPGRADE} component={FirmwareUpgradeContainer} options={{ headerBackTitleVisible: false }} />
       <Stack.Screen
         name={RouteName.NFC_SCAN}
         component={NFCScanContainer}
