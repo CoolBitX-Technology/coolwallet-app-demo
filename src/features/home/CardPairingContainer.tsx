@@ -19,6 +19,10 @@ function useRouteItems() {
       onButtonPress: () => navigation.navigate(RouteName.REGISTER_CARD),
     },
     {
+      routeName: RouteName.FIRMWARE_UPGRADE,
+      onButtonPress: () => navigation.navigate(RouteName.FIRMWARE_UPGRADE),
+    },
+    {
       routeName: RouteName.GET_PAIRING_PASSWORD,
       onButtonPress: () => navigation.navigate(RouteName.GET_PAIRING_PASSWORD),
     },

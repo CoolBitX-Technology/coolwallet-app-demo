@@ -6,6 +6,7 @@ export enum RouteName {
   REFRESH_APP_KEY_PAIR = 'Refresh App Key Pair',
   RESET_CARD = 'Reset Card',
   GET_CARD_INFO = 'Get Card Info',
+  FIRMWARE_UPGRADE = 'Firmware Upgrade',
   REGISTER_CARD = 'Register Card',
   CREATE_MNEMONIC = 'Create Mnemonic',
   RECOVER_MNEMONIC = 'Recover Mnemonic',
