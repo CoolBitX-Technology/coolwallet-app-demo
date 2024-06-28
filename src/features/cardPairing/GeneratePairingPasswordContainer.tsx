@@ -1,3 +1,4 @@
+import { RNApduError } from '@src/features/ble/RNApduError';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { DemoView } from '@src/features/components/DemoView';
@@ -24,16 +25,20 @@ export function GeneratePairingPasswordContainer() {
   const generatePairPassword = async () => {
     if (!appId || isBtnDisable) return;
 
-    await connect();
-
-    setIsRefereshing(true);
-    addLog('GENERATING....');
-    const newPairedPassword = await RNApduManager.getInstance().getPairPassword(appId);
-    setPairPassword(newPairedPassword);
-    setIsRefereshing(false);
-    addLog('GENERATED SUCCESS, PLEASE COPY NEW PAIR PASSWORD AND GO TO REFRESH APP KEY PAIR');
-
-    await disconnect();
+    try {
+      setIsRefereshing(true);
+      await connect();
+      addLog('GENERATING....');
+      const newPairedPassword = await RNApduManager.getInstance().getPairPassword(appId);
+      setPairPassword(newPairedPassword);
+      addLog('GENERATED SUCCESS, PLEASE COPY NEW PAIR PASSWORD AND GO TO REFRESH APP KEY PAIR');
+      await disconnect();
+    } catch(e) {
+      const error = e as RNApduError;
+      addLog('GENERATED FAILED >>> ERROR=' + error);
+    } finally {
+      setIsRefereshing(false);
+    }
   };
 
   return (
