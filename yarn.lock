@@ -1211,7 +1211,29 @@
     react-native-ble-plx "^2.0.3"
     rlp "^2.2.3"
 
-"@coolwallet/core@2.0.0-beta.5", "@coolwallet/core@^2.0.0-beta.2":
+"@coolwallet/core@2.0.0-beta.6":
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.6.tgz#51bcb23993c077b8b779cda07448542673923579"
+  integrity sha512-3Jkmqv5vrVnxsnw4hdZ5AA9rYfNXbB3daetzdoC/nOZ27/w95rv5DL6GPv6YQhmV0IIIVPj7n86z66z8C2D7ow==
+  dependencies:
+    "@types/elliptic" "^6.4.14"
+    "@types/lodash" "^4.14.177"
+    "@types/node" "^14.0.13"
+    "@types/pbkdf2" "^3.1.0"
+    "@types/web-bluetooth" "^0.0.11"
+    bip32 "^2.0.4"
+    bip39 "^3.0.2"
+    bip66 "^1.1.5"
+    bn.js "^5.1.1"
+    elliptic "^6.5.3"
+    jwt-decode "^3.1.2"
+    key-encoder "^2.0.3"
+    lodash "^4.17.21"
+    pbkdf2 "^3.1.2"
+    react-native-ble-plx "^2.0.3"
+    rlp "^2.2.3"
+
+"@coolwallet/core@^2.0.0-beta.2":
   version "2.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.5.tgz#93c24449ac2fb26c41275a52907fa88aa8c5096e"
   integrity sha512-7pWZUJPo/1CL2tX1mvNMMajJ9ks9O4kuRYKnmn0gd7IAAMrZ7EJ2TyyeOb03DpO0JLyvWubBKRofl0mPC90AnQ==
@@ -1255,10 +1277,10 @@
     axios "^0.25.0"
     lodash "^4.17.21"
 
-"@coolwallet/transport-react-native-nfc@1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@coolwallet/transport-react-native-nfc/-/transport-react-native-nfc-1.0.0-beta.2.tgz#ad1dc5e977e6fc130611124b89246fddbcff0d63"
-  integrity sha512-gxBnphyuFoz8E+x7TtNxtAyLtKL3Sw7EFnNeajg8F4BIEIUKQKRHWSYg5s6bbfSBcArVakWHWUMCzrVHBctR8w==
+"@coolwallet/transport-react-native-nfc@1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@coolwallet/transport-react-native-nfc/-/transport-react-native-nfc-1.0.0-beta.3.tgz#9f2bca55af96767e40d3df9cac9885291dcfad7c"
+  integrity sha512-IzV8wd4jgyZOOmgdk3ynKOfULnwXaV2pQ+be0XhGTPD2/+1huZjQBKjc3tztHVkXvSxBlzTJpmUJbxO4ZakINQ==
   dependencies:
     "@coolwallet/core" "^2.0.0-beta.2"
     react-native-nfc-manager "^3.14.14"

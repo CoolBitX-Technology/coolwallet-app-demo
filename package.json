@@ -21,10 +21,10 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
-    "@coolwallet/core": "2.0.0-beta.5",
+    "@coolwallet/core": "2.0.0-beta.6",
     "@coolwallet/evm": "^1.0.27",
     "@coolwallet/transport-jre-http": "2.0.0-beta.1",
-    "@coolwallet/transport-react-native-nfc": "1.0.0-beta.2",
+    "@coolwallet/transport-react-native-nfc": "1.0.0-beta.3",
     "@react-native-async-storage/async-storage": "^1.19.2",
     "@react-native-clipboard/clipboard": "1.11.2",
     "@react-navigation/material-top-tabs": "^6.6.3",
