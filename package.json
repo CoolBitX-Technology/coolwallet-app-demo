@@ -5,13 +5,14 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios:install-pods": "bundle install && cd ios && bundle exec pod install",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
     "adbremote": "adb reverse tcp:8081 tcp:8081",
     "patch:rn-nodeify": "npx rn-nodeify --install --hack",
     "patch:jetify": "npx jetify",
-    "postinstall": "yarn patch:rn-nodeify && yarn patch:jetify && react-native setup-ios-permissions && pod-install"
+    "postinstall": "yarn patch:rn-nodeify && yarn patch:jetify && react-native setup-ios-permissions && yarn ios:install-pods"
   },
   "reactNativePermissionsIOS": [
     "BluetoothPeripheral",
@@ -20,8 +21,10 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
-    "@coolwallet/core": "^1.1.18",
+    "@coolwallet/core": "2.0.0-beta.6",
     "@coolwallet/evm": "^1.0.27",
+    "@coolwallet/transport-jre-http": "2.0.0-beta.1",
+    "@coolwallet/transport-react-native-nfc": "1.0.0-beta.3",
     "@react-native-async-storage/async-storage": "^1.19.2",
     "@react-native-clipboard/clipboard": "1.11.2",
     "@react-navigation/material-top-tabs": "^6.6.3",
@@ -76,7 +79,6 @@
     "string_decoder": "^0.10.31",
     "styled-components": "^6.0.7",
     "timers-browserify": "^1.4.2",
-    "transport-jre-http": "^1.1.2",
     "tty-browserify": "^0.0.0",
     "url": "^0.10.3",
     "util": "^0.10.4",

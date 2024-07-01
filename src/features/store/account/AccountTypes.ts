@@ -1,7 +1,6 @@
-import { AppKeyPair } from '@src/features/ble/utils/KeyPairUtils';
-
 export interface AccountState {
   mnemonic: string;
+  masterKey: string;
   accounts: Record<string, AccountInfo | null>;
 }
 
