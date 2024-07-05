@@ -21,7 +21,7 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
-    "@coolwallet/core": "2.0.0-beta.6",
+    "@coolwallet/core": "2.0.0-beta.7",
     "@coolwallet/evm": "^1.0.27",
     "@coolwallet/transport-jre-http": "2.0.0-beta.1",
     "@coolwallet/transport-react-native-nfc": "1.0.0-beta.3",

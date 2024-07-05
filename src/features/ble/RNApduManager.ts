@@ -158,4 +158,14 @@ export class RNApduManager implements ApduManager {
       throw RNApduError.parseError(e as Error);
     }
   }
+
+  async createSeedByCard(appId: string, strength: 12 | 18 | 24) {
+    const appKeyPair = this.getAppKeyPair();
+    const { privateKey } = appKeyPair;
+    try {
+      return await wallet.secret.creation.createSeedByCard(this.getTransport(), appId, privateKey, strength);
+    } catch (e) {
+      throw RNApduError.parseError(e as Error);
+    }
+  }
 }

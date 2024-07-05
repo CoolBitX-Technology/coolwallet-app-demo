@@ -1211,10 +1211,10 @@
     react-native-ble-plx "^2.0.3"
     rlp "^2.2.3"
 
-"@coolwallet/core@2.0.0-beta.6":
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.6.tgz#51bcb23993c077b8b779cda07448542673923579"
-  integrity sha512-3Jkmqv5vrVnxsnw4hdZ5AA9rYfNXbB3daetzdoC/nOZ27/w95rv5DL6GPv6YQhmV0IIIVPj7n86z66z8C2D7ow==
+"@coolwallet/core@2.0.0-beta.7":
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.7.tgz#3f2865094642101976561fb50a402dc08e006a9a"
+  integrity sha512-iwEy9V0Kw5zQ2ruIgYmP1fIvLm/w9aUyM6VfqlOziIO4r+H0T/HUggx6iLT/++h32J58o/J8G8NfpBjqgV8o4g==
   dependencies:
     "@types/elliptic" "^6.4.14"
     "@types/lodash" "^4.14.177"
