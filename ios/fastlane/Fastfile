@@ -1,0 +1,93 @@
+default_platform(:ios)
+
+build_number = nil
+
+platform :ios do
+  before_all do
+    setup_circle_ci
+    puts "env GITHUB_RUN_NUMBER=#{ENV['GITHUB_RUN_NUMBER']}"
+
+    if ENV['GITHUB_RUN_NUMBER']
+      puts "run setup_ci on Github Action"
+      build_number = ENV['GITHUB_RUN_NUMBER'].to_i + 12000
+      setup_ci
+    else
+      puts "run setup_ci on Local"
+      build_number = 1
+      setup_ci
+    end
+
+    puts "build_number=#{build_number}"
+  end
+  
+  desc "Download all certificates and provisioning profiles to local"
+    lane :match_all do
+     api_key = app_store_connect_api_key(
+        key_id: "A9LPUK52N8",
+        issuer_id: "69a6de86-4ca4-47e3-e053-5b8c7c11a4d1",
+        key_filepath: "fastlane/AuthKey_A9LPUK52N8.p8",
+        duration: 1200, # 可選 (最大 1200)
+        in_house: false # 可選，但使用 match/sigh 時可能需要
+      )
+      match(api_key: api_key, type: "development", readonly: true)
+      match(api_key: api_key, type: "appstore", readonly: true)
+  end
+
+  desc "Get certificates"
+  lane :certificates do
+    api_key = app_store_connect_api_key(
+        key_id: "A9LPUK52N8",
+        issuer_id: "69a6de86-4ca4-47e3-e053-5b8c7c11a4d1",
+        key_filepath: "fastlane/AuthKey_A9LPUK52N8.p8",
+      )
+    sync_code_signing(
+      type: "development",
+      app_identifier: 'org.reactjs.native.example.CoolWalletAppDemo',
+      force_for_new_devices: true,
+      readonly: true
+    )
+    sync_code_signing(
+      type: "appstore",
+      app_identifier: 'org.reactjs.native.example.CoolWalletAppDemo',
+      readonly: true
+    )
+  end
+
+  desc "Deploy to TestFlight"
+  lane :deploy_demo_app do
+    sync_code_signing(
+      type: "appstore",
+      app_identifier: 'org.reactjs.native.example.CoolWalletAppDemo',
+      readonly: true
+    )
+    # xcode_select "/Applications/Xcode-15.0.1.app"
+    increment_build_number(build_number: build_number)
+    build_app(scheme: "CoolWalletAppDemo")
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true, 
+      apple_id: '6505131435'
+    )
+  end
+
+  desc "Slack deployed message for demo App"
+  lane :slack_deployed_message_for_demo_app do
+    version = get_version_number(
+      xcodeproj: "CoolWalletAppDemo.xcodeproj",
+      target: "CoolWalletAppDemo"
+    )
+    puts version
+    command = sh("git log --pretty='%b' HEAD^..HEAD --merges --grep='pull request'")
+    msg = "Deploy CoolWallet Demo App to TestFlight Successfully! \n Version: #{version} \n Build number: #{build_number} \n Changelog: #{command} \n"
+    puts "Slack Message: #{msg}"
+    slack(
+      message: msg,
+      default_payloads: [:git_branch],
+      slack_url: "https://hooks.slack.com/services/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"
+    )
+  end
+
+  lane :print_build_number do
+    puts("current build number is #{build_number}")
+  end
+
+end
