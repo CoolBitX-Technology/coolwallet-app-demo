@@ -1,0 +1,89 @@
+name: Deploy iOS demo app
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+# cancel previous workflow runs that are not completed yet
+# ref: https://github.com/TeamAmaze/AmazeFileManager/blob/release/3.7/.github/workflows/android-feature.yml#L10-L12
+concurrency:
+  group: deploy-ios-demo-app-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-ios-demo-app:
+    timeout-minutes: 35
+    runs-on: [self-hosted, ios]
+    env:
+      FL_OUTPUT_DIR: output
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          lfs: true
+      - name: checkoutLFS
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - run: git lfs pull
+
+      - name: Create iOS config files
+        env:
+          IOS_FASTLANE_ENV: '${{ secrets.IOS_FASTLANE_ENV }}'
+        run: |
+          echo $IOS_FASTLANE_ENV | base64 --decode > ios/fastlane/.env.default
+
+      - name: Dump Xcode path to check which version
+        run: 'echo "Xcode path: $(xcode-select -p)"' # e.g. -> "Xcode path: /Applications/Xcode-14.2.0.app/Contents/Developer"
+
+      # setup yarn
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc' # ref: https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#node-version-file
+      #     cache: "yarn"
+      - name: Dump node and yarn versions
+        run: 'echo "node: $(node -v) yarn: $(yarn -v)"'
+      - name: Install Dependencies
+        run: yarn install --immutable --immutable-cache
+
+      # Install Bundler
+      - name: Install bundler
+        run: gem install bundler:2.2.27 # bundler for our lockfile
+        working-directory: ios
+      - name: Bundle Install
+        run: bundle install
+        working-directory: ios
+      - name: Dump ruby and bundler version
+        run: 'echo "ruby: $(ruby -v) bundler: $(bundle -v)"'
+        working-directory: ios
+
+      - name: Print app build-number
+        run: bundle exec fastlane print_build_number
+        working-directory: ios
+
+      - name: Save PR_NUMBER to env
+        run: |
+          PR_NUMBER=$(gh pr view --json number -q .number)
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+        continue-on-error: true
+      - name: Replace patch with PR_NUMBER on version name
+        if: ${{ env.PR_NUMBER != '' }}
+        run: sed -i -e "/MARKETING_VERSION/ s/\(\.[0-9]*\)\..*/\1.${{ env.PR_NUMBER }};/" ios/CoolWalletAppDemo.xcodeproj/project.pbxproj
+      - name: Deploy demo App to TestFlight
+        run: bundle exec fastlane deploy_demo_app
+        working-directory: ios
+
+      - name: Send deployed message to Slack
+        run: bundle exec fastlane slack_deployed_message_for_demo_app
+        working-directory: ios
+
+      - name: Report error to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,pullRequest,commit,author,job,took # selectable (default: repo,message)
+        env:
+          SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL_COOLBITX_BOT }}'
+        if: ${{ failure() }}
