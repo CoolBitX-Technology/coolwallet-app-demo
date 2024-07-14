@@ -79,7 +79,7 @@ platform :ios do
     command = sh("git log --pretty='%b' HEAD^..HEAD --merges --grep='pull request'")
     msg = "Deploy CoolWallet Demo App to TestFlight Successfully! \n Version: #{version} \n Build number: #{build_number} \n Changelog: #{command} \n"
     puts "Slack Message: #{msg}"
-    slack_url_from_github = lane_context[SharedValues::GITHUB_SECRET_SLACK_URL]
+    slack_url_from_github = lane_context[SharedValues::GITHUB_SECRET_SLACK_WEBHOOK_URL_COOLBITX_BOT]
     slack(
       message: msg,
       default_payloads: [:git_branch],
