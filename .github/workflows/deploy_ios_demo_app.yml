@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - 'release/**'
+      - 'chore/deploy-testflight'
 
 # cancel previous workflow runs that are not completed yet
 # ref: https://github.com/TeamAmaze/AmazeFileManager/blob/release/3.7/.github/workflows/android-feature.yml#L10-L12
