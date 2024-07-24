@@ -1189,10 +1189,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@coolwallet/core@^1.1.25":
-  version "1.1.25"
-  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-1.1.25.tgz#53dd2ec222ade312f1682395b3ae3290db945163"
-  integrity sha512-lYuk5EiU8bpRhewyEvSsIKbk3Au8CF+Gb2hLsEjXtYQyeFBdaEBnovmtalmwnXLPSdynwUi7sHTMrqp5pGeHxA==
+"@coolwallet/core@^1.1.26":
+  version "1.1.26"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-1.1.26.tgz#94662e95ef627a93f027e1a5cabd18b79aa8bcb7"
+  integrity sha512-W60nZd1ZzSzBg80ewnUlZJdoJ5IFYPAFXPSrYkSVhhrO5Bc8hmtoIHerCajcl01/+T49FDV98FrJQMM1D9KJMg==
   dependencies:
     "@types/elliptic" "^6.4.14"
     "@types/lodash" "^4.14.177"
