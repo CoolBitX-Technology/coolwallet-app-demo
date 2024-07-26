@@ -51,7 +51,7 @@ jobs:
 
       # Install Bundler
       - name: Install bundler
-        run: gem install bundler:2.2.27 # bundler for our lockfile
+        run: gem install bundler:2.2.27 --user-install # bundler for our lockfile
         working-directory: ios
       - name: Bundle Install
         run: bundle install
