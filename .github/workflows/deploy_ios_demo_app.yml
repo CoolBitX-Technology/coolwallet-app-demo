@@ -33,9 +33,10 @@ jobs:
       - name: Create iOS config files
         env:
           IOS_FASTLANE_ENV: '${{ secrets.IOS_FASTLANE_ENV }}'
+          APP_STORE_CONNECT_API_KEY_P8_APP_MANAGER: '${{ secrets.APP_STORE_CONNECT_API_KEY_P8_APP_MANAGER }}'
         run: |
           echo $IOS_FASTLANE_ENV | base64 --decode > ios/fastlane/.env.default
-
+          echo $APP_STORE_CONNECT_API_KEY_P8_APP_MANAGER | base64 --decode > ios/fastlane/AuthKey_A9LPUK52N8.p8
       - name: Dump Xcode path to check which version
         run: 'echo "Xcode path: $(xcode-select -p)"' # e.g. -> "Xcode path: /Applications/Xcode-14.2.0.app/Contents/Developer"
 
