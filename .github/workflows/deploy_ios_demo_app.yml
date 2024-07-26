@@ -79,12 +79,3 @@ jobs:
       - name: Send deployed message to Slack
         run: bundle exec fastlane slack_deployed_message_for_demo_app
         working-directory: ios
-
-      - name: Report error to Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,pullRequest,commit,author,job,took # selectable (default: repo,message)
-        env:
-          SLACK_WEBHOOK_URL: '${{ secrets.SLACK_WEBHOOK_URL_COOLBITX_BOT }}'
-        if: ${{ failure() }}
