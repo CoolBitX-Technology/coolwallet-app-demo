@@ -1,7 +1,5 @@
 source "https://rubygems.org"
 
-ruby ">= 2.6.10"
-
 gem "fastlane"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
