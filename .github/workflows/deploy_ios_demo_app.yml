@@ -16,7 +16,7 @@ concurrency:
 jobs:
   deploy-ios-demo-app:
     timeout-minutes: 35
-    runs-on: [self-hosted, ios]
+    runs-on: [self-hosted]
     env:
       FL_OUTPUT_DIR: output
     steps:
