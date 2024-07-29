@@ -50,6 +50,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NFCReaderUsageDescription</key>
+    <string>This app needs access to NFC to read NFC tags for payment processing.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
