@@ -20,7 +20,7 @@ platform :ios do
     puts "build_number=#{build_number}"
   end
  
-  desc "Create demo app certificate"
+  desc "Create demo app development certificate"
     lane :certificates_demo_app_development do
      api_key = app_store_connect_api_key(
         key_id: "A9LPUK52N8",
@@ -36,7 +36,7 @@ platform :ios do
       )
   end
 
-  desc "Create demo app certificate"
+  desc "Create demo app appstore certificate"
   lane :certificates_demo_app_appstore do
    api_key = app_store_connect_api_key(
       key_id: "A9LPUK52N8",
