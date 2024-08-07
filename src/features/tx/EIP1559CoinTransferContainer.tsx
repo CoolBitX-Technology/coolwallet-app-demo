@@ -110,6 +110,7 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
       inputPlaceHolder="To Address"
       input2PlaceHolder="Amount"
       input2Mode="decimal"
+      input2ReturnKeyType="done"
       btnText="Sign"
       input={toAddress}
       input2={amount}
