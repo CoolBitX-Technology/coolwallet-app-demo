@@ -78,5 +78,7 @@ jobs:
         working-directory: ios
 
       - name: Send deployed message to Slack
+        env:
+          GITHUB_SECRET_SLACK_WEBHOOK_URL_COOLBITX_BOT: '${{ secrets.SLACK_WEBHOOK_URL_COOLBITX_BOT }}'
         run: bundle exec fastlane slack_deployed_message_for_demo_app
         working-directory: ios
