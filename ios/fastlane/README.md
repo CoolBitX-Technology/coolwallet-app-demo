@@ -1,4 +1,5 @@
-## fastlane documentation
+fastlane documentation
+----
 
 # Installation
 
@@ -14,23 +15,16 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios match_all
+
+### ios download_certificates
 
 ```sh
-[bundle exec] fastlane ios match_all
+[bundle exec] fastlane ios download_certificates
 ```
 
-下載所有需要的證書和描述檔到本地，不會重新創建證書和描述檔
+Download certificates
 
-### ios certificates
-
-```sh
-[bundle exec] fastlane ios certificates
-```
-
-Get certificates
-
-### ios deploy
+### ios deploy_demo_app
 
 ```sh
 [bundle exec] fastlane ios deploy_demo_app
@@ -38,7 +32,7 @@ Get certificates
 
 Deploy to TestFlight
 
-### ios slack_deployed_message_for_staging_app
+### ios slack_deployed_message_for_demo_app
 
 ```sh
 [bundle exec] fastlane ios slack_deployed_message_for_demo_app
@@ -52,7 +46,9 @@ Slack deployed message for demo App
 [bundle exec] fastlane ios print_build_number
 ```
 
----
+
+
+----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 
