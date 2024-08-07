@@ -1255,11 +1255,34 @@
     react-native-ble-plx "^2.0.3"
     rlp "^2.2.3"
 
-"@coolwallet/evm@^1.0.27":
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/@coolwallet/evm/-/evm-1.0.31.tgz#b0513038b35784dd06bc633d62095ac2bb4d1586"
-  integrity sha512-5mCwvZrxJoIuT3P+m448KGIIl2Jmvrl47FmHFD9CtVb0GP80Sz4Zr1vxp0G97hE6JsjDgHYasjChzxoC0wDVqw==
+"@coolwallet/core@^2.0.0-beta.6":
+  version "2.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@coolwallet/core/-/core-2.0.0-beta.12.tgz#4e6e2ffe292eac9bee91a31df1c6317dbf111c79"
+  integrity sha512-ZNWZHyUr9nc99GQ8c5kORITIv7vQ9rlq3xuRgS31EwHFpr6VDfUmohM3MmoZe3baTIvoYZgBkqfg1WEF3kxUxA==
   dependencies:
+    "@types/elliptic" "^6.4.14"
+    "@types/lodash" "^4.14.177"
+    "@types/node" "^14.0.13"
+    "@types/pbkdf2" "^3.1.0"
+    "@types/web-bluetooth" "^0.0.11"
+    bip32 "^2.0.4"
+    bip39 "^3.0.2"
+    bip66 "^1.1.5"
+    bn.js "^5.1.1"
+    elliptic "^6.5.3"
+    jwt-decode "^3.1.2"
+    key-encoder "^2.0.3"
+    lodash "^4.17.21"
+    pbkdf2 "^3.1.2"
+    react-native-ble-plx "^2.0.3"
+    rlp "^2.2.3"
+
+"@coolwallet/evm@^2.0.0-beta.0":
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@coolwallet/evm/-/evm-2.0.0-beta.0.tgz#dbc069c5b81e8673e01dd29d893cd5ecdc096a7f"
+  integrity sha512-z7HfV5SWDGhb9QUIp0J4SXgBJZs7s1HAWVpiJyGnA9KG/wE/MyHkfNNBQqUe/F6DsDMU9Sxhh9vpAWN100zixQ==
+  dependencies:
+    "@coolwallet/core" "^2.0.0-beta.6"
     "@metamask/eth-sig-util" "^4.0.0"
     ajv "^8.10.0"
     bn.js "^5.2.0"
