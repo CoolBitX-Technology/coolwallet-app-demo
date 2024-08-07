@@ -1,4 +1,4 @@
-git_url("git@github.com:CoolBitX-Technology/coolwallets-demo-ios-ci-certificates")
+git_url("git@github.com:CoolBitX-Technology/coolwallets-ios-ci-certificates")
 
 storage_mode("git")
 
