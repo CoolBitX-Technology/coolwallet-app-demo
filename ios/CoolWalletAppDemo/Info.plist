@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -40,7 +42,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Please enable Bluetooth on your phone to allow data transmission to the CoolWallet display</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Permission to localize the app service</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string></string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
@@ -49,7 +51,9 @@
 		<string>YOUR TEXT</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Permission to localize the app service</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>This app needs access to NFC to read NFC tags for payment processing.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
