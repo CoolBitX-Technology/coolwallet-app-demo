@@ -23,11 +23,6 @@ jobs:
         with:
           fetch-depth: 2
           lfs: true
-      - name: checkoutLFS
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - run: git lfs pull
 
       - name: Create iOS config files
         env:
