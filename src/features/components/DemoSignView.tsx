@@ -1,6 +1,7 @@
 import { LogBox } from '@src/features/components/LogBox';
-import { Button, VStack, Input } from 'native-base';
+import { Button, VStack } from 'native-base';
 import { ReturnKeyTypeOptions, View, ViewStyle } from 'react-native';
+import { TextInput as Input } from 'react-native';
 
 type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
 type InputType = 'password' | 'text';
