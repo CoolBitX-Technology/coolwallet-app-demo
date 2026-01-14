@@ -1,5 +1,6 @@
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { DemoView } from '@src/features/components/DemoView';
-import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
+import { useInitApduEffect, useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
 import { EthereumSdkAdapter } from '@src/features/sdk/evm/EthereumSdkAdapter';
 import { EvmChainId } from '@src/features/sdk/evm/EvmChain';
@@ -18,11 +19,15 @@ export function RecoverWalletContainer() {
   const isBtnDisable = !cardId || !appId || !transport || !mnemonic || isRecovering;
   const updateMnemonic = useDispatchMnemonicChange();
   const updateRecoverdStatus = useDispatchWalletRecoverStatus();
+  const { connect, disconnect } = useConnectCardUseCase();
+
+  useInitApduEffect();
 
   const recoverWallet = async () => {
     if (isBtnDisable) return;
     try {
       setIsRecovering(true);
+      await connect();
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
       sdkAdapter.setTransport(transport);
@@ -37,6 +42,7 @@ export function RecoverWalletContainer() {
       updateRecoverdStatus(cardId, false);
       addLog(`RECOVER FAILED >>> ${e}`);
     } finally {
+      await disconnect();
       setIsRecovering(false);
     }
   };

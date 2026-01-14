@@ -40,4 +40,8 @@ export interface HttpInfo {
   cardId?: string;
 }
 
-export type DeviceInfo = BluetoothInfo | HttpInfo;
+export interface NfcInfo {
+  cardId?: string;
+}
+
+export type DeviceInfo = BluetoothInfo | HttpInfo | NfcInfo;

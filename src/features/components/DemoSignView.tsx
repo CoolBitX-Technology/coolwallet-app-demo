@@ -1,6 +1,6 @@
 import { LogBox } from '@src/features/components/LogBox';
 import { Button, VStack, Input } from 'native-base';
-import { View, ViewStyle } from 'react-native';
+import { ReturnKeyTypeOptions, View, ViewStyle } from 'react-native';
 
 type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
 type InputType = 'password' | 'text';
@@ -35,6 +35,7 @@ interface Props {
   input2PlaceHolder?: string;
   showInput2?: boolean;
   input2Mode?: InputMode;
+  input2ReturnKeyType?: ReturnKeyTypeOptions;
   onInput2Changed?: (text: string) => void;
   input3?: string;
   input3Type?: InputType;
@@ -73,6 +74,7 @@ export function DemoSignView({
   input2PlaceHolder,
   input2Mode = 'text',
   input2Type = 'text',
+  input2ReturnKeyType,
   onInput2Changed,
   input3 = '',
   showInput3 = false,
@@ -120,6 +122,7 @@ export function DemoSignView({
               type={input2Type}
               onChangeText={onInput2Changed}
               inputMode={input2Mode}
+              returnKeyType={input2ReturnKeyType}
               style={{ backgroundColor: '#ffffff' }}
             />
           )}

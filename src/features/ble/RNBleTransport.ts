@@ -1,4 +1,5 @@
-import { Transport as CWTransport, device as CWDevice } from '@coolwallet/core';
+import { device as CWDevice } from '@coolwallet/core';
+import { BleTransport } from '@coolwallet/core/lib/transport';
 import { RNBleError } from '@src/features/ble/RNBleError';
 import { BleErrorCode, Device as BluetoothDevice, Characteristic } from 'react-native-ble-plx';
 
@@ -9,7 +10,7 @@ export interface CWServiceCharacteristics {
   response?: Characteristic;
 }
 
-export class RNBleTransport extends CWTransport {
+export class RNBleTransport extends BleTransport {
   private characteristics?: CWServiceCharacteristics | null;
 
   constructor(device: BluetoothDevice) {

@@ -4,6 +4,7 @@ import { ReducerTypes } from '@src/features/store/types';
 
 const initialState: AccountState = {
   mnemonic: '',
+  masterKey: '',
   accounts: {},
 };
 
@@ -11,8 +12,14 @@ export const AcountSlice = createSlice({
   name: ReducerTypes.ACCOUNT,
   initialState,
   reducers: {
+    setMasterKey: (state: AccountState, action: PayloadAction<string>) => {
+      state.masterKey = action.payload;
+    },
     setMnemonic: (state: AccountState, action: PayloadAction<string>) => {
       state.mnemonic = action.payload;
+    },
+    resetMasterKey: (state: AccountState) => {
+      state.masterKey = '';
     },
     resetMnemonic: (state: AccountState) => {
       state.mnemonic = '';
