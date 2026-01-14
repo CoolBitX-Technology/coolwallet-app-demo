@@ -1,3 +1,4 @@
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { DemoView } from '@src/features/components/DemoView';
 import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
@@ -19,10 +20,12 @@ export function RecoverAddressContainer() {
   const [isRecovering, setIsRecovering] = useState(false);
   const [addressIndex, setAddressIndex] = useState(defaultAddressIndex);
   const isBtnDisable = !cardId || !appId || addressIndex === undefined || !transport || isRecovering;
+  const { connect, disconnect } = useConnectCardUseCase();
 
   const recoverAddress = async () => {
     if (isBtnDisable) return;
     try {
+      await connect();
       setIsRecovering(true);
       const sdkAdapter = new EthereumSdkAdapter(EvmChainId.POLYGON_MAINNET);
       sdkAdapter.setAppId(appId);
@@ -36,6 +39,7 @@ export function RecoverAddressContainer() {
     } catch (e) {
       addLog(`RECOVER FAILED >>> ${e}`);
     } finally {
+      await disconnect();
       setIsRecovering(false);
     }
   };

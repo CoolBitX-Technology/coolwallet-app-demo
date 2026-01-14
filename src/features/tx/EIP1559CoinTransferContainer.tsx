@@ -1,3 +1,4 @@
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { DemoSignView } from '@src/features/components/DemoSignView';
 import { useTransport } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
@@ -41,7 +42,11 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
     addLog(`SIGN AUTHORIZED`);
   };
 
+  const { connect, disconnect } = useConnectCardUseCase();
+
   const signCoinTransfer = async () => {
+    await connect();
+
     try {
       if (isBtnDisable) return;
       const apiAdapter = new EthereumApiAdapter(EvmChainId.POLYGON_MAINNET);
@@ -74,6 +79,7 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
       addLog(`SIGN FAILED >>> ${e}`);
     } finally {
       setIsSigning(false);
+      disconnect();
     }
   };
 
@@ -103,7 +109,8 @@ export function EIP1559CoinTransferContainer(): JSX.Element {
       isBtnDisable={isBtnDisable}
       inputPlaceHolder="To Address"
       input2PlaceHolder="Amount"
-      input2Mode="numeric"
+      input2Mode="decimal"
+      input2ReturnKeyType="done"
       btnText="Sign"
       input={toAddress}
       input2={amount}

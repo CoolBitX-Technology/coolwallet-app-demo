@@ -1,10 +1,11 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { LogBox, getDefaultLog } from '@src/features/components/LogBox';
-import { Button, VStack, useToast, Input } from 'native-base';
+import { Button, VStack, useToast } from 'native-base';
+import { TextInput as Input } from 'react-native';
 import { View, ViewStyle } from 'react-native';
 
 type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
-type InputType = "password" | "text";
+type InputType = 'password' | 'text';
 
 interface Props {
   title?: string;

@@ -23,4 +23,10 @@ export class DeviceInfoMapper {
       cardId,
     } as DeviceInfo;
   }
+
+  static mapFromNfcInfo(cardId?: string): DeviceInfo {
+    return {
+      cardId,
+    } as DeviceInfo;
+  }
 }

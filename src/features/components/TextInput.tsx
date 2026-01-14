@@ -1,4 +1,4 @@
-import { Input } from 'native-base';
+import { TextInput as Input } from 'react-native';
 
 interface Props {
   text?: string;

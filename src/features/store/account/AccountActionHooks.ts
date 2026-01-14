@@ -11,6 +11,24 @@ export function useAccountState() {
   return useAppSelector((state: RootState) => getAccountState(state));
 }
 
+export function useMasterKey() {
+  return useAccountState()?.masterKey;
+}
+
+export function useDispatchMasterKeyChange(): (masterKey: string) => void {
+  const dispatch = useAppDispatch();
+  return (masterKey) => {
+    dispatch(AccountActions.setMasterKey(masterKey));
+  };
+}
+
+export function useDispatchResetMasterKey(): () => void {
+  const dispatch = useAppDispatch();
+  return () => {
+    dispatch(AccountActions.resetMasterKey);
+  };
+}
+
 export function useMnemonic() {
   return useAccountState()?.mnemonic;
 }

@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RNApduError } from '@src/features/ble/RNApduError';
 import { RNApduManager } from '@src/features/ble/RNApduManager';
 import { PairedApp } from '@src/features/ble/data/PairedApp';
+import { useConnectCardUseCase } from '@src/features/cardPairing/hooks/useConnectCardUseCase';
 import { PairedAppsView } from '@src/features/components/PairedAppsView';
 import { useInitApduEffect } from '@src/features/home/usecases/useCardPairingUseCase';
 import { useLogUseCase } from '@src/features/home/usecases/useLogUseCase';
@@ -24,7 +25,11 @@ export function GetPairedAppsContainer(): JSX.Element {
 
   useInitApduEffect();
 
-  const getPairedApps = () => {
+  const { connect, disconnect } = useConnectCardUseCase();
+
+  const getPairedApps = async () => {
+    await connect();
+
     setIsFetching(true);
     addLog('FETCHING....');
     RNApduManager.getInstance()
@@ -37,7 +42,10 @@ export function GetPairedAppsContainer(): JSX.Element {
         const error = e as RNApduError;
         addLog('FETCHING FAILED >>> ERROR=' + error);
       })
-      .finally(() => setIsFetching(false));
+      .finally(() => {
+        setIsFetching(false);
+        disconnect();
+      });
   };
 
   const onDeleted = (pairedAppId: string) => {
